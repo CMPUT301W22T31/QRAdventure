@@ -21,23 +21,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Access a Cloud Firestore instance from your Activity
+        // Putting Player data into HashMap
+        HashMap<String, String> data = new HashMap<>();
+        data.put("Email", "mlee1@ualberta.ca");
+        data.put("Phone Number", "+1 780-123-4567");
+        data.put("Username", "mlee1");
+
+        // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
 
         // Get a top level reference to the collection
-        final CollectionReference collectionReference = db.collection("Account");
-
-        // hashmap
-        HashMap<String, String> data = new HashMap<>();
-
-        data.put("username", "mlee1");
+        final CollectionReference collectionReference = db.collection("Accounts");
 
         // test addition
+        // Add data to a player document named mlee1
         collectionReference
-                .document("username")
+                .document("mlee1")
                 .set(data);
 
-
+        // Update Firestore database
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
