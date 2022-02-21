@@ -3,6 +3,7 @@ package com.example.qradventure;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -46,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseFirestoreException error) {
             }
         });
+
+
+
+
 
 
 
