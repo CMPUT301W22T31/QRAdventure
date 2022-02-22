@@ -10,6 +10,54 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRAdventure">
         <activity
+            android:name=".LeaderboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".QRPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewCodesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchPlayersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CommentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ScannedByActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PhotoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PostScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyCodesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyStatsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginQRActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StatusQRActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
