@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.0.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
     implementation 'com.google.mlkit:barcode-scanning:17.0.2'
+    implementation 'commons-codec:commons-codec:1.14'
     androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.3.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -50,17 +50,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button test = findViewById(R.id.testBtn);
-
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), Camera.class);
-
-                startActivity(intent);
-
-            }
-        });
 
 
 

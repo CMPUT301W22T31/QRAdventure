@@ -1,6 +1,8 @@
 package com.example.qradventure;
 
 
+import static org.junit.Assert.assertTrue;
+
 import android.app.Activity;
 
 import com.robotium.solo.Solo;
@@ -13,9 +15,14 @@ import org.junit.Test;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+
+
 public class CameraTest {
 
     private Solo solo;
+    QR testQR;
+
+
 
     @Rule
     public ActivityTestRule<Camera> rule = new ActivityTestRule<>(Camera.class, true, true);
@@ -33,11 +40,20 @@ public class CameraTest {
         Activity activity = rule.getActivity();
     }
 
-    @Test
-    public void test(){
+    // Test to scan a QR code. Times out after 20 Seconds
+    @Test(timeout = 20000)
+    public void testScanQR(){
         solo.assertCurrentActivity("Wrong", Camera.class);
 
-        solo.clickOnButton("qr_button");
+        solo.clickOnButton(0);
+
+        // wait to scan QR code
+        Camera camera = (Camera)solo.getCurrentActivity();
+
+        while (camera.lastQR == null);
+
+        assertTrue(camera.globalQRData.contains(camera.lastQR));
+
     }
 
 
