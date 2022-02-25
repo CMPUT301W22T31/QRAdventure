@@ -16,6 +16,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <Button
         android:id="@+id/buttonGoToScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,11 +29,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGoToAccount" />
-  
-  
 
-  
-  
+
+
 
     <Button
         android:id="@+id/buttonGoToPlayerSearch"
@@ -52,14 +54,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGoToPlayerSearch" />
-  
-      <Button
-        android:id="@+id/qr_button"
-        android:layout_width="85dp"
-        android:layout_height="68dp"
-        android:text="SCAN QR CODE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -93,10 +93,13 @@ public class ScanActivity extends AppCompatActivity{
     }
 
 
-
-     * **PLACEHOLDER**
+    /**
+     * PLACEHOLDER
      * Temporarily used to access PostScanActivity
+     *
+     * @param view
      */
+
     public void goToPostScan(View view) {
         Intent intent = new Intent(this, PostScanActivity.class);
         startActivity(intent);

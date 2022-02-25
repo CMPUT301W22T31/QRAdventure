@@ -68,12 +68,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ScanActivity"
-            android:parentActivityName=".MainActivity">
-
-        </activity>
-
 
 
     </application>

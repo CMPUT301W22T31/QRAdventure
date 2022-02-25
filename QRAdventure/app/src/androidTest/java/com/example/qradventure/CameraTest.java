@@ -45,7 +45,7 @@ public class CameraTest {
     public void testScanQR(){
         solo.assertCurrentActivity("Wrong", ScanActivity.class);
 
-        solo.clickOnButton(0);
+        solo.clickOnButton(1);
 
         // wait to scan QR code
         ScanActivity camera = (ScanActivity)solo.getCurrentActivity();
