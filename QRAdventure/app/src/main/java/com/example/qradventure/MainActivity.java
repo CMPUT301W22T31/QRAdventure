@@ -68,17 +68,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Sends to leaderboard activity. Called when respective button is clicked.
      * @param view: unused

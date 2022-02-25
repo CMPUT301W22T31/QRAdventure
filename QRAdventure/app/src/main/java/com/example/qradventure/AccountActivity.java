@@ -65,6 +65,40 @@ public class AccountActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MyCodesActivity.class);
         startActivity(intent);
     }
+    /**
+     * Sends to account activity. Called when respective button is clicked.
+     * @param view: unused
+     */
+    public void goToAccount(View view) {
+        Intent intent = new Intent(this, AccountActivity.class);
+        startActivity(intent);
+    }
 
+    /**
+     * Sends to scan activity. Called when respective button is clicked.
+     * @param view: unused
+     */
+    public void goToScan(View view) {
+        Intent intent = new Intent(this, ScanActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Sends to search player activity. Called when respective button is clicked.
+     * @param view: unused
+     */
+    public void goToSearchPlayers(View view) {
+        Intent intent = new Intent(this, SearchPlayersActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Sends to leaderboard activity. Called when respective button is clicked.
+     * @param view: unused
+     */
+    public void goToLeaderboard(View view) {
+        Intent intent = new Intent(this, LeaderboardActivity.class);
+        startActivity(intent);
+    }
 
 }

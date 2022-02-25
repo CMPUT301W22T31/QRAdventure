@@ -4,56 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/buttonGoToAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="87dp"
-        android:onClick="goToAccount"
-        android:text="ACCOUNT"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-    <Button
-        android:id="@+id/buttonGoToScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:onClick="goToScan"
-        android:text="SCAN A QR"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGoToAccount" />
-
-
-
-
-    <Button
-        android:id="@+id/buttonGoToPlayerSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:onClick="goToSearchPlayers"
-        android:text="SEARCH PLAYERS"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGoToScan" />
-
-    <Button
-        android:id="@+id/buttonGoToLeaderboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
+        android:gravity="center"
+        >
+    <ImageView
+        android:clickable="true"
         android:onClick="goToLeaderboard"
-        android:text="LEADERBOARD"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGoToPlayerSearch" />
+        android:paddingHorizontal="25dp"
+        android:src="@drawable/leaderboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+        <ImageView
+            android:clickable="true"
+            android:onClick="goToSearchPlayers"
+            android:paddingHorizontal="25dp"
+            android:src="@drawable/people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:clickable="true"
+            android:onClick="goToScan"
+            android:paddingHorizontal="20dp"
+            android:src="@drawable/qr_scanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:paddingHorizontal="25dp"
+            android:src="@drawable/location2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:clickable="true"
+            android:onClick="goToAccount"
+            android:paddingHorizontal="25dp"
+            android:src="@drawable/account2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+</LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
