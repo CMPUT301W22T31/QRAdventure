@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -21,11 +20,15 @@ import java.util.ArrayList;
 /**
  *This is the screen which shows up before
  */
-public class Camera extends AppCompatActivity{
+public class ScanActivity extends AppCompatActivity{
 
 
     // Both these variables are meant for testing. Later should try and find a better way to test
 
+
+    /**
+     * The onCreate method for the camera.
+     */
     public ArrayList<QR> globalQRData = new ArrayList<QR>();
     public QR lastQR;
     @Override
@@ -41,7 +44,7 @@ public class Camera extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
-                IntentIntegrator tempIntent = new IntentIntegrator(Camera.this);
+                IntentIntegrator tempIntent = new IntentIntegrator(ScanActivity.this);
 
                 tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
                 tempIntent.setCameraId(0);
@@ -56,14 +59,24 @@ public class Camera extends AppCompatActivity{
 
     }
 
+    /**
+     * This method is called whenever a QR code is scanned
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     *
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        new AlertDialog.Builder(Camera.this).setTitle("Result")
-                .setMessage(result.getContents()).setPositiveButton("yay", null)
+
+        //Note: should display a dialogue here
+        new AlertDialog.Builder(ScanActivity.this).setTitle("Result")
+                .setMessage(result.getContents()).setPositiveButton("QR code scanned", null)
+                .setNegativeButton("Cancel", null)
                 .create().show();
 
         lastQR = new QR(result.getContents());
