@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import android.widget.Button;
+
+
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,5 +75,6 @@ public class MainActivity extends AppCompatActivity {
     public void goToLeaderboard(View view) {
         Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);
+
     }
 }
