@@ -1,5 +1,7 @@
 package com.example.qradventure;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,8 +36,9 @@ public class ScanActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.camera);
+        setContentView(R.layout.activity_scan);
+        setTitle("Scan Activity");
+      
         Button qrButton = findViewById(R.id.qr_button);
 
         Intent intent = getIntent();
@@ -57,9 +60,14 @@ public class ScanActivity extends AppCompatActivity{
             }
         });
 
+
+
+
+
     }
 
     /**
+
      * This method is called whenever a QR code is scanned
      * @param requestCode
      * @param resultCode
@@ -84,4 +92,14 @@ public class ScanActivity extends AppCompatActivity{
 
     }
 
+
+
+     * **PLACEHOLDER**
+     * Temporarily used to access PostScanActivity
+     */
+    public void goToPostScan(View view) {
+        Intent intent = new Intent(this, PostScanActivity.class);
+        startActivity(intent);
+    }
 }
+
