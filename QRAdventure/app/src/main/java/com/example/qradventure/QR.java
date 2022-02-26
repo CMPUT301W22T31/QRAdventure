@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
-
 /**
  * This class represents a QR code. It is itentified by the hash of the QR code it
  * represents
@@ -18,16 +17,22 @@ public class QR {
     private String hash;
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
-    private ArrayList<Comment> comments;
+    private ArrayList<String> geolocation;
 
-
+    // two constructors
+    public QR(String hash, int score, ArrayList<Account> scannedAccounts, ArrayList<String> geolocation) {
+        this.hash = hash;
+        this.score = score;
+        this.scannedAccounts = scannedAccounts;
+        this.geolocation = geolocation;
+    }
 
     public QR(String QR){
 
         hash = DigestUtils.sha256Hex(QR);
-        scannedAccounts = new ArrayList<Account>();
-        comments = new ArrayList<Comment>();
         score = getScore(hash);
+        scannedAccounts = new ArrayList<Account>();
+        geolocation = new ArrayList<String>();
 
     }
 

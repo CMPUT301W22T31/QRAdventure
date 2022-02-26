@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         StatusQR = "username3StatusQRHash";
 
         // Create new user
-        User newUser = new User(username, email, phoneNumber, LoginQR, StatusQR, myRecords);
+        Account newUser = new Account(username, email, phoneNumber, LoginQR, StatusQR, myRecords);
 
         // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();

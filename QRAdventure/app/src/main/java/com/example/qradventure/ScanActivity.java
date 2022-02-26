@@ -2,7 +2,6 @@ package com.example.qradventure;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +16,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
-
+/*** TODO: Add new QR to Firestore QRDB and RecordDB ***/
 
 /**
  *This is the screen which shows up before
@@ -89,6 +88,7 @@ public class ScanActivity extends AppCompatActivity{
 
         lastQR = new QR(result.getContents());
         globalQRData.add(lastQR);
+
 
     }
 

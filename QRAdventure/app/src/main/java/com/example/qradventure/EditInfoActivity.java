@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+/** TODO: Edit Info in User in Firestore **/
+
 /**
  * Activity where logged in user can edit their account information
  */

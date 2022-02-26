@@ -1,15 +1,17 @@
 package com.example.qradventure;
 
+import java.util.ArrayList;
+
 public class Record {
 
-    String username;
-    String QRhash;
-    String comments;
-    String recordID = username + "-" + QRhash;
+    private Account user;
+    private QR theQR;
+    private ArrayList<String> comments;
+    // String recordID = username + "-" + QRhash; -> For Firebase document ID
 
-    public Record(String username, String QRhash, String comments) {
-        this.username = username;
-        this.QRhash = QRhash;
+    public Record(Account user, QR theQR, ArrayList<String> comments) {
+        this.user = user;
+        this.theQR = theQR;
         this.comments = comments;
     }
 
