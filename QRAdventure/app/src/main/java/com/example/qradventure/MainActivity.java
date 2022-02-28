@@ -1,80 +1,79 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.View;
+import android.util.Log;
 
-import android.widget.Button;
-
-
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
-/**
- * The main, landing activity of the app
- */
 public class MainActivity extends AppCompatActivity {
+    FirebaseFirestore db;
 
-    /**
-     * Part of the standard activity lifecycle
-     * TODO: Will this activity only be created once? Or each time is it navigated to?
-     *       How we want to design our activity lifecycle/stack and navigation.
-     *
-     * @param savedInstanceState
-     *       TODO
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Main Activity");
-        String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-    }
 
-    /**
-     * Sends to account activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToAccount(View view) {
-        Intent intent = new Intent(this, AccountActivity.class);
-        startActivity(intent);
-    }
+        // Putting Player data into HashMap
+        HashMap<String, String> data = new HashMap<>();
+        data.put("Email", "mlee1@ualberta.ca");
+        data.put("Phone Number", "+1 780-123-4567");
+        data.put("Username", "mlee1");
+        data.put("device_id", "12393023");
 
-    /**
-     * Sends to scan activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToScan(View view) {
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivity(intent);
-    }
+        // Cloud Firestore instance
+        db = FirebaseFirestore.getInstance();
 
-    /**
-     * Sends to search player activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToSearchPlayers(View view) {
-        Intent intent = new Intent(this, SearchPlayersActivity.class);
-        startActivity(intent);
-    }
+        // Get a top level reference to the collection
+        final CollectionReference collectionReference = db.collection("Accounts");
 
-    /**
-     * Sends to leaderboard activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToLeaderboard(View view) {
-        Intent intent = new Intent(this, LeaderboardActivity.class);
-        startActivity(intent);
+        // test addition
+        // Add data to a player document named mlee1
+        collectionReference
+                .document("mlee1")
+                .set(data);
+
+        Query accountsQuery = collectionReference
+                .whereEqualTo("device_id", "12393023");  //Second argument should be device ID
+
+        accountsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for(QueryDocumentSnapshot doc: task.getResult()) {
+                        String userName = (String) doc.getData().get("Username");
+                        String phoneNumber = (String) doc.getData().get("Phone Number");
+                        String email = (String) doc.getData().get("Email");
+                        Log.d("Testing", userName);
+                    }
+                }
+                else {
+
+                }
+            }
+        });
+
+
+        // Update Firestore database
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+            }
+        });
 
     }
 }
