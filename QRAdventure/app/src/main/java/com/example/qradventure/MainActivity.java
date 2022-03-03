@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     String username, email, phoneNumber, LoginQR, StatusQR;
     ArrayList<Record> myRecords;
 
+    public static Account currentUser;
+
     /**
      * Part of the standard activity lifecycle
      * TODO: Will this activity only be created once? Or each time is it navigated to?
@@ -52,9 +54,6 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Main Activity");
 
         /******** Initialize player account data ********/
-
-        // Create new user
-        Account newUser = new Account(username, email, phoneNumber, LoginQR, StatusQR, myRecords);
 
         // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
@@ -76,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 // Dummy data for now
                 LoginQR = "usernameLoginQRHash";
                 StatusQR = "usernameStatusQRHash";
+
+                // Create new user
+                currentUser = new Account(username, email, phoneNumber, LoginQR, StatusQR, myRecords);
 
                 // Putting Player data into HashMap
                 HashMap<String, Object> data = new HashMap<>();
@@ -121,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-
 
         /******** Initializing account done ********/
 

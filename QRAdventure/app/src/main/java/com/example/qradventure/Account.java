@@ -19,4 +19,8 @@ public class Account {
         this.statusQR = statusQR;
         this.myRecords = myRecords;
     }
+
+    public String getUsername() {
+        return username;
+    }
 }
