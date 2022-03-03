@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -18,6 +21,17 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
 
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("Username");
+        String email = intent.getStringExtra("E-mail");
+        String phoneNumber = intent.getStringExtra("Phone Number");
+
+        TextView displayUsername = findViewById(R.id.user_username);
+        displayUsername.setText(username);
+        TextView displayEmail = findViewById(R.id.user_email);
+        displayEmail.setText(email);
+        TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
+        displayPhoneNumber.setText(phoneNumber);
 
     }
 
