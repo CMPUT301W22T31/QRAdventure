@@ -1,16 +1,21 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,8 +26,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-/*** TODO: Check for duplicates ***/
 
 /**
  *This is the screen which shows up before
@@ -93,24 +96,35 @@ public class ScanActivity extends AppCompatActivity{
 
         CollectionReference QRDB = db.collection("QRDB");
 
-        HashMap<String, Object> QRData = new HashMap<>();
-        QRData.put("Score", scannedQR.getScore(scannedQR.getHash()));
-        HashMap<String, Object> locationData = new HashMap<>();
-        QRData.put("Geolocation", locationData);
-        HashMap<String, Object> scannedByData = new HashMap<>();
-        scannedByData.put("Username", MainActivity.currentUser.getUsername());
+        QRDB.whereEqualTo(scannedQR.getHash(), true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                       @Override
+                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                           if (!task.isSuccessful()) { // if it doesn't exist in the QR database
+                               HashMap<String, Object> QRData = new HashMap<>();
+                               QRData.put("Score", scannedQR.getScore(scannedQR.getHash()));
+                               HashMap<String, Object> locationData = new HashMap<>();
+                               QRData.put("Geolocation", locationData);
+                               HashMap<String, Object> scannedByData = new HashMap<>();
+                               scannedByData.put("Username", MainActivity.currentUser.getUsername());
 
-        QRDB.document(scannedQR.getHash()).set(QRData);
-        QRDB.document(scannedQR.getHash())
-                .collection("Scanned By").document(MainActivity.currentUser.getUsername())
-                .set(scannedByData);
+                               QRDB.document(scannedQR.getHash()).set(QRData);
+                               QRDB.document(scannedQR.getHash())
+                                       .collection("Scanned By").document(MainActivity.currentUser.getUsername())
+                                       .set(scannedByData);
 
-        QRDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                    FirebaseFirestoreException error) {
-            }
-        });
+                               QRDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                   @Override
+                                   public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                                           FirebaseFirestoreException error) {
+                                   }
+                               });
+                           }
+                       }
+                   });
+
+
 
         /***** Create New Record *****/
         CollectionReference RecordDB = db.collection("RecordDB");
@@ -145,7 +159,7 @@ public class ScanActivity extends AppCompatActivity{
      */
 
     public void goToPostScan(View view) {
-        Intent intent = new Intent(this, PostScanActivity.class);
+        Intent intent = new Intent(ScanActivity.this, PostScanActivity.class);
         startActivity(intent);
     }
 }

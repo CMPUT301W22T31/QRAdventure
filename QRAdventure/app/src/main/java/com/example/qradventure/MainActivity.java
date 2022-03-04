@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,12 +14,16 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -88,37 +93,41 @@ public class MainActivity extends AppCompatActivity {
 
                 // Add data to the player document
                 CollectionReference AccountDB = db.collection("AccountDB");
-                // AccountDB.document(username).set(data);
-                 AccountDB.document(username)
-                        .set(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
-                            }
-                        });
 
-                Intent intent = new Intent(MainActivity.this, AccountActivity.class);
-                intent.putExtra("Username", username);
-                intent.putExtra("E-mail", email);
-                intent.putExtra("Phone Number", phoneNumber);
-                intent.putExtra("LoginQR", LoginQR);
-                intent.putExtra("StatusQR", StatusQR);
-                startActivity(intent);
+                AccountDB.whereEqualTo(username, true)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) { // if it exists
+                                Context context = getApplicationContext();
+                                CharSequence text = "Username already exists!";
+                                int duration = Toast.LENGTH_SHORT;
 
-                // Update Firestore database
-                AccountDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                            FirebaseFirestoreException error) {
-                    }
-                });
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                            } else { // if it doesn't exist in the Account database
+                                AccountDB.document(username).set(data);
+
+                                Intent intent = new Intent(MainActivity.this, AccountActivity.class);
+                                intent.putExtra("Username", username);
+                                intent.putExtra("E-mail", email);
+                                intent.putExtra("Phone Number", phoneNumber);
+                                intent.putExtra("LoginQR", LoginQR);
+                                intent.putExtra("StatusQR", StatusQR);
+
+                                startActivity(intent);
+
+                                // Update Firestore database
+                                AccountDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                                            FirebaseFirestoreException error) {
+                                    }
+                                });
+                            }
+                        }
+                    });
             }
         });
 
