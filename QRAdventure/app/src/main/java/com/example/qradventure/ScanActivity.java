@@ -22,7 +22,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/*** TODO: Add new QR to Firestore QRDB and RecordDB ***/
+/*** TODO: Check for duplicates ***/
 
 /**
  *This is the screen which shows up before
@@ -85,12 +85,12 @@ public class ScanActivity extends AppCompatActivity{
                 .setNegativeButton("Cancel", null)
                 .create().show();
 
-        scannedQR = new QR(result.getContents());
-
         // Update Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Create New QR
+        /***** Create New QR *****/
+        scannedQR = new QR(result.getContents());
+
         CollectionReference QRDB = db.collection("QRDB");
 
         HashMap<String, Object> QRData = new HashMap<>();
@@ -98,10 +98,13 @@ public class ScanActivity extends AppCompatActivity{
         HashMap<String, Object> locationData = new HashMap<>();
         QRData.put("Geolocation", locationData);
         HashMap<String, Object> scannedByData = new HashMap<>();
-        scannedByData.put(MainActivity.currentUser.getUsername(), MainActivity.currentUser);
-        QRData.put("Scanned By", scannedByData);
+        scannedByData.put("Username", MainActivity.currentUser.getUsername());
 
-        QRDB.document(scannedQR.getHash()).set(data);
+        QRDB.document(scannedQR.getHash()).set(QRData);
+        QRDB.document(scannedQR.getHash())
+                .collection("Scanned By").document(MainActivity.currentUser.getUsername())
+                .set(scannedByData);
+
         QRDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
@@ -109,7 +112,7 @@ public class ScanActivity extends AppCompatActivity{
             }
         });
 
-        // Create New Record
+        /***** Create New Record *****/
         CollectionReference RecordDB = db.collection("RecordDB");
 
         HashMap<String, Object> recordData = new HashMap<>();
@@ -126,7 +129,10 @@ public class ScanActivity extends AppCompatActivity{
             }
         });
 
-
+        /*** Add Record to user ***/
+        CollectionReference AccountDB = db.collection("AccountDB");
+        AccountDB.document(MainActivity.currentUser.getUsername())
+                .collection("My QR Records").document(recordID).set(recordData);
 
     }
 

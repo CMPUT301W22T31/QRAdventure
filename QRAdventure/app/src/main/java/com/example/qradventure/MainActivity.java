@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 data.put("Phone Number", phoneNumber);
                 data.put("LoginQR", LoginQR);
                 data.put("StatusQR", StatusQR);
-                HashMap<String, Object> myScannedQR = new HashMap<>();
-                data.put("My QR Records", myScannedQR);
 
                 // Add data to the player document
                 CollectionReference AccountDB = db.collection("AccountDB");
