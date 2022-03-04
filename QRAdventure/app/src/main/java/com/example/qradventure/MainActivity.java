@@ -37,10 +37,7 @@ import java.util.HashMap;
  * The main, landing activity of the app
  */
 public class MainActivity extends AppCompatActivity {
-
     FirebaseFirestore db;
-    String username, email, phoneNumber, LoginQR, StatusQR;
-    ArrayList<Record> myRecords;
 
     public static Account currentUser;
 
@@ -58,13 +55,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Main Activity");
 
-        /******** Initialize player account data ********/
-
         // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
 
-        // Get a top level reference to the collection
-        // DocumentReference usernameDR = db.collection("AccountDB").document();
+
+
+        /* =========================================================================================
+         * TODO: This should all be moved to some activity relating to account registration
+         *       Later we will have to decide the logic about registration and which activity
+         *       is the startup activity.
+         *       Idea: LoginActivity is the startup activity, and it checks the device if it is
+         *             associated with an account, or allows user to register if not.
+         *       Keep this code temporarily as a means to test things?
+         *       Probably delete all this before merging
+         */
 
         Button createButton = findViewById(R.id.button_create);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -72,17 +76,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 EditText username_entered = findViewById(R.id.editText_username);
-                username = username_entered.getText().toString();
+                String username = username_entered.getText().toString();
                 EditText phone_number_entered = findViewById(R.id.editText_phone_number);
-                phoneNumber = phone_number_entered.getText().toString();
+                String phoneNumber = phone_number_entered.getText().toString();
                 EditText email_entered = findViewById(R.id.editText_email);
-                email = email_entered.getText().toString();
+                String email = email_entered.getText().toString();
                 // Dummy data for now
-                LoginQR = "usernameLoginQRHash";
-                StatusQR = "usernameStatusQRHash";
+                String LoginQR = "usernameLoginQRHash";
+                String StatusQR = "usernameStatusQRHash";
 
                 // Create new user
-                currentUser = new Account(username, email, phoneNumber, LoginQR, StatusQR, myRecords);
+                currentUser = new Account(username, email, phoneNumber, LoginQR, StatusQR, null);
 
                 // Putting Player data into HashMap
                 HashMap<String, Object> data = new HashMap<>();
@@ -91,49 +95,65 @@ public class MainActivity extends AppCompatActivity {
                 data.put("LoginQR", LoginQR);
                 data.put("StatusQR", StatusQR);
 
-                // Add data to the player document
                 CollectionReference AccountDB = db.collection("AccountDB");
 
-                AccountDB.whereEqualTo(username, true)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) { // if it exists
-                                Context context = getApplicationContext();
-                                CharSequence text = "Username already exists!";
-                                int duration = Toast.LENGTH_SHORT;
+                // reference: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
+                // if input was non-empty
+                if (!username.matches("")) {
+                    DocumentReference docRef = db.collection("AccountDB").document(username);
 
+                    // Check for a document matching the input username
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            // task is a query for a document matching the String username
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    // Document exists, therefore username is taken!
+                                    Context context = getApplicationContext();
+                                    CharSequence text = "Username already exists!";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+
+                                } else {
+                                    // Document does not exist, therefore username is available!
+                                    Context context = getApplicationContext();
+                                    CharSequence text = "Username available! Creating account...";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+
+                                    // TODO: add logic to add this account to firestore
+
+                                }
+
+                            } else {
+                                // document query was not successful
+                                Context context = getApplicationContext();
+                                CharSequence text = "ERROR: query failed!";
+                                int duration = Toast.LENGTH_SHORT;
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
-                            } else { // if it doesn't exist in the Account database
-                                AccountDB.document(username).set(data);
-
-                                Intent intent = new Intent(MainActivity.this, AccountActivity.class);
-                                intent.putExtra("Username", username);
-                                intent.putExtra("E-mail", email);
-                                intent.putExtra("Phone Number", phoneNumber);
-                                intent.putExtra("LoginQR", LoginQR);
-                                intent.putExtra("StatusQR", StatusQR);
-
-                                startActivity(intent);
-
-                                // Update Firestore database
-                                AccountDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                                            FirebaseFirestoreException error) {
-                                    }
-                                });
+                                Log.d(TAG, "get failed with ", task.getException());
                             }
                         }
                     });
+                } else {
+                    // user input was empty; optionally add logic for this case?
+                }
             }
         });
+        // ====== outside button click logic ======
+        //==========================================================================================
 
-        /******** Initializing account done ********/
+        //
 
     }
+
+
+
 
     /**
      * Sends to account activity. Called when respective button is clicked.
