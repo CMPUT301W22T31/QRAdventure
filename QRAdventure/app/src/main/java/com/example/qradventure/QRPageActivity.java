@@ -12,6 +12,7 @@ import android.view.View;
  * Anyone can access. Further leads to activities ScannedBy and Comments
  */
 public class QRPageActivity extends AppCompatActivity {
+    String hash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,8 @@ public class QRPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrpage);
         setTitle("QR-123456");
 
+        // unpack Intent to get the hash (String)
+        // query DB for that hash to get relevant fields
 
     }
 
@@ -28,7 +31,7 @@ public class QRPageActivity extends AppCompatActivity {
      */
     public void goToScannedBy(View view) {
         Intent intent = new Intent(this, ScannedByActivity.class);
-        // add QR identifier to the intent (?)
+        // add QR hash to the intent (?)
         startActivity(intent);
     }
 
@@ -38,7 +41,7 @@ public class QRPageActivity extends AppCompatActivity {
      */
     public void goToComments(View view) {
         Intent intent = new Intent(this, CommentsActivity.class);
-        // add qr identifier to intent (?)
+        // add QR hash to intent (?)
         startActivity(intent);
     }
 }

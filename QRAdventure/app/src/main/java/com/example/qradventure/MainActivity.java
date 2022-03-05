@@ -34,18 +34,14 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * The main, landing activity of the app
+ * Startup Activity
  */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
 
     /**
-     * Part of the standard activity lifecycle
-     * TODO: Will this activity only be created once? Or each time is it navigated to?
-     *       How we want to design our activity lifecycle/stack and navigation.
-     *
-     * @param savedInstanceState
-     *       TODO
+     * **TEMP** logs into a default test account
+     * @param savedInstanceState - (unused)
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // create a dummy account
-        Account account = new Account("temp", "temp", "temp", "temp", "temp", null);
+        Account account = new Account("Default Test Account", "temp", "temp", "temp", "temp", null);
         // set CurrentAccount to this dummy account
         CurrentAccount.getInstance().setAccount(account);
 

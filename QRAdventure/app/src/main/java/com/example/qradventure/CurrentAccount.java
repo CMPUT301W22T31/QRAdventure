@@ -10,7 +10,7 @@ public class CurrentAccount {
     private Account account;
 
     /**
-     * Lazy singleton constructor is private. We have nothing to set inside it.
+     * Lazy singleton constructor is private.
      */
     private CurrentAccount() {
     }
@@ -34,19 +34,19 @@ public class CurrentAccount {
         account = acc;
     }
 
+    public Account getCurrentAccount() {
+		return account;
+    }
+
     /**
      * Setter method
-     * Takes in a username and constructors the associated Account object.
-     * Sets account to this reconstructed created Account.
+     * Takes in a username and constructs the associated Account object from firestore fields.
+     * Sets account to this reconstructed Account.
      * @param username
      *          String - unique username of account
      */
     public void setByUsername(String username) {
-        // TODO: implement? scrap?
-    }
-
-    public Account getCurrentAccount() {
-		return account;
+        // This might be useful for LoginQRActivity?
     }
 
 }

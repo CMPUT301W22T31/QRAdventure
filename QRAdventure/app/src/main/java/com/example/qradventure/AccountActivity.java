@@ -26,6 +26,7 @@ public class AccountActivity extends AppCompatActivity {
         account = CurrentAccount.getInstance().getCurrentAccount();
 
         // give info to textviews to display
+        // TODO: Move these to onResume() in case of updated info.
         String username = account.getUsername();
         String email = account.getEmail();
         String phoneNumber = account.getPhoneNumber();
