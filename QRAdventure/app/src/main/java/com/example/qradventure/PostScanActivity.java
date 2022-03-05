@@ -106,11 +106,6 @@ public class PostScanActivity extends AppCompatActivity {
                         docRef.set(QRData); // set the data!
                         // could include success/failure listener?
 
-                        // Add User to list of user scanned this qr
-                        HashMap<String, Object> userData = new HashMap<>();
-                        userData.put("Username", myAccount.getUsername());
-                        docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
-
                     }
 
                 } else {
@@ -127,6 +122,11 @@ public class PostScanActivity extends AppCompatActivity {
 
         // TODO: Record logic. This is what remains of Michelle's work (untested?)
         //====== Create New Record ======//
+        // Add User to list of user scanned this qr
+        HashMap<String, Object> userData = new HashMap<>();
+        userData.put("Username", myAccount.getUsername());
+        docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
+
         recordID = myAccount.getUsername() + "-" + qr.getHash();
 
         CollectionReference RecordDB = db.collection("RecordDB");
