@@ -25,11 +25,6 @@ public class AccountActivity extends AppCompatActivity {
         // get the account from the singleton
         account = CurrentAccount.getInstance().getCurrentAccount();
 
-        // temp, for testing, fixes a simple crash where account is null.
-        if (account == null) {
-            account = new Account("temp", "temp", "temp", "temp", "temp", null);
-        }
-
         // give info to textviews to display
         String username = account.getUsername();
         String email = account.getEmail();

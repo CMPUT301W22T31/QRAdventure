@@ -39,8 +39,6 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
 
-    public static Account currentUser;
-
     /**
      * Part of the standard activity lifecycle
      * TODO: Will this activity only be created once? Or each time is it navigated to?
@@ -58,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
         // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
 
-
+        // create a dummy account
+        Account account = new Account("temp", "temp", "temp", "temp", "temp", null);
+        // set CurrentAccount to this dummy account
+        CurrentAccount.getInstance().setAccount(account);
 
     }
 
