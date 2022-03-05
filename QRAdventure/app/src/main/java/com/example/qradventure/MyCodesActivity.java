@@ -37,7 +37,6 @@ public class MyCodesActivity extends AppCompatActivity {
 
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
-
         navbar.setOnItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.leaderboards:
