@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db;
-    Account currentAccount;
+    public Account currentAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
