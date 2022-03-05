@@ -117,10 +117,12 @@ public class MainActivity extends AppCompatActivity {
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
 
+                                    // TODO: handle logic for this case
+
                                 } else {
                                     // Document does not exist, therefore username is available!
                                     Context context = getApplicationContext();
-                                    CharSequence text = "Username available! Creating account...";
+                                    CharSequence text = "Username available! TODO: create account...";
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();

@@ -35,7 +35,8 @@ public class ScanActivity extends AppCompatActivity{
     /**
      * The onCreate method for the camera.
      */
-    public ArrayList<QR> globalQRData = new ArrayList<QR>();
+
+    public ArrayList<QR> globalQRData = new ArrayList<QR>(); // used in Test. Review?
 
     public QR scannedQR;
     public String scannedQRHash;
@@ -46,17 +47,14 @@ public class ScanActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
         setTitle("Scan Activity");
-      
+
+        // button logic: activates camera
         Button qrButton = findViewById(R.id.qr_button);
-
-        Intent intent = getIntent();
-
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Use IntentIntegrator to activate camera
                 IntentIntegrator tempIntent = new IntentIntegrator(ScanActivity.this);
-
                 tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
                 tempIntent.setCameraId(0);
                 tempIntent.setOrientationLocked(false);
@@ -64,7 +62,6 @@ public class ScanActivity extends AppCompatActivity{
                 tempIntent.setBeepEnabled(true);
                 tempIntent.setBarcodeImageEnabled(true);
                 tempIntent.initiateScan();
-
             }
         });
     }
@@ -79,88 +76,34 @@ public class ScanActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
-        //Note: should display a dialogue here
-        new AlertDialog.Builder(ScanActivity.this).setTitle("Result")
-                .setMessage(result.getContents()).setPositiveButton("QR code scanned", null)
-                .setNegativeButton("Cancel", null)
-                .create().show();
-
-        // Update Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        /***** Create New QR *****/
-        scannedQR = new QR(result.getContents());
-
-        CollectionReference QRDB = db.collection("QRDB");
-
-        QRDB.whereEqualTo(scannedQR.getHash(), true)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                       @Override
-                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                           if (!task.isSuccessful()) { // if it doesn't exist in the QR database
-                               HashMap<String, Object> QRData = new HashMap<>();
-                               QRData.put("Score", scannedQR.getScore(scannedQR.getHash()));
-                               HashMap<String, Object> locationData = new HashMap<>();
-                               QRData.put("Geolocation", locationData);
-                               HashMap<String, Object> scannedByData = new HashMap<>();
-                               scannedByData.put("Username", MainActivity.currentUser.getUsername());
-
-                               QRDB.document(scannedQR.getHash()).set(QRData);
-                               QRDB.document(scannedQR.getHash())
-                                       .collection("Scanned By").document(MainActivity.currentUser.getUsername())
-                                       .set(scannedByData);
-
-                               QRDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                   @Override
-                                   public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                                           FirebaseFirestoreException error) {
-                                   }
-                               });
-                           }
-                       }
-                   });
-
-
-
-        /***** Create New Record *****/
-        CollectionReference RecordDB = db.collection("RecordDB");
-
-        HashMap<String, Object> recordData = new HashMap<>();
-        recordData.put("User", MainActivity.currentUser);
-        recordData.put("QR", scannedQR);
-
-        recordID = MainActivity.currentUser.getUsername() + "-" + scannedQR.getHash();
-
-        RecordDB.document(recordID).set(recordData);
-        RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                    FirebaseFirestoreException error) {
-            }
-        });
-
-        /*** Add Record to user ***/
-        CollectionReference AccountDB = db.collection("AccountDB");
-        AccountDB.document(MainActivity.currentUser.getUsername())
-                .collection("My QR Records").document(recordID).set(recordData);
-
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        goToPostScan2(content);
     }
 
 
     /**
      * PLACEHOLDER
-     * Temporarily used to access PostScanActivity
+     * Temporarily used to access PostScanActivity via button.
      *
      * @param view
      */
 
     public void goToPostScan(View view) {
+        //Intent intent = new Intent(ScanActivity.this, PostScanActivity.class);
+        //startActivity(intent);
+    }
+
+    /**
+     * Called when a QR is successfully scanned
+     * Sends to PostScanActivity, with the QR contents in the intent
+     */
+    public void goToPostScan2(String QRContent) {
         Intent intent = new Intent(ScanActivity.this, PostScanActivity.class);
+        intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), QRContent);
         startActivity(intent);
     }
+
 }
 

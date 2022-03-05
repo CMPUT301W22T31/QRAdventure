@@ -9,12 +9,11 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 
 /**
- * This class represents a QR code. It is itentified by the hash of the QR code it
- * represents
+ * This class represents a QR code. Uniquely Identified by its hash string.
  */
 public class QR {
 
-    private String hash;
+    private final String hash;
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
     private ArrayList<String> geolocation;
@@ -30,7 +29,7 @@ public class QR {
     public QR(String QR){
 
         hash = DigestUtils.sha256Hex(QR);
-        score = getScore(hash);
+        calculateScore(hash);
         scannedAccounts = new ArrayList<Account>();
         geolocation = new ArrayList<String>();
 
@@ -40,11 +39,11 @@ public class QR {
     /**
      * Function to obtain the score from a hexidecimal hash
      * @param hash
-     *          The hash we wish to get the score from
+     *          String - The hash we wish to get the score from
      * @return
-     *          The score as an integer
+     *          Int - The score as an integer
      */
-    public int getScore(String hash){
+    public int calculateScore(String hash){
 
         char nextChar = ' ';
         char current = ' ';
@@ -85,7 +84,15 @@ public class QR {
             }
         }
 
-        return QRScore;
+        score = QRScore;
+        return score;
+    }
+
+    /**
+     * Getter for the score
+     */
+    public int getScore() {
+        return this.score;
     }
 
 

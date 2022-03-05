@@ -39,13 +39,13 @@ public class QRTest {
         String testHash6 = "abcddf";
         String testHash7 = "DA6B387601834350B994A8987A94793C555E91FAF9322C0D80025DD45821DBD5";
 
-        assertEquals(testQR.getScore(testHash1), 1024);
-        assertEquals(testQR.getScore(testHash2), 3200000);
-        assertEquals(testQR.getScore(testHash3), 513);
-        assertEquals(testQR.getScore(testHash4), 10);
-        assertEquals(testQR.getScore(testHash5), 50625);
-        assertEquals(testQR.getScore(testHash6), 17);
-        assertEquals(testQR.getScore(testHash7), 122);
+        assertEquals(testQR.calculateScore(testHash1), 1024);
+        assertEquals(testQR.calculateScore(testHash2), 3200000);
+        assertEquals(testQR.calculateScore(testHash3), 513);
+        assertEquals(testQR.calculateScore(testHash4), 10);
+        assertEquals(testQR.calculateScore(testHash5), 50625);
+        assertEquals(testQR.calculateScore(testHash6), 17);
+        assertEquals(testQR.calculateScore(testHash7), 122);
 
     }
 
