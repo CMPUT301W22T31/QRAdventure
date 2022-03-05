@@ -119,7 +119,7 @@ public class PostScanActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: Record logic
+        // TODO: Record logic. This is what remains of Michelle's work (untested?)
         /*
         //====== Create New Record ======//
         CollectionReference RecordDB = db.collection("RecordDB");
@@ -144,9 +144,11 @@ public class PostScanActivity extends AppCompatActivity {
                 .collection("My QR Records").document(recordID).set(recordData);
         */
 
-        // ====== database updated ======
+
+        // ====== database logic concluded ======
         // send user to a different activity (which? Account for now?).
         Intent intent = new Intent(this, AccountActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
     }
@@ -156,7 +158,6 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void clickDismiss(View view) {
-        // abort scan, do not save anything?
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -167,7 +168,6 @@ public class PostScanActivity extends AppCompatActivity {
      */
     public void addGeolocation(View view) {
         // related: need a setter method in QR.java?
-
     }
 
     /**

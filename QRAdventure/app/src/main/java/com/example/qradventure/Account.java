@@ -2,6 +2,10 @@ package com.example.qradventure;
 
 import java.util.ArrayList;
 
+/**
+ * Represents an player account.
+ * All account usernames are unique.
+ */
 public class Account {
 
     String username;
@@ -22,5 +26,21 @@ public class Account {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getLoginQR() {
+        return loginQR;
+    }
+
+    public String getStatusQR() {
+        return statusQR;
     }
 }

@@ -14,6 +14,7 @@ import org.w3c.dom.Text;
  * Activity where the logged in player can manage their account
  */
 public class AccountActivity extends AppCompatActivity {
+    Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,17 +22,26 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
 
-        Intent intent = getIntent();
-        String username = intent.getStringExtra("Username");
-        String email = intent.getStringExtra("E-mail");
-        String phoneNumber = intent.getStringExtra("Phone Number");
+        // get the account from the singleton
+        account = CurrentAccount.getInstance().getCurrentAccount();
 
+        // temp, for testing, fixes a simple crash where account is null.
+        if (account == null) {
+            account = new Account("temp", "temp", "temp", "temp", "temp", null);
+        }
+
+        // give info to textviews to display
+        String username = account.getUsername();
+        String email = account.getEmail();
+        String phoneNumber = account.getPhoneNumber();
         TextView displayUsername = findViewById(R.id.user_username);
         displayUsername.setText(username);
         TextView displayEmail = findViewById(R.id.user_email);
         displayEmail.setText(email);
         TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
         displayPhoneNumber.setText(phoneNumber);
+
+        //
 
     }
 

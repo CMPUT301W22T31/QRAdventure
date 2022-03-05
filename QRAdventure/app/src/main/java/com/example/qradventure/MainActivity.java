@@ -60,98 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /* =========================================================================================
-         * TODO: This should all be moved to some activity relating to account registration
-         *       Later we will have to decide the logic about registration and which activity
-         *       is the startup activity.
-         *       Idea: LoginActivity is the startup activity, and it checks the device if it is
-         *             associated with an account, or allows user to register if not.
-         *       Keep this code temporarily as a means to test things?
-         *       Probably delete all this before merging
-         */
-
-        Button createButton = findViewById(R.id.button_create);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                EditText username_entered = findViewById(R.id.editText_username);
-                String username = username_entered.getText().toString();
-                EditText phone_number_entered = findViewById(R.id.editText_phone_number);
-                String phoneNumber = phone_number_entered.getText().toString();
-                EditText email_entered = findViewById(R.id.editText_email);
-                String email = email_entered.getText().toString();
-                // Dummy data for now
-                String LoginQR = "usernameLoginQRHash";
-                String StatusQR = "usernameStatusQRHash";
-
-                // Create new user
-                currentUser = new Account(username, email, phoneNumber, LoginQR, StatusQR, null);
-
-                // Putting Player data into HashMap
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("E-mail", email);
-                data.put("Phone Number", phoneNumber);
-                data.put("LoginQR", LoginQR);
-                data.put("StatusQR", StatusQR);
-
-                CollectionReference AccountDB = db.collection("AccountDB");
-
-                // reference: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
-                // if input was non-empty
-                if (!username.matches("")) {
-                    DocumentReference docRef = db.collection("AccountDB").document(username);
-
-                    // Check for a document matching the input username
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            // task is a query for a document matching the String username
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    // Document exists, therefore username is taken!
-                                    Context context = getApplicationContext();
-                                    CharSequence text = "Username already exists!";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
-
-                                    // TODO: handle logic for this case
-
-                                } else {
-                                    // Document does not exist, therefore username is available!
-                                    Context context = getApplicationContext();
-                                    CharSequence text = "Username available! TODO: create account...";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
-
-                                    // TODO: add logic to add this account to firestore
-
-                                }
-
-                            } else {
-                                // document query was not successful
-                                Context context = getApplicationContext();
-                                CharSequence text = "ERROR: query failed!";
-                                int duration = Toast.LENGTH_SHORT;
-                                Toast toast = Toast.makeText(context, text, duration);
-                                toast.show();
-                                Log.d(TAG, "get failed with ", task.getException());
-                            }
-                        }
-                    });
-                } else {
-                    // user input was empty; optionally add logic for this case?
-                }
-            }
-        });
-        // ====== outside button click logic ======
-        //==========================================================================================
-
-        //
-
     }
 
 
@@ -191,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
     public void goToLeaderboard(View view) {
         Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);
-
     }
+
+    /**
+     * ** TEMPORARY **
+     * Sends to login activity. Called when respective button is clicked.
+     * @param view: unused
+     */
+    public void TEMPgoToLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 }
