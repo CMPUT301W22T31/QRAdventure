@@ -1,11 +1,17 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.w3c.dom.Text;
 
@@ -15,16 +21,18 @@ import org.w3c.dom.Text;
  */
 public class AccountActivity extends AppCompatActivity {
     Account account;
+    BottomNavigationView navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
-
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
         // get the account from the singleton
         account = CurrentAccount.getInstance().getCurrentAccount();
-
+        //navbar = new Navbar(this);
         // give info to textviews to display
         String username = account.getUsername();
         String email = account.getEmail();
@@ -36,7 +44,27 @@ public class AccountActivity extends AppCompatActivity {
         TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
         displayPhoneNumber.setText(phoneNumber);
 
-        //
+        navbar.setOnItemSelectedListener((item) ->  {
+            switch(item.getItemId()) {
+                case R.id.leaderboards:
+                    Log.d("check", "WORKING???");
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Log.d("check", "YES WORKING???");
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.scan:
+                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent3);
+                    break;
+            }
+            return false;
+        });
+
+
 
     }
 
@@ -82,41 +110,6 @@ public class AccountActivity extends AppCompatActivity {
      */
     public void goToMyCodes(View view) {
         Intent intent = new Intent(this, MyCodesActivity.class);
-        startActivity(intent);
-    }
-    /**
-     * Sends to account activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToAccount(View view) {
-        Intent intent = new Intent(this, AccountActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to scan activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToScan(View view) {
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to search player activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToSearchPlayers(View view) {
-        Intent intent = new Intent(this, SearchPlayersActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to leaderboard activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToLeaderboard(View view) {
-        Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);
     }
 

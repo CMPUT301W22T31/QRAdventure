@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,6 +40,7 @@ import java.util.HashMap;
  */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
+    BottomNavigationView navbar;
 
     /**
      * Part of the standard activity lifecycle
@@ -53,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Main Activity");
 
+        // make sure to do this anytime an activity has a navbar
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
+
         // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
 
@@ -60,6 +67,30 @@ public class MainActivity extends AppCompatActivity {
         Account account = new Account("temp", "temp", "temp", "temp", "temp", null);
         // set CurrentAccount to this dummy account
         CurrentAccount.getInstance().setAccount(account);
+
+        navbar.setOnItemSelectedListener((item) ->  {
+            switch(item.getItemId()) {
+                case R.id.leaderboards:
+                    Log.d("check", "WORKING???");
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Log.d("check", "YES WORKING???");
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.scan:
+                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent3);
+                    break;
+                case R.id.my_account:
+                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent4);
+                    break;
+            }
+            return false;
+        });
 
     }
 
@@ -111,5 +142,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-
 }
