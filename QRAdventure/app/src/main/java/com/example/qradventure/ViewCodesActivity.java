@@ -9,7 +9,7 @@ import android.view.View;
 
 /**
  * Activity that displays all the codes scanned by a player.
- * This activity is reached from the players profile. Anyone can access this activity.
+ * This activity is navigated from the players profile. Anyone can access this activity.
  * NOTE: This is functionally different from MyCodesActivity
  */
 public class ViewCodesActivity extends AppCompatActivity {
@@ -20,7 +20,8 @@ public class ViewCodesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_codes);
         setTitle("USERNAME123456789s Codes");
 
-        // unpack the intent to get the player to display
+        // unpack the intent to get the account username
+        // query DB by username to get relevant fields
 
     }
 

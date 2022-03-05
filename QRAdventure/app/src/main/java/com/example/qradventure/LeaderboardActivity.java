@@ -9,7 +9,6 @@ import android.view.View;
 
 /**
  * Activity that displays a global leaderboard.
- * Can change which ranking criteria to sort by (Score, count, etc).
  */
 public class LeaderboardActivity extends AppCompatActivity {
 
@@ -24,12 +23,12 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     /**
      * Sends to profile activity. Called when a player is clicked.
-     * TEMPORARY: Using a button to navigate. Will be changed to accommodate other navigation.
-     * @param view: unused
+     * TEMPORARY: Using a button to navigate. Changed for proper navigation.
+     * @param view: unused (button)
      */
     public void goToProfile(View view) {
         Intent intent = new Intent(this, ProfileActivity.class);
-        // use intent to carry over which profile was clicked?
+        // use intent to carry over which profile was clicked? Just send their String username.
         startActivity(intent);
     }
 }

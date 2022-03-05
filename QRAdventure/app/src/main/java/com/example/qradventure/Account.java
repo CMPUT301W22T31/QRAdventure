@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * All account usernames are unique.
  */
 public class Account {
-
     String username;
     String email;
     String phoneNumber;

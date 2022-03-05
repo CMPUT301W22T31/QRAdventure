@@ -28,19 +28,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *This is the screen which shows up before
+ * Activity that controls Camera activation
+ * Leads to PostScanActivity after scanning a QR.
  */
 public class ScanActivity extends AppCompatActivity{
-
-    /**
-     * The onCreate method for the camera.
-     */
-
-    public ArrayList<QR> globalQRData = new ArrayList<QR>(); // used in Test. Review?
-
     public QR scannedQR;
-    public String scannedQRHash;
-    public String recordID;
+    public ArrayList<QR> globalQRData = new ArrayList<QR>(); // TODO: used in Test. Review this?
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +42,8 @@ public class ScanActivity extends AppCompatActivity{
         setContentView(R.layout.activity_scan);
         setTitle("Scan Activity");
 
-        // button logic: activates camera
+        // TODO: Could activate camera immediately? Without need for button click?
+        // button logic: activates camera on click
         Button qrButton = findViewById(R.id.qr_button);
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +66,6 @@ public class ScanActivity extends AppCompatActivity{
      * @param requestCode
      * @param resultCode
      * @param data
-     *
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -79,30 +73,29 @@ public class ScanActivity extends AppCompatActivity{
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // get the QR contents, and send it to next activity
         String content = result.getContents();
-        goToPostScan2(content);
+        goToPostScan(content);
     }
 
-
-    /**
-     * PLACEHOLDER
-     * Temporarily used to access PostScanActivity via button.
-     *
-     * @param view
-     */
-
-    public void goToPostScan(View view) {
-        //Intent intent = new Intent(ScanActivity.this, PostScanActivity.class);
-        //startActivity(intent);
-    }
 
     /**
      * Called when a QR is successfully scanned
      * Sends to PostScanActivity, with the QR contents in the intent
      */
-    public void goToPostScan2(String QRContent) {
+    public void goToPostScan(String QRContent) {
         Intent intent = new Intent(ScanActivity.this, PostScanActivity.class);
         intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), QRContent);
         startActivity(intent);
+        //TODO: Can move this logic into onActivityResult? This method redundant.
+    }
+
+    /**
+     * PLACEHOLDER - Delete this and button later.
+     * Temporarily used to access PostScanActivity via button.
+     * @param view - (unused)
+     */
+    public void goToPostScan2(View view) {
+        //Intent intent = new Intent(ScanActivity.this, PostScanActivity.class);
+        //startActivity(intent);
     }
 
 }

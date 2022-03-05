@@ -6,9 +6,10 @@ import android.os.Bundle;
 
 
 /**
- * Activity where anyone can see a list of all the players that have scanned a particular QR code.
+ * Activity that displays a list of all the players that have scanned a particular QR code.
  */
 public class ScannedByActivity extends AppCompatActivity {
+    String hash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,8 +17,8 @@ public class ScannedByActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scanned_by);
         setTitle("Scanned By:");
 
-        // unpack intent to get which QR code to display
-
+        // unpack intent to get QR code hash
+        // query DB by QR hash to get relevant fields
 
     }
 }

@@ -2,6 +2,11 @@ package com.example.qradventure;
 
 import java.util.ArrayList;
 
+
+/**
+ * Represents a record of a QR that was scanned by a player
+ *
+ */
 public class Record {
 
     private Account user;
@@ -12,7 +17,7 @@ public class Record {
     public Record(Account user, QR theQR, ArrayList<String> comments) {
         this.user = user;
         this.theQR = theQR;
-        this.comments = comments;
+        this.comments = comments; // TODO: QR should hold comments, not the record.
     }
 
 }

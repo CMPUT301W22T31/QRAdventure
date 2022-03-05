@@ -162,13 +162,11 @@ public class PostScanActivity extends AppCompatActivity {
            });
 
 
-
         // ====== database logic concluded ======
         // send user to a different activity (which? Account for now?).
         Intent intent = new Intent(this, AccountActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-
     }
 
     /**
