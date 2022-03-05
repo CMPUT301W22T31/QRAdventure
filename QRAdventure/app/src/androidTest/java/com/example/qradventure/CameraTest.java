@@ -50,9 +50,9 @@ public class CameraTest {
         // wait to scan QR code
         ScanActivity camera = (ScanActivity)solo.getCurrentActivity();
 
-        while (camera.lastQR == null);
+        while (camera.scannedQR == null);
 
-        assertTrue(camera.globalQRData.contains(camera.lastQR));
+        assertTrue(camera.globalQRData.contains(camera.scannedQR));
 
     }
 

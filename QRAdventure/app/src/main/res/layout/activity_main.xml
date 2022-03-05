@@ -8,55 +8,71 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/black"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"
-        >
-    <ImageView
-        android:clickable="true"
-        android:onClick="goToLeaderboard"
-        android:paddingHorizontal="25dp"
-        android:src="@drawable/leaderboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        app:layout_constraintStart_toStartOf="parent">
+
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="goToLeaderboard"
+            android:paddingHorizontal="25dp"
+            android:src="@drawable/leaderboard"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:onClick="goToSearchPlayers"
             android:paddingHorizontal="25dp"
             android:src="@drawable/people"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-        <ImageView
             android:clickable="true"
             android:onClick="goToScan"
             android:paddingHorizontal="20dp"
             android:src="@drawable/qr_scanner"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-        <ImageView
             android:paddingHorizontal="25dp"
-            android:src="@drawable/location2"
+            android:src="@drawable/location2" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-        <ImageView
             android:clickable="true"
             android:onClick="goToAccount"
             android:paddingHorizontal="25dp"
             android:src="@drawable/account2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-</LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="TEMPgoToLogin"
+        android:text="(TEMP) LOGIN"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

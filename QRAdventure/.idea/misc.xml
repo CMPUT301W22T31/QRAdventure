@@ -21,6 +21,7 @@
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_comments.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_edit_info.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_leaderboard.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login_qractivity.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_my_codes.xml" value="0.36666666666666664" />
@@ -34,7 +35,9 @@
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_search_players.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_status_qractivity.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_view_codes.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/activity_account.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/camera.xml" value="0.5" />
       </map>
     </option>

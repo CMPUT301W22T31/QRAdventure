@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 /**
  * Activity where the logged in player can manage their account
  */
 public class AccountActivity extends AppCompatActivity {
+    Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +22,21 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
 
+        // get the account from the singleton
+        account = CurrentAccount.getInstance().getCurrentAccount();
+
+        // give info to textviews to display
+        String username = account.getUsername();
+        String email = account.getEmail();
+        String phoneNumber = account.getPhoneNumber();
+        TextView displayUsername = findViewById(R.id.user_username);
+        displayUsername.setText(username);
+        TextView displayEmail = findViewById(R.id.user_email);
+        displayEmail.setText(email);
+        TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
+        displayPhoneNumber.setText(phoneNumber);
+
+        //
 
     }
 
