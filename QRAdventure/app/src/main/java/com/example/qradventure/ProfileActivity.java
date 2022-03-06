@@ -16,9 +16,11 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        setTitle("USERNAME123456789s profile");
 
-        // unpack the intent to get which player to display
+
+        // unpack intent to get account username
+        // query DB for username. Pull relevant fields to display
+        setTitle("USERNAME123456789s profile");
 
     }
 
