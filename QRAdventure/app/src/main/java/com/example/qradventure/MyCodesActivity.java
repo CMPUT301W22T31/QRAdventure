@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 
@@ -35,6 +37,15 @@ public class MyCodesActivity extends AppCompatActivity {
         QRListAdapter qrListAdapter = new QRListAdapter(this, QRname, pts);
         qrList.setAdapter(qrListAdapter);
 
+        qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
+                intent.putExtra("QRtitle", QRname[position]);
+                startActivity(intent);
+            }
+        });
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) -> {
