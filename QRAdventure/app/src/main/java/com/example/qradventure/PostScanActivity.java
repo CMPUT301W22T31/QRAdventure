@@ -103,6 +103,8 @@ public class PostScanActivity extends AppCompatActivity {
                         HashMap<String, Object> QRData = new HashMap<>();
                         QRData.put("Score", qr.getScore()); // use a manual score to test, 1234?
 
+
+
                         docRef.set(QRData); // set the data!
                         // could include success/failure listener?
 
