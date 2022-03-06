@@ -28,7 +28,7 @@ public class AccountActivity extends AppCompatActivity {
         setTitle("Account Activity");
 
         // get the account from the singleton
-        account = CurrentAccount.getInstance().getCurrentAccount();
+        account = CurrentAccount.getAccount();
 
         // give info to textviews to display
         // TODO: Move these to onResume() in case of updated info.
@@ -125,7 +125,6 @@ public class AccountActivity extends AppCompatActivity {
     public void goToScan(View view) {
 //        Intent intent = new Intent(this, ScanActivity.class);
 //        startActivity(intent);
-
 
         // TODO: Could activate camera immediately? Without need for button click?
         // button logic: activates camera on click

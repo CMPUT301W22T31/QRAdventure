@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // create a dummy account
-        Account account = new Account("Default Test Account", "temp", "temp", "temp", "temp", null);
+        Account account = new Account("Default Test Account", "temp", "temp", "temp", "temp");
         // set CurrentAccount to this dummy account
-        CurrentAccount.getInstance().setAccount(account);
+        CurrentAccount.setAccount(account);
 
     }
 

@@ -1,13 +1,15 @@
 package com.example.qradventure;
 
 
+import java.util.ArrayList;
+
 /**
  * Lazy Singleton
  * Holds the Account that is currently logged into the device
  */
 public class CurrentAccount {
     private static CurrentAccount instance;
-    private Account account;
+    private static Account account;
 
     /**
      * Lazy singleton constructor is private.
@@ -23,14 +25,15 @@ public class CurrentAccount {
     // DOCS: Lazy singleton implementation
     // getInstance() is static so it can be called without making a new instance of the class.
     // *returns: CurrentAccount - the only instance of this singleton class
-    public static CurrentAccount getInstance() {
-        if (instance == null) {
-            instance = new CurrentAccount();
+    public static Account getAccount() {
+        if (account == null) {
+            account = new Account("Filler", "filler", "filler", "filler",
+                    "filler", new ArrayList<Record>() );
         }
-        return instance;
+        return account;
     }
 
-    public void setAccount(Account acc) {
+    public static void setAccount(Account acc) {
         account = acc;
     }
 

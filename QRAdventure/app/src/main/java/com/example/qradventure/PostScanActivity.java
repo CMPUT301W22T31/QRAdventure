@@ -64,7 +64,7 @@ public class PostScanActivity extends AppCompatActivity {
      */
     public void AddQR(View view) {
 
-        Account myAccount = CurrentAccount.getInstance().getCurrentAccount();
+        Account myAccount = CurrentAccount.getAccount();
 
         // get firestore collection and desired document
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -124,45 +124,57 @@ public class PostScanActivity extends AppCompatActivity {
 
         // TODO: Record logic. This is what remains of Michelle's work (untested?)
         //====== Create New Record ======//
-        // Add User to list of user scanned this qr
-        HashMap<String, Object> userData = new HashMap<>();
-        userData.put("Username", myAccount.getUsername());
-        docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
 
         recordID = myAccount.getUsername() + "-" + qr.getHash();
+        
+        // Add the record to the current account
+        Account currentAccount = CurrentAccount.getAccount();
+        Record toAdd = new Record(currentAccount, qr);
 
-        CollectionReference RecordDB = db.collection("RecordDB");
 
-        RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-               @Override
-               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                   // task is a document query
-                   if (task.isSuccessful()) {
-                       DocumentSnapshot document = task.getResult();
-                       if (document.exists()) {
+        if (!currentAccount.containsRecord(toAdd)) {
 
-                       } else {
-                           HashMap<String, Object> recordData = new HashMap<>();
-                           recordData.put("User", myAccount.getUsername());
-                           recordData.put("QR", qr.getHash());
+            currentAccount.addRecord(new Record(currentAccount, qr));
 
-                           RecordDB.document(recordID).set(recordData);
-                           RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                                       FirebaseFirestoreException error) {
-                               }
-                           });
 
-                           //====== Add Record to user ======//
-                           CollectionReference AccountDB = db.collection("AccountDB");
-                           AccountDB.document(myAccount.getUsername())
-                                   .collection("My QR Records").document(recordID).set(recordData);
-                       }
-                   }
-               }
-           });
+            // Add User to list of user scanned this qr
+            HashMap<String, Object> userData = new HashMap<>();
+            userData.put("Username", myAccount.getUsername());
+            docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
 
+
+            CollectionReference RecordDB = db.collection("RecordDB");
+
+            RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    // task is a document query
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                        } else {
+                            HashMap<String, Object> recordData = new HashMap<>();
+                            recordData.put("User", myAccount.getUsername());
+                            recordData.put("QR", qr.getHash());
+
+                            RecordDB.document(recordID).set(recordData);
+                            RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                                        FirebaseFirestoreException error) {
+                                }
+                            });
+
+                            //====== Add Record to user ======//
+                            CollectionReference AccountDB = db.collection("AccountDB");
+                            AccountDB.document(myAccount.getUsername())
+                                    .collection("My QR Records").document(recordID).set(recordData);
+                        }
+                    }
+                }
+            });
+        }
 
         // ====== database logic concluded ======
         // send user to a different activity (which? Account for now?).

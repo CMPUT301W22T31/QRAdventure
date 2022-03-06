@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 String StatusQR = "usernameStatusQRHash";
 
                 // Create new user
-                currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR, null);
+                currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR);
 
                 // Put Player data into HashMap
                 HashMap<String, Object> data = new HashMap<>();
@@ -145,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void signedIn() {
         // Sets the Current Account singleton
-        CurrentAccount.getInstance().setAccount(currentAccount);
+        CurrentAccount.setAccount(currentAccount);
 
         Intent intent = new Intent(this, AccountActivity.class);
         // Disable backward navigation

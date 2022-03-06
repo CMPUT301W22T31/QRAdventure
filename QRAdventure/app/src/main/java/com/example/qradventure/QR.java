@@ -7,6 +7,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class represents a QR code. Uniquely Identified by its hash string.
@@ -33,6 +34,19 @@ public class QR {
         geolocation = new ArrayList<String>();
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QR qr = (QR) o;
+        return Objects.equals(hash, qr.hash);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hash);
+    }
 
     /**
      * Function to obtain the score from a hexidecimal hash
