@@ -26,6 +26,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -35,6 +36,7 @@
             android:textSize="20dp" />
 
         <TextView
+            android:id="@+id/tvPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -55,6 +57,7 @@
             android:textSize="10dp" />
 
         <TextView
+            android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -90,15 +93,16 @@
         android:gravity="center">
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/source_sans_pro"
-                android:text="0"
-                android:textColor="#FFFFFF"
-                android:textSize="75dp"
-                android:textStyle="bold"
-                android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/tvTotalScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/source_sans_pro"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="75dp"
+            android:textStyle="bold" />
 
             <TextView
 
