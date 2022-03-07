@@ -61,7 +61,7 @@ public class MyCodesActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-                intent.putExtra("QRtitle", "Unnamed QR");
+                intent.putExtra("QRtitle", accountRecords.get(position).getQRHash().substring(0,4));
                 startActivity(intent);
             }
         });
