@@ -13,7 +13,7 @@ public class Record {
     private Account user;
     private QR theQR;
     private ArrayList<String> comments;  // TODO: QR should hold comments, not the record.
-    // String recordID = username + "-" + QRhash; -> For Firebase document ID
+    private String recordID = user.getUsername() + "-" + theQR.getHash(); //-> For Firebase document ID
 
     public Record(Account user, QR theQR) {
         this.user = user;
@@ -26,6 +26,9 @@ public class Record {
         if (o == null || getClass() != o.getClass()) return false;
         Record record = (Record) o;
         return Objects.equals(user, record.user) && Objects.equals(theQR, record.theQR);
+    }
+    String getID(){
+        return this.recordID;
     }
 
     @Override
