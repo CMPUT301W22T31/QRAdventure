@@ -18,16 +18,9 @@ public class QRListViewHolder {
 
     }
 
-    public TextView getQRTitle() {
-        return QRTitle;
-    }
 
     public void setQRTitle(String text) {
         QRTitle.setText(text);
-    }
-
-    public TextView getPts() {
-        return pts;
     }
 
     public void setPts(String text) {

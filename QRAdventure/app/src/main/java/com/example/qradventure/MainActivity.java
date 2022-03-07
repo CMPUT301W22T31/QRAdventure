@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -41,6 +44,8 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView navbar;
+
+
 
     /**
      * **TEMP** logs into a default test account
@@ -60,10 +65,67 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // create a dummy account
-        Account account = new Account("Default Test Account", "temp", "temp", "temp", "temp", null);
+        Account account = new Account("Default Test Account", "temp", "temp", "temp", "temp");
         // set CurrentAccount to this dummy account
-        CurrentAccount.getInstance().setAccount(account);
+        CurrentAccount.setAccount(account);
 
+        CollectionReference userRecords = db.collection("AccountDB").document("Default Test Account").collection("My QR Records");
+
+        // DELETE THIS LATER - Huey
+        // As of right now we are logged in as Default Test Account on start up so I want to get all their records once the app boots up
+        // This is so that we have the records to be displayed in pages.
+
+        Log.d("logs","testing query");
+
+        // get all the added QR's by the user and put them in a list
+
+
+        // The following is a query to grab all the QR codes that the player has added in their account
+        // This is really long because this is two calls to the firebase db
+        // Query steps:
+        // 1.) I need to grab all the QR codes added by the user in the AccountDB collection
+        // 2.) I need to grab all the scores by those QR codes in the QRDB
+        // 3.) combine those two to create a new QR object and store it on the singleton account class
+
+        // This probably should be put in a query handle class...
+        try {
+            db.collection("AccountDB").document(account.getUsername()).collection("My QR Records")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String qrHash = (String) document.getData().get("QR");
+                                    db.collection("QRDB").document(qrHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                String qrScoreValue = (String) document.getData().get("Score");
+                                                DocumentSnapshot document = task.getResult();
+                                                String qrScore = "" + document.getData().get("Score");
+                                                int qrValue = Integer.parseInt(qrScore);
+                                                QR qr = new QR(qrHash, qrValue, null, null);
+                                                Log.d("logs", qrHash + " " + qrValue);
+                                                Record newRecord = new Record(account, qr);
+                                                account.addRecord(newRecord);
+                                            } else {
+                                                Log.d("logs", "Cached get failed: ", task.getException());
+                                            }
+                                        }
+                                    });
+                                }
+                            } else {
+                                Log.d("logs", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
+
+        // END OF QUERY
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
@@ -87,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
 
     }
 

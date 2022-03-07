@@ -10,18 +10,19 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 
 // Grid View adapter for the grid view in "MyCodesActivity" Class
-public class QRListAdapter extends ArrayAdapter<String>{
+public class QRListAdapter extends ArrayAdapter<Record>{
     Context context;
-    String[] qrName;
-    String[] pts;
+    private ArrayList<Record> accountRecords;
 
-    public QRListAdapter(Context context, String[] qrName, String[] pts) {
-        super(context, R.layout.single_qr, R.id.QR_title, qrName);
+
+    public QRListAdapter(Context context, ArrayList<Record> accountRecords) {
+        super(context, R.layout.single_qr, R.id.QR_title, accountRecords);
         this.context = context;
-        this.qrName = qrName;
-        this.pts = pts;
+        this.accountRecords = accountRecords;
     }
 
     @NonNull
@@ -40,8 +41,8 @@ public class QRListAdapter extends ArrayAdapter<String>{
         else {
             holder = (QRListViewHolder) singleItem.getTag();
         }
-        holder.setQRTitle(qrName[position]);
-        holder.setPts(pts[position]);
+        holder.setQRTitle(accountRecords.get(position).getQRHash().substring(0,4));
+        holder.setPts(Integer.toString(accountRecords.get(position).getQRscore()));
 
         return singleItem;
     }

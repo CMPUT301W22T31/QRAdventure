@@ -12,6 +12,8 @@ import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 
 /**
  * Activity where logged in user can access and manage the codes they have scanned
@@ -26,7 +28,7 @@ public class MyCodesActivity extends AppCompatActivity {
     String[] QRname = {"Chocolate Bar", "Train Ad", "Random Wall", "Peanut Butter", "Video Game Ad",
             "Pokemon", "Team Seas", "OMG", "PlayStation", "Some Random", "Watches", "NO WAY", "Boxes"};
 
-    String[] pts = {"102", "300", "240", "39", "111", "241", "34", "234", "12", "234", "112", "29", "73"};
+   String[] pts = {"102", "300", "240", "39", "111", "241", "34", "234", "12", "234", "112", "29", "73"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +36,38 @@ public class MyCodesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_codes);
         setTitle("My Codes");
         qrList = findViewById(R.id.qr_list);
-        QRListAdapter qrListAdapter = new QRListAdapter(this, QRname, pts);
+
+        Account myAccount = CurrentAccount.getAccount();
+
+        Log.d("logs","Logged in as" + myAccount.getUsername());
+
+
+        ArrayList<Record> accountRecords = myAccount.getMyRecords();
+        //Log.d("logs", "" + accountRecords.size());
+        for (Record record: accountRecords
+             ) {
+            Log.d("logs", record.getQRHash().substring(0,4) + " " + record.getQRscore());
+        }
+
+        //String[] pts = {"23","342","34","34"};
+
+        QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);
         qrList.setAdapter(qrListAdapter);
+
+//        Log.d("logs",""+ qrListAdapter.qrRecords.length);
 
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-                intent.putExtra("QRtitle", QRname[position]);
+                intent.putExtra("QRtitle", "Unnamed QR");
                 startActivity(intent);
             }
         });
+
+
+
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) -> {
