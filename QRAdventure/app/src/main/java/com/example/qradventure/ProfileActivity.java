@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -15,6 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class ProfileActivity extends AppCompatActivity {
     BottomNavigationView navbar;
+    Account account = CurrentAccount.getAccount();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

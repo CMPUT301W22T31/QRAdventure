@@ -22,14 +22,6 @@ import java.util.ArrayList;
 public class MyCodesActivity extends AppCompatActivity {
     GridView qrList;
     BottomNavigationView navbar;
-
-    // The following are dummy values.. Please remove this once we have the qr system ready to go :P
-
-    String[] QRname = {"Chocolate Bar", "Train Ad", "Random Wall", "Peanut Butter", "Video Game Ad",
-            "Pokemon", "Team Seas", "OMG", "PlayStation", "Some Random", "Watches", "NO WAY", "Boxes"};
-
-   String[] pts = {"102", "300", "240", "39", "111", "241", "34", "234", "12", "234", "112", "29", "73"};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

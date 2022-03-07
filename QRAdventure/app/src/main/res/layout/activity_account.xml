@@ -113,7 +113,7 @@
             >
 
             <TextView
-
+                android:id="@+id/codes_scanned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
@@ -144,7 +144,7 @@
             >
 
             <TextView
-
+                android:id="@+id/total_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
@@ -176,7 +176,7 @@
             >
 
             <TextView
-
+                android:id="@+id/highest_qr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
@@ -208,7 +208,7 @@
             >
 
             <TextView
-
+                android:id="@+id/lowest_qr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
