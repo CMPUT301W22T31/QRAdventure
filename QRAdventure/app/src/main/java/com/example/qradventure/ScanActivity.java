@@ -27,6 +27,11 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
+
+//TODO: This class is now redundant. Should be deleted eventually
+
 /**
  * Activity that controls Camera activation
  * Leads to PostScanActivity after scanning a QR.
