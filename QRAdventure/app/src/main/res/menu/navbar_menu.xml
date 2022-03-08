@@ -11,6 +11,7 @@
         android:id="@+id/scan"
         android:icon="@drawable/qr_scanner"/>
     <item android:title=""
+        android:id="@+id/location"
         android:icon="@drawable/location2"/>
     <item android:title=""
         android:id="@+id/my_account"

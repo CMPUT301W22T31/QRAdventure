@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/test"
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -17,16 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navbar_menu" />
 
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="TEMPgoToLogin"
-        android:text="(TEMP) LOGIN"
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="409dp"
+        android:layout_height="684dp"
         app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
