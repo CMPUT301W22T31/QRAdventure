@@ -77,8 +77,10 @@ public class AccountActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
+                    //Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    //startActivity(intent3);
+                    goToScan();
+
                     break;
             }
             return false;
@@ -212,9 +214,8 @@ public class AccountActivity extends AppCompatActivity {
 
     /**
      * Sends to scan activity. Called when respective button is clicked.
-     * @param view: unused
      */
-    public void goToScan(View view) {
+    public void goToScan() {
 //        Intent intent = new Intent(this, ScanActivity.class);
 //        startActivity(intent);
 
