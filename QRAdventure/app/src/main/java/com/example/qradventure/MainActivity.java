@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         //Get local android device ID
         String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        final boolean[] recognizedDeviceID = {false};
         //Query for device ID
         Query accountsQuery = userRecords
                 .whereEqualTo("device_id", androidDeviceID);  //Second argument should be device ID
@@ -92,17 +93,23 @@ public class MainActivity extends AppCompatActivity {
                         String phoneNumber = (String) doc.getData().get("Phone Number");
                         String statusQR = (String) doc.getData().get("StatusQR");
                         String username = (String) doc.getId();
-                        
+
+                        Log.d("Testing", username);
+
                         fetchedAccount = new Account(username, email, phoneNumber, loginQR, statusQR);
                         CurrentAccount.setAccount(fetchedAccount);
+                        recognizedDeviceID[0] = true;
                     }
-                }
-                else {
-                    //Device ID not recognized, create new a new account
-
                 }
             }
         });
+
+        if (!recognizedDeviceID[0]) {
+            //Device ID not recognized, send user to create a new account screen
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+
+        }
 
         // DELETE THIS LATER - Huey
         // As of right now we are logged in as Default Test Account on start up so I want to get all their records once the app boots up
