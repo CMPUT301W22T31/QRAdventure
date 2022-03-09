@@ -22,8 +22,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -214,8 +216,23 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void goToScannedBy(View view) {
-        Intent intent = new Intent(this, ScannedByActivity.class);
-        startActivity(intent);
+
+
+        QueryHandler q = new QueryHandler();
+
+        q.getOthersScanned(qr,new QueryCallback() {
+            @Override
+            public void callback(ArrayList<String> data) {
+
+                Intent intent = new Intent(PostScanActivity.this, ScannedByActivity.class);
+
+                intent.putExtra("PLAYERS", data);
+
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     /**

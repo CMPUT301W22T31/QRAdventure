@@ -1,5 +1,6 @@
 package com.example.qradventure;
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -24,10 +25,7 @@ public class QueryHandler {
     }
 
 
-    public ArrayList<String> getOthersScanned(QR qr){
-
-
-
+    public void getOthersScanned(QR qr, QueryCallback myCallback){
 
         db = FirebaseFirestore.getInstance();
 
@@ -38,13 +36,19 @@ public class QueryHandler {
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+                String recordID;
                 ArrayList<String> othersScanned = new ArrayList<>();
 
                 if (task.isSuccessful()){
                     // Start list activity with the accounts
 
+                    for (QueryDocumentSnapshot doc : task.getResult()){
+                        recordID = doc.getId();
+                        Log.d("RECORD:", recordID);
+                        othersScanned.add(recordID);
+                    }
 
+                    myCallback.callback(othersScanned);
 
                 }else{
                     Log.d("SUCCESS:", "NO");
@@ -54,8 +58,6 @@ public class QueryHandler {
             }
         });
 
-
-        return othersScanned;
     }
 
 

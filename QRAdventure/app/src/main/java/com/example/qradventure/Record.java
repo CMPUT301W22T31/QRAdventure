@@ -13,11 +13,12 @@ public class Record {
     private Account user;
     private QR theQR;
     private ArrayList<String> comments;  // TODO: QR should hold comments, not the record.
-    private String recordID = user.getUsername() + "-" + theQR.getHash(); //-> For Firebase document ID
+    private String recordID; //-> For Firebase document ID
 
     public Record(Account user, QR theQR) {
         this.user = user;
         this.theQR = theQR;
+        recordID = user.getUsername() + "-" + theQR.getHash();
     }
 
     @Override
