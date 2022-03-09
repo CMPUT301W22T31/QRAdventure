@@ -91,5 +91,9 @@ public class Account {
 
     }
 
+    public ArrayList<Record> getMyRecords() {
+        return myRecords;
+    }
+
 
 }

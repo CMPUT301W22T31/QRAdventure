@@ -65,124 +65,128 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void AddQR(View view) {
+        try {
+            Account myAccount = CurrentAccount.getAccount();
 
-        Account myAccount = CurrentAccount.getAccount();
+            // get firestore collection and desired document
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("QRDB").document(qr.getHash());
 
-        // get firestore collection and desired document
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("QRDB").document(qr.getHash());
-
-        // reference: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
-        // Check for a document matching the qr hash
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                // task is a document query
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        // Document exists, therefore QR already in DB!
-                        Context context = getApplicationContext();
-                        CharSequence text = "That QR is in the DB!";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-
-                        // TODO: append CURRENT ACCOUNT to the list of players that have scanned this QR
-                        //       use set(data, SetOptions.merge());
-
-
-                    } else {
-                        // Document does not exist, therefore this QR is brand new!
-                        Context context = getApplicationContext();
-                        CharSequence text = "New QR! Adding to Database...";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-
-                        // add this QR to the database
-                        // TODO: populate all fields
-                        HashMap<String, Object> QRData = new HashMap<>();
-                        QRData.put("Score", qr.getScore()); // use a manual score to test, 1234?
-
-
-
-                        docRef.set(QRData); // set the data!
-                        // could include success/failure listener?
-
-                    }
-
-                } else {
-                    // document query was not successful
-                    Context context = getApplicationContext();
-                    CharSequence text = "ERROR: query failed!";
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        // TODO: Record logic. This is what remains of Michelle's work (untested?)
-        //====== Create New Record ======//
-
-        recordID = myAccount.getUsername() + "-" + qr.getHash();
-        
-        // Add the record to the current account
-        Account currentAccount = CurrentAccount.getAccount();
-        Record toAdd = new Record(currentAccount, qr);
-
-
-        if (!currentAccount.containsRecord(toAdd)) {
-
-            currentAccount.addRecord(new Record(currentAccount, qr));
-
-
-            // Add User to list of user scanned this qr
-            HashMap<String, Object> userData = new HashMap<>();
-            userData.put("Username", myAccount.getUsername());
-            docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
-
-
-            CollectionReference RecordDB = db.collection("RecordDB");
-
-            RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            // reference: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
+            // Check for a document matching the qr hash
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     // task is a document query
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
+                            // Document exists, therefore QR already in DB!
+                            Context context = getApplicationContext();
+                            CharSequence text = "That QR is in the DB!";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+
+                            // TODO: append CURRENT ACCOUNT to the list of players that have scanned this QR
+                            //       use set(data, SetOptions.merge());
+
 
                         } else {
-                            HashMap<String, Object> recordData = new HashMap<>();
-                            recordData.put("User", myAccount.getUsername());
-                            recordData.put("QR", qr.getHash());
+                            // Document does not exist, therefore this QR is brand new!
+                            Context context = getApplicationContext();
+                            CharSequence text = "New QR! Adding to Database...";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
 
-                            RecordDB.document(recordID).set(recordData);
-                            RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                                        FirebaseFirestoreException error) {
-                                }
-                            });
+                            // add this QR to the database
+                            // TODO: populate all fields
+                            HashMap<String, Object> QRData = new HashMap<>();
+                            QRData.put("Score", qr.getScore()); // use a manual score to test, 1234?
 
-                            //====== Add Record to user ======//
-                            CollectionReference AccountDB = db.collection("AccountDB");
-                            AccountDB.document(myAccount.getUsername())
-                                    .collection("My QR Records").document(recordID).set(recordData);
+
+                            docRef.set(QRData); // set the data!
+                            // could include success/failure listener?
+
                         }
+
+                    } else {
+                        // document query was not successful
+                        Context context = getApplicationContext();
+                        CharSequence text = "ERROR: query failed!";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
             });
-        }
 
-        // ====== database logic concluded ======
-        // send user to a different activity (which? Account for now?).
-        Intent intent = new Intent(this, AccountActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+            // TODO: Record logic. This is what remains of Michelle's work (untested?)
+            //====== Create New Record ======//
+
+            recordID = myAccount.getUsername() + "-" + qr.getHash();
+
+            // Add the record to the current account
+            Account currentAccount = CurrentAccount.getAccount();
+            Record toAdd = new Record(currentAccount, qr);
+
+
+            if (!currentAccount.containsRecord(toAdd)) {
+
+                currentAccount.addRecord(new Record(currentAccount, qr));
+
+
+                // Add User to list of user scanned this qr
+                HashMap<String, Object> userData = new HashMap<>();
+                userData.put("Username", myAccount.getUsername());
+                docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
+
+
+                CollectionReference RecordDB = db.collection("RecordDB");
+
+                RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        // task is a document query
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+
+                            } else {
+                                HashMap<String, Object> recordData = new HashMap<>();
+                                recordData.put("User", myAccount.getUsername());
+                                recordData.put("QR", qr.getHash());
+
+                                RecordDB.document(recordID).set(recordData);
+                                RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                                            FirebaseFirestoreException error) {
+                                    }
+                                });
+
+                                //====== Add Record to user ======//
+                                CollectionReference AccountDB = db.collection("AccountDB");
+                                AccountDB.document(myAccount.getUsername())
+                                        .collection("My QR Records").document(recordID).set(recordData);
+                            }
+                        }
+                    }
+                });
+            }
+
+            // ====== database logic concluded ======
+            // send user to a different activity (which? Account for now?).
+            Intent intent = new Intent(this, AccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Something went wrong..", Toast.LENGTH_SHORT).show();
+            Log.d("logs", "Something went wrong");
+        }
     }
 
     /**

@@ -36,4 +36,11 @@ public class Record {
     public int hashCode() {
         return Objects.hash(user, theQR);
     }
+
+    public String getQRHash() {
+        return theQR.getHash();
+    }
+    public int getQRscore() {
+        return theQR.getScore();
+    }
 }

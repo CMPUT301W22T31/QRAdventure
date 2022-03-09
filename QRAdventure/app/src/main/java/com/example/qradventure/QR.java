@@ -34,7 +34,6 @@ public class QR {
         geolocation = new ArrayList<String>();
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

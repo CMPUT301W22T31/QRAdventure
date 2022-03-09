@@ -5,14 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.w3c.dom.Text;
+import java.text.DecimalFormat;
 
 
 /**
@@ -20,18 +21,38 @@ import org.w3c.dom.Text;
  */
 public class AccountActivity extends AppCompatActivity {
     Account account;
+    BottomNavigationView navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
-
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
         // get the account from the singleton
+
         account = CurrentAccount.getAccount();
 
         // give info to textviews to display
         // TODO: Move these to onResume() in case of updated info.
+
+        Log.d("logs", "setting text");
+        try {
+            TextView displayTotalScore = findViewById(R.id.total_score);
+
+            displayTotalScore.setText(detailFormatter(getTotalScore()));
+            TextView displayCodesScanned = findViewById(R.id.codes_scanned);
+            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
+            TextView displayLowestQR = findViewById(R.id.lowest_qr);
+            displayLowestQR.setText(detailFormatter(getLowestQR()));
+            TextView displayHighestQR = findViewById(R.id.highest_qr);
+            displayHighestQR.setText(detailFormatter(getHighestQR()));
+        }
+        catch (Exception e) {
+            Log.d("logs", "Something went wrong while displaying!!! ");
+        }
+
         String username = account.getUsername();
         String email = account.getEmail();
         String phoneNumber = account.getPhoneNumber();
@@ -42,8 +63,81 @@ public class AccountActivity extends AppCompatActivity {
         TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
         displayPhoneNumber.setText(phoneNumber);
 
-        //
 
+        navbar.setOnItemSelectedListener((item) ->  {
+            switch(item.getItemId()) {
+                case R.id.leaderboards:
+                    Log.d("check", "WORKING???");
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Log.d("check", "YES WORKING???");
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.scan:
+                    //Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    //startActivity(intent3);
+                    goToScan();
+
+                    break;
+            }
+            return false;
+        });
+
+    }
+    // if the number is too big, put it in this format
+    // for example, if the user has 1345 qr's scanned
+    // it would say 1.34k in the page
+    private String detailFormatter(Number number) {
+        char[] suffix = {' ', 'k', 'M', 'B', 'T', 'P', 'E'};
+        long numValue = number.longValue();
+        int value = (int) Math.floor(Math.log10(numValue));
+        int base = value / 3;
+        if (value >= 3 && base < suffix.length) {
+            return new DecimalFormat("#0.00").format(numValue / Math.pow(10, base * 3)) + suffix[base];
+        } else {
+            return new DecimalFormat("#,##0").format(numValue);
+        }
+    }
+    // gets the lowest QR the player has scan to display
+    private int getLowestQR() {
+        int smallest = account.getMyRecords().get(0).getQRscore();
+        for (Record record: account.getMyRecords()
+             ) {
+            if (record.getQRscore() < smallest){
+                smallest = record.getQRscore();
+            }
+        }
+        return smallest;
+    }
+
+    // gets the highest QR the player has scan to display
+    private int getHighestQR() {
+        int biggest = account.getMyRecords().get(0).getQRscore();
+        for (Record record: account.getMyRecords()
+        ) {
+            if (record.getQRscore() > biggest){
+                biggest = record.getQRscore();
+            }
+        }
+        return biggest;
+    }
+
+    // gets the number of codes scanned by player so we can display it
+    private int getCodesScanned() {
+        return account.getMyRecords().size();
+    }
+
+    // gets the cumulative score player has scanned so we can display it
+    private int getTotalScore() {
+        int sum = 0;
+        for (Record record: account.getMyRecords()
+        ) {
+            sum += record.getQRscore();
+        }
+        return sum;
     }
 
     /**
@@ -120,9 +214,8 @@ public class AccountActivity extends AppCompatActivity {
 
     /**
      * Sends to scan activity. Called when respective button is clicked.
-     * @param view: unused
      */
-    public void goToScan(View view) {
+    public void goToScan() {
 //        Intent intent = new Intent(this, ScanActivity.class);
 //        startActivity(intent);
 
