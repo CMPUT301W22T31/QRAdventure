@@ -41,6 +41,9 @@ public class LoginActivity extends AppCompatActivity {
      * Contains logic for account registration
      * @param savedInstanceState - (unused)
      */
+
+    boolean disableBackButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,9 +145,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+         disableBackButton = intent.getBooleanExtra("disable_back_button", false);
+
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (disableBackButton) {
+            ;
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     /**
      * After logging in, set CurrentAccount and go to AccountActivity

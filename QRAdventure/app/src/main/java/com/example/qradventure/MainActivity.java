@@ -87,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
                     //device ID is recognize so fetch the associated account details
                     for(QueryDocumentSnapshot doc: task.getResult()) {
 
+
+                        //Fetch the user account
                         Account fetchedAccount;
                         String email = (String) doc.getData().get("E-mail");
                         String loginQR = (String) doc.getData().get("LoginQR");
                         String phoneNumber = (String) doc.getData().get("Phone Number");
                         String statusQR = (String) doc.getData().get("StatusQR");
                         String username = (String) doc.getId();
-
-                        Log.d("Testing", username);
 
                         fetchedAccount = new Account(username, email, phoneNumber, loginQR, statusQR);
                         CurrentAccount.setAccount(fetchedAccount);
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         if (!recognizedDeviceID[0]) {
             //Device ID not recognized, send user to create a new account screen
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.putExtra("disable_back_button", true);
             startActivity(intent);
 
         }
