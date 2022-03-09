@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">QRAdventure</string>
+    <string name="EXTRA_QR_CONTENT">com.example.qradventure.QR_CONTENT</string>
 </resources>

@@ -7,56 +7,26 @@
     android:background="@drawable/bg"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navbar_menu"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/black"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"
-        >
-    <ImageView
-        android:clickable="true"
-        android:onClick="goToLeaderboard"
-        android:paddingHorizontal="25dp"
-        android:src="@drawable/leaderboard"
+        app:menu="@menu/navbar_menu" />
+
+    <Button
+        android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
-        <ImageView
-            android:clickable="true"
-            android:onClick="goToSearchPlayers"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/people"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:clickable="true"
-            android:onClick="goToScan"
-            android:paddingHorizontal="20dp"
-            android:src="@drawable/qr_scanner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/location2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:clickable="true"
-            android:onClick="goToAccount"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/account2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-
-</LinearLayout>
+        android:onClick="TEMPgoToLogin"
+        android:text="(TEMP) LOGIN"
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

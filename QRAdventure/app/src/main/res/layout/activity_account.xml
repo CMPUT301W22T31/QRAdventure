@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
@@ -17,25 +18,26 @@
         <LinearLayout
             android:layout_width="200dp"
             android:layout_height="80dp"
-            android:orientation="horizontal"
-            android:gravity="">
+            android:gravity=""
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_marginLeft="50dp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
                 android:src="@drawable/account_default" />
 
             <ImageView
-                android:clickable="true"
-                android:onClick="goToEditInfo"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:onClick="goToEditInfo"
                 android:src="@drawable/edit" />
 
         </LinearLayout>
 
-            <TextView
+        <TextView
+            android:id="@+id/user_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -45,6 +47,7 @@
             android:textSize="20dp" />
 
         <TextView
+            android:id="@+id/user_phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -65,6 +68,7 @@
             android:textSize="10dp" />
 
         <TextView
+            android:id="@+id/user_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -92,6 +96,7 @@
             android:background="@android:color/darker_gray" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,7 +113,7 @@
             >
 
             <TextView
-
+                android:id="@+id/codes_scanned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
@@ -139,7 +144,7 @@
             >
 
             <TextView
-
+                android:id="@+id/total_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
@@ -171,7 +176,7 @@
             >
 
             <TextView
-
+                android:id="@+id/highest_qr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
@@ -203,7 +208,7 @@
             >
 
             <TextView
-
+                android:id="@+id/lowest_qr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/source_sans_pro"
@@ -379,49 +384,12 @@
             />
 
     </LinearLayout>
-    <LinearLayout
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navbar_menu"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/black"
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
-        <ImageView
-            android:clickable="true"
-            android:onClick="goToLeaderboard"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/leaderboard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:clickable="true"
-            android:onClick="goToSearchPlayers"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/people"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:clickable="true"
-            android:onClick="goToScan"
-            android:paddingHorizontal="20dp"
-            android:src="@drawable/qr_scanner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/location2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/account2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+        app:menu="@menu/navbar_menu" />
 
-    </LinearLayout>
 </LinearLayout>

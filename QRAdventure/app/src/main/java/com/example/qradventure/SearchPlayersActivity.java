@@ -11,6 +11,7 @@ import android.view.View;
  * Activity that lets anyone search for other players by their username
  */
 public class SearchPlayersActivity extends AppCompatActivity {
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,7 @@ public class SearchPlayersActivity extends AppCompatActivity {
      */
     public void goToProfile(View view) {
         Intent intent = new Intent(this, ProfileActivity.class);
-
-        // use intent to carry over which profile was clicked?
-
+        // put username string into intent
         startActivity(intent);
     }
 

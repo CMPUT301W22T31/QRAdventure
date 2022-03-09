@@ -7,39 +7,54 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-
+import java.util.Objects;
 
 /**
- * This class represents a QR code. It is itentified by the hash of the QR code it
- * represents
+ * This class represents a QR code. Uniquely Identified by its hash string.
  */
 public class QR {
-
-    private String hash;
+    private final String hash;
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
-    private ArrayList<Comment> comments;
+    private ArrayList<String> geolocation;
+    // TODO: add comments/comment section
 
-
-
-    public QR(String QR){
-
-        hash = DigestUtils.sha256Hex(QR);
-        scannedAccounts = new ArrayList<Account>();
-        comments = new ArrayList<Comment>();
-        score = getScore(hash);
-
+    // two constructors
+    public QR(String hash, int score, ArrayList<Account> scannedAccounts, ArrayList<String> geolocation) {
+        this.hash = hash;
+        this.score = score;
+        this.scannedAccounts = scannedAccounts;
+        this.geolocation = geolocation;
     }
 
+    public QR(String QR){
+        hash = DigestUtils.sha256Hex(QR);
+        calculateScore(hash);
+        scannedAccounts = new ArrayList<Account>();
+        geolocation = new ArrayList<String>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QR qr = (QR) o;
+        return Objects.equals(hash, qr.hash);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hash);
+    }
 
     /**
      * Function to obtain the score from a hexidecimal hash
      * @param hash
-     *          The hash we wish to get the score from
+     *          String - The hash we wish to get the score from
      * @return
-     *          The score as an integer
+     *          Int - The score as an integer
      */
-    public int getScore(String hash){
+    public int calculateScore(String hash){
 
         char nextChar = ' ';
         char current = ' ';
@@ -80,15 +95,15 @@ public class QR {
             }
         }
 
-        return QRScore;
+        score = QRScore;
+        return score;
     }
 
 
-    /**
-     * Getter for the hash
-     * @return
-     *      The hash as a string
-     */
+    public int getScore() {
+        return this.score;
+    }
+
     public String getHash(){
         return this.hash;
     }
