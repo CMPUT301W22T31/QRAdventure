@@ -101,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
                         fetchedAccount = new Account(username, email, phoneNumber, loginQR, statusQR);
                         CurrentAccount.setAccount(fetchedAccount);
                         recognizedDeviceID[0] = true;
+
+                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                        startActivity(intent);
                     }
                 }
 
@@ -190,6 +193,12 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
                     break;
+
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
+                    break;
+
             }
             return false;
         });

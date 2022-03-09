@@ -150,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Restrict back button usage when forcing user to make an account
     @Override
     public void onBackPressed() {
         if (disableBackButton) {
