@@ -1,8 +1,25 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -10,13 +27,61 @@ import android.os.Bundle;
  */
 public class CommentsActivity extends AppCompatActivity {
 
+    String recordID;
+    int count = 0;
+    ListView commentListView;
+    ArrayAdapter<String> commentAdapter;
+    ArrayList<String> comments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         setTitle("Player Comments");
 
-        // unpack intent to get which QR comments to display
+        // Intent for record ID
+        Intent intent = getIntent();
+        recordID = intent.getStringExtra("Record ID");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference recordRef = db.collection("RecordDB").document(recordID);
+
+        // Update list of comments to display
+        commentListView = findViewById(R.id.list_comments);
+        comments = new ArrayList<>();
+
+        // Count the number of comments and add comments to ArrayList
+        db.collection("Comments")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                count++;
+                                comments.add(document.get("Comment").toString());
+                            }
+                        } else {
+                            // Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        commentAdapter = new ArrayAdapter<String>(this, R.layout.content_comment, comments);
+        commentListView.setAdapter(commentAdapter);
+
+        // Update number of comments
+        TextView commentTitle = findViewById(R.id.text_comments_title);
+        String commentTitleText = "Comments (" + Integer.toString(count) + ")";
+        commentTitle.setText(commentTitleText);
+
+        // Add comment to Record collection
+        EditText comment = findViewById(R.id.editText_comment);
+
+        HashMap<String, Object> CommentData = new HashMap<>();
+        CommentData.put("Comment", comment.getText());
+
+        recordRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
 
     }
 }

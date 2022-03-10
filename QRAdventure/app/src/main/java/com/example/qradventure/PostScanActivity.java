@@ -161,8 +161,6 @@ public class PostScanActivity extends AppCompatActivity {
                }
            });
 
-
-
         // ====== database logic concluded ======
         // send user to a different activity (which? Account for now?).
         Intent intent = new Intent(this, AccountActivity.class);
@@ -212,6 +210,7 @@ public class PostScanActivity extends AppCompatActivity {
      */
     public void goToComments(View view) {
         Intent intent = new Intent(this, CommentsActivity.class);
+        intent.putExtra("Record ID", recordID);
         startActivity(intent);
     }
 
