@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,6 +35,7 @@ public class SearchPlayersActivity extends AppCompatActivity {
     ArrayList<String> playerNames;
     ArrayAdapter<String> usernameAdapter;
     FirebaseFirestore db;
+    BottomNavigationView navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,34 @@ public class SearchPlayersActivity extends AppCompatActivity {
                 goToProfile(username);
             }
         });
+
+        // enable navbar functionality
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
+        navbar.setOnItemSelectedListener((item) ->  {
+            switch(item.getItemId()) {
+                case R.id.leaderboards:
+                    Log.d("check", "WORKING???");
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Log.d("check", "YES WORKING???");
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.scan:
+                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent3);
+                    break;
+                case R.id.my_account:
+                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent4);
+                    break;
+            }
+            return false;
+        });
+
 
     }
 

@@ -7,60 +7,15 @@
     android:background="@drawable/bg"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navbar_menu"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/black"
-        android:gravity="center"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="goToLeaderboard"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/leaderboard"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="goToSearchPlayers"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/people"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="goToScan"
-            android:paddingHorizontal="20dp"
-            android:src="@drawable/qr_scanner"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/location2" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="goToAccount"
-            android:paddingHorizontal="25dp"
-            android:src="@drawable/account2"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/navbar_menu" />
 
     <Button
         android:id="@+id/buttonLogin"
@@ -68,9 +23,8 @@
         android:layout_height="wrap_content"
         android:onClick="TEMPgoToLogin"
         android:text="(TEMP) LOGIN"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

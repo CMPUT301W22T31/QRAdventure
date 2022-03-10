@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 
 /**
@@ -13,12 +14,23 @@ import android.view.View;
  */
 public class QRPageActivity extends AppCompatActivity {
     String hash;
+    TextView QRTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrpage);
-        setTitle("QR-123456");
+
+        // set textview for qr name
+        // try: temporary to prevent crashes
+        QRTitle = findViewById(R.id.qr_title_header);
+        try {
+            Bundle bundle = getIntent().getExtras(); // get string from previous activity
+            String title = bundle.getString("QRtitle");
+            QRTitle.setText(title);
+        } catch(Exception e) {
+            QRTitle.setText("PLACEHOLDER");
+        }
 
         // unpack Intent to get the hash (String)
         // query DB for that hash to get relevant fields

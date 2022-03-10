@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 /**
@@ -13,6 +16,8 @@ import android.widget.TextView;
  */
 public class ProfileActivity extends AppCompatActivity {
     private String username;
+    BottomNavigationView navbar;
+    Account account = CurrentAccount.getAccount();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,32 @@ public class ProfileActivity extends AppCompatActivity {
         // query DB for username. Pull relevant fields to display
         // TESTING: use dummy data
         setTextViews(username, "March6", "March6", "3");
+
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
+        navbar.setOnItemSelectedListener((item) ->  {
+            switch(item.getItemId()) {
+                case R.id.leaderboards:
+                    Log.d("check", "WORKING???");
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Log.d("check", "YES WORKING???");
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.scan:
+                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent3);
+                    break;
+                case R.id.my_account:
+                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent4);
+                    break;
+            }
+            return false;
+        });
 
     }
 
