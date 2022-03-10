@@ -28,10 +28,8 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
-        navbar = findViewById(R.id.navbar_menu);
-        navbar.setItemIconTintList(null);
-        // get the account from the singleton
 
+        // get the account from the singleton
         account = CurrentAccount.getAccount();
 
         // give info to textviews to display
@@ -63,7 +61,8 @@ public class AccountActivity extends AppCompatActivity {
         TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
         displayPhoneNumber.setText(phoneNumber);
 
-
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
@@ -80,7 +79,9 @@ public class AccountActivity extends AppCompatActivity {
                     //Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
                     //startActivity(intent3);
                     goToScan();
-
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
                     break;
             }
             return false;

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView navbar;
 
-
-
     /**
      * **TEMP** logs into a default test account
      * @param savedInstanceState - (unused)
@@ -69,7 +68,56 @@ public class MainActivity extends AppCompatActivity {
         // set CurrentAccount to this dummy account
         CurrentAccount.setAccount(account);
 
-        CollectionReference userRecords = db.collection("AccountDB").document("Default Test Account").collection("My QR Records");
+        CollectionReference userRecords = db.collection("AccountDB");
+
+        //Get local android device ID
+        String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        //boolean to track if the device ID is found in the database
+        final boolean[] recognizedDeviceID = {false};
+
+        //Query for device ID
+        Query accountsQuery = userRecords
+                .whereEqualTo("device_id", androidDeviceID);  //Second argument should be device ID
+
+        accountsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    //device ID is recognize so fetch the associated account details
+                    for(QueryDocumentSnapshot doc: task.getResult()) {
+
+
+                        //Fetch the user account
+                        Account fetchedAccount;
+                        String email = (String) doc.getData().get("E-mail");
+                        String loginQR = (String) doc.getData().get("LoginQR");
+                        String phoneNumber = (String) doc.getData().get("Phone Number");
+                        String statusQR = (String) doc.getData().get("StatusQR");
+                        String username = (String) doc.getId();
+
+                        fetchedAccount = new Account(username, email, phoneNumber, loginQR, statusQR);
+                        CurrentAccount.setAccount(fetchedAccount);
+                        recognizedDeviceID[0] = true;
+
+                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                        // disable backward navigation to this activity
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                }
+
+                //Device ID not recognized, send user to create a new account screen
+                if (!recognizedDeviceID[0]) {
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    // disable backward navigation to this activity
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
 
         // DELETE THIS LATER - Huey
         // As of right now we are logged in as Default Test Account on start up so I want to get all their records once the app boots up
@@ -146,6 +194,12 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
                     break;
+
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
+                    break;
+
             }
             return false;
         });
@@ -154,43 +208,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    /**
-     * Sends to account activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToAccount(View view) {
-        Intent intent = new Intent(this, AccountActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to scan activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToScan(View view) {
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to search player activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToSearchPlayers(View view) {
-        Intent intent = new Intent(this, SearchPlayersActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to leaderboard activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToLeaderboard(View view) {
-        Intent intent = new Intent(this, LeaderboardActivity.class);
-        startActivity(intent);
-    }
 
     /**
      * ** TEMPORARY **
