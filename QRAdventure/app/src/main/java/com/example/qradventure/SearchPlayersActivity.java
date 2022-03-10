@@ -68,9 +68,7 @@ public class SearchPlayersActivity extends AppCompatActivity {
                     startActivity(intent1);
                     break;
                 case R.id.search_players:
-                    Log.d("check", "YES WORKING???");
-                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
-                    startActivity(intent2);
+                    // Already on this activity. Do nothing.
                     break;
                 case R.id.scan:
                     Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
@@ -79,6 +77,10 @@ public class SearchPlayersActivity extends AppCompatActivity {
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
+                    break;
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
                     break;
             }
             return false;
@@ -104,6 +106,8 @@ public class SearchPlayersActivity extends AppCompatActivity {
      * @param v - (unused)
      */
     public void queryUsername(View v) {
+        // drop keyboard
+
         // clear current results
         playerNames.clear();
         usernameAdapter.notifyDataSetChanged();

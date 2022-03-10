@@ -1,5 +1,6 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,7 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
 /**
@@ -17,7 +23,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ProfileActivity extends AppCompatActivity {
     private String username;
     BottomNavigationView navbar;
-    Account account = CurrentAccount.getAccount();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
 
-        // query DB for username. Pull relevant fields to display
-        // TESTING: use dummy data
-        setTextViews(username, "March6", "March6", "3");
-
+        // ====== Enable navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
@@ -61,6 +63,35 @@ public class ProfileActivity extends AppCompatActivity {
             }
             return false;
         });
+        // ====== Enable navbar functionality ======
+
+        // ====== query DB for display fields ======
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("AccountDB").document(username)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                String email = (String) doc.getData().get("E-mail");
+                                String phone = (String) doc.getData().get("Phone Number");
+                                // TODO: Need a Score field.
+                                //String score = (String) doc.getData().get("Score");
+                                setTextViews(username, email, phone, "TODO");
+                            } else {
+                                // log: document dne
+                                Log.d("logs", "Document does not exist!", task.getException());
+                            }
+                        } else {
+                            // query failed
+                            Log.d("logs", "Query Failed!", task.getException());
+                        }
+                    }
+                });
+        // ====== query DB for display fields ======
+
 
     }
 
@@ -70,6 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
      */
     public void goToViewCodes(View view) {
         Intent intent = new Intent(this, ViewCodesActivity.class);
+        intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         startActivity(intent);
     }
 

@@ -13,15 +13,18 @@ import android.view.View;
  * NOTE: This is functionally different from MyCodesActivity
  */
 public class ViewCodesActivity extends AppCompatActivity {
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_codes);
-        setTitle("USERNAME123456789s Codes");
 
-        // unpack the intent to get the account username
-        // query DB by username to get relevant fields
+        // unpack intent to get account username
+        Intent intent = getIntent();
+        username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
+
+        // query DB to get their records / scanned qr codes (?)
 
     }
 
