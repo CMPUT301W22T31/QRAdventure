@@ -6,20 +6,13 @@
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/account2.xml" value="0.20729166666666668" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/box.xml" value="0.1" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/edit.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/gradient_bg.xml" value="0.11481481481481481" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/gradientbackground.xml" value="0.11481481481481481" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.17592592592592593" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/ic_baseline_local_phone_24.xml" value="0.33229166666666665" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/ic_qrbg.xml" value="0.303125" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/leaderboard.xml" value="0.20729166666666668" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/location2.xml" value="0.20729166666666668" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/navbar.xml" value="0.18703703703703703" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/people.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/qr_code2.xml" value="0.15648148148148147" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/qr_code2_black.xml" value="0.2078125" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/qr_code3.xml" value="0.33229166666666665" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/qr_scanner.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/trophy.xml" value="0.33229166666666665" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_account.xml" value="0.25" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_comments.xml" value="0.3489583333333333" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_edit_info.xml" value="0.3489583333333333" />
@@ -29,19 +22,14 @@
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_my_codes.xml" value="0.22" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_post_scan.xml" value="0.27239583333333334" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_profile.xml" value="0.33" />
+        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_profile.xml" value="0.3489583333333333" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_qrpage.xml" value="0.33" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_scan.xml" value="0.2526041666666667" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_scanned_by.xml" value="0.2526041666666667" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_search_players.xml" value="0.26875" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_status_qractivity.xml" value="0.2869791666666667" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_view_codes.xml" value="0.31145833333333334" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/camera.xml" value="0.31145833333333334" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_account.xml" value="0.33" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_leaderboard.xml" value="0.278125" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_location.xml" value="0.2869791666666667" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_main.xml" value="0.278125" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_search_players.xml" value="0.26875" />
+        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_account.xml" value="0.3489583333333333" />
+        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_my_codes.xml" value="0.18125" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/navbar.xml" value="0.3489583333333333" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/single_qr.xml" value="0.5" />
         <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/menu/navbar_menu.xml" value="0.25" />
@@ -62,6 +50,7 @@
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_search_players.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_status_qractivity.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_view_codes.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/activity_account.xml" value="0.39926062846580407" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="app/src/main/res/layout/camera.xml" value="0.5" />
       </map>

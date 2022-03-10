@@ -138,32 +138,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
 
-        // END OF QUERY
-//        navbar.setOnItemSelectedListener((item) ->  {
-//            switch(item.getItemId()) {
-//                case R.id.leaderboards:
-//                    Log.d("check", "WORKING???");
-//                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
-//                    startActivity(intent1);
-//                    break;
-//                case R.id.search_players:
-//                    Log.d("check", "YES WORKING???");
-//                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
-//                    startActivity(intent2);
-//                    break;
-//                case R.id.scan:
-//                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-//                    startActivity(intent3);
-//                    break;
-//                case R.id.my_account:
-//                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
-//                    startActivity(intent4);
-//                    break;
-//            }
-//            return false;
-//        });
-
-
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -208,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToMyStats(View view) {
         Intent intent = new Intent(this, MyStatsActivity.class);
+
         startActivity(intent);
     }
 
@@ -219,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MyCodesActivity.class);
         startActivity(intent);
     }
-
     /**
      * Sends to account activity. Called when respective button is clicked.
      * @param view: unused
