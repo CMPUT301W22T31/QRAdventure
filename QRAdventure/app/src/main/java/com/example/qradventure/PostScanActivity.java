@@ -121,7 +121,6 @@ public class PostScanActivity extends AppCompatActivity {
                 }
             });
 
-            // TODO: Record logic. This is what remains of Michelle's work (untested?)
             //====== Create New Record ======//
 
             recordID = myAccount.getUsername() + "-" + qr.getHash();
@@ -192,7 +191,7 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void clickDismiss(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AccountActivity.class);
         startActivity(intent);
     }
 

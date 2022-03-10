@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView navbar;
 
-
-
     /**
      * **TEMP** logs into a default test account
      * @param savedInstanceState - (unused)
@@ -103,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
                         recognizedDeviceID[0] = true;
 
                         Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                        // disable backward navigation to this activity
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 }
@@ -110,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 //Device ID not recognized, send user to create a new account screen
                 if (!recognizedDeviceID[0]) {
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    intent.putExtra("disable_back_button", true);
+                    // disable backward navigation to this activity
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
                 }
@@ -207,43 +208,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    /**
-     * Sends to account activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToAccount(View view) {
-        Intent intent = new Intent(this, AccountActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to scan activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToScan(View view) {
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to search player activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToSearchPlayers(View view) {
-        Intent intent = new Intent(this, SearchPlayersActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to leaderboard activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToLeaderboard(View view) {
-        Intent intent = new Intent(this, LeaderboardActivity.class);
-        startActivity(intent);
-    }
 
     /**
      * ** TEMPORARY **
