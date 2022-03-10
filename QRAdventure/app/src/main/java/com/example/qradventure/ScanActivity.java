@@ -45,7 +45,6 @@ public class ScanActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-        setTitle("Scan Activity");
 
         // TODO: Could activate camera immediately? Without need for button click?
         // button logic: activates camera on click
@@ -93,15 +92,6 @@ public class ScanActivity extends AppCompatActivity{
         //TODO: Can move this logic into onActivityResult? This method redundant.
     }
 
-    /**
-     * PLACEHOLDER - Delete this and button later.
-     * Temporarily used to access PostScanActivity via button.
-     * @param view - (unused)
-     */
-    public void goToPostScan2(View view) {
-        //Intent intent = new Intent(ScanActivity.this, PostScanActivity.class);
-        //startActivity(intent);
-    }
 
 }
 
