@@ -21,52 +21,66 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+
+/**
+ * LoginActivity
+ * Checks for an account associated with this device and signs them in
+ * Otherwise, this activity handles account creation.
+ */
 public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db;
-    public Account currentAccount;
+    private Account currentAccount;
 
+    /**
+     * Contains logic for existing account login
+     * Sets up button listener for account registration
+     * Contains logic for account registration
+     * @param savedInstanceState - (unused)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         db = FirebaseFirestore.getInstance();
 
-        // TODO: add logic to query db for an account that belongs to this device
-        //       Alternative method: This device stores their account locally, so retrieve it!
+        /* TODO: add logic to query db for an account that belongs to this device
+        /* Alternative method: This device stores their account locally, so retrieve it!
+        /* If exists, *must* set attribute: currentAccount =
+        /*
+        /* if currentAccount was found and set successfully, call: signedIn();
+         */
 
-        // if their account was found successfully, call signedIn()
-        // signedIn();
 
-        // New user or account not found: let them register:
+        // ========== Account Registration ==========
         Button createButton = findViewById(R.id.buttonLogin);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // get user input from textviews
                 EditText username_entered = findViewById(R.id.editText_username);
                 String username = username_entered.getText().toString();
                 EditText phone_number_entered = findViewById(R.id.editText_phone_number);
                 String phoneNumber = phone_number_entered.getText().toString();
                 EditText email_entered = findViewById(R.id.editText_email);
                 String email = email_entered.getText().toString();
-                // Dummy data for now
+                // TODO: develop LoginQR and StatusQR
                 String LoginQR = "usernameLoginQRHash";
                 String StatusQR = "usernameStatusQRHash";
 
                 // Create new user
-                currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR, null);
+                currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR);
 
-                // Putting Player data into HashMap
+                // Put Player data into HashMap
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("E-mail", email);
                 data.put("Phone Number", phoneNumber);
                 data.put("LoginQR", LoginQR);
                 data.put("StatusQR", StatusQR);
 
-                // reference: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
-                // if input was non-empty
                 if (!username.matches("")) {
                     DocumentReference docRef = db.collection("AccountDB").document(username);
 
@@ -74,33 +88,31 @@ public class LoginActivity extends AppCompatActivity {
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            // task is a query for a document matching the String username
+                            // task is a document query
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
-                                    // Document exists, therefore username is taken!
+                                    // Document exists, so username is taken!
                                     Context context = getApplicationContext();
-                                    CharSequence text = "Username already exists!";
+                                    CharSequence text = "Username is taken";
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-
-                                    // TODO: handle logic for this case ? Do nothing?
+                                    // TODO: Does this case need extra logic? Or just a toast?
 
                                 } else {
-                                    // Document does not exist, therefore username is available!
+                                    // Document does not exist, so username is available!
                                     Context context = getApplicationContext();
                                     CharSequence text = "Username available! Creating account...";
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
 
+                                    // Set data. Could add success/fail listeners?
                                     docRef.set(data);
-                                    // Could add success/fail listener?
 
                                     // on success: proceed to app!
                                     signedIn();
-
                                 }
 
                             } else {
@@ -115,7 +127,12 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    // user input was empty; optionally add logic for this case?
+                    // user input was empty, notify them via toast:
+                    Context context = getApplicationContext();
+                    CharSequence text = "Username Empty";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
             }
         });
@@ -125,14 +142,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /**
-     * After logging in, set CurrentAccount and go to MainActivity
+     * After logging in, set CurrentAccount and go to AccountActivity
      */
     public void signedIn() {
         // Sets the Current Account singleton
-        CurrentAccount.getInstance().setAccount(currentAccount);
+        CurrentAccount.setAccount(currentAccount);
 
-        // travel to AccountActivity (or main idc)
         Intent intent = new Intent(this, AccountActivity.class);
+        // Disable backward navigation
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,6 +52,16 @@ public class CommentsActivity extends AppCompatActivity {
         commentListView = findViewById(R.id.list_comments);
         comments = new ArrayList<>();
 
+        commentAdapter = new ArrayAdapter<String>(this, R.layout.content_comment, comments);
+        commentListView.setAdapter(commentAdapter);
+
+        // Update number of comments
+        TextView commentTitle = findViewById(R.id.text_comments_title);
+        String commentTitleText = "Comments (" + Integer.toString(count) + ")";
+        commentTitle.setText(commentTitleText);
+
+        EditText comment = findViewById(R.id.editText_comment);
+
         // Count the number of comments and add comments to ArrayList
         db.collection("Comments")
                 .get()
@@ -59,7 +71,8 @@ public class CommentsActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
                                 count++;
-                                comments.add(document.get("Comment").toString());
+                                comments.add(comment.getText().toString());;
+                                commentAdapter.notifyDataSetChanged();
                             }
                         } else {
                             // Log.d(TAG, "Error getting documents: ", task.getException());
@@ -67,21 +80,27 @@ public class CommentsActivity extends AppCompatActivity {
                     }
                 });
 
-        commentAdapter = new ArrayAdapter<String>(this, R.layout.content_comment, comments);
-        commentListView.setAdapter(commentAdapter);
+        Button addButton = findViewById(R.id.button_add_comment);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Add comment to Record collection
+                HashMap<String, Object> CommentData = new HashMap<>();
+                CommentData.put("Comment", comment.getText().toString());
 
-        // Update number of comments
-        TextView commentTitle = findViewById(R.id.text_comments_title);
-        String commentTitleText = "Comments (" + Integer.toString(count) + ")";
-        commentTitle.setText(commentTitleText);
+                // Update number of comments
+                String newTitle = "Comments (" + Integer.toString(count) + ")";
+                commentTitle.setText(newTitle);
 
-        // Add comment to Record collection
-        EditText comment = findViewById(R.id.editText_comment);
+                recordRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
 
-        HashMap<String, Object> CommentData = new HashMap<>();
-        CommentData.put("Comment", comment.getText());
+                comments.add(comment.getText().toString());;
+                commentAdapter.notifyDataSetChanged();
+            }
+        });
 
-        recordRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
+
+
+
 
     }
 }
