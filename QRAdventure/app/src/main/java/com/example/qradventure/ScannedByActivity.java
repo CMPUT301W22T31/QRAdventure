@@ -2,7 +2,13 @@ package com.example.qradventure;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 /**
@@ -10,15 +16,23 @@ import android.os.Bundle;
  */
 public class ScannedByActivity extends AppCompatActivity {
     String hash;
-
+    ArrayList<String> players;
+    ArrayAdapter<String> adapter;
+    ListView playerList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanned_by);
         setTitle("Scanned By:");
 
-        // unpack intent to get QR code hash
-        // query DB by QR hash to get relevant fields
+        playerList = findViewById(R.id.player_list);
+        players = (ArrayList<String>)getIntent().getSerializableExtra("PLAYERS");
+
+        adapter = new PlayerListAdapter(this, players);
+
+        playerList.setAdapter(adapter);
+
+
 
     }
 }
