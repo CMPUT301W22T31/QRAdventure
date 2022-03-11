@@ -109,9 +109,8 @@ public class AccountActivity extends AppCompatActivity {
     }
     // gets the lowest QR the player has scan to display
     private int getLowestQR() {
-        Log.d("logs", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        // TODO: verify this works. Sometimes records are not present.
         int smallest = account.getMyRecords().get(0).getQRscore();
-        Log.d("logs", "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         for (Record record: account.getMyRecords()
              ) {
             if (record.getQRscore() < smallest){

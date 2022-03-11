@@ -1,6 +1,7 @@
 package com.example.qradventure;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,13 @@ public class QueryHandler {
             }
         });
 
+    }
+
+    /**
+     * Used for account login
+     */
+    public void LoginQuery(String androidDeviceID) {
+        db = FirebaseFirestore.getInstance();
     }
 
 

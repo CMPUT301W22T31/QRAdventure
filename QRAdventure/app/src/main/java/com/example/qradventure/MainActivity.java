@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         //Get local android device ID
         String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+
         // ====== Query for accounts with matching device_id field ======
         // send to registration if no matching documents exist
         db.collection("AccountDB")
@@ -78,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             // query completed
                             // TODO: reformat this "for". Surely there's a better way than a for loop for 1 document??
+                            if (task.getResult().size() == 0) {
+                                // no documents found! go to registration
+                                Log.d("logs", "doc dne!");
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                // disable backward navigation to this activity
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
                             for(QueryDocumentSnapshot doc: task.getResult()) {
                                 if (doc.exists()) {
                                     //Fetch the user account
@@ -86,22 +95,22 @@ public class MainActivity extends AppCompatActivity {
                                     String phoneNumber = (String) doc.getData().get("Phone Number");
                                     String statusQR = (String) doc.getData().get("StatusQR");
                                     String username = (String) doc.getId();
+                                    Log.d("logs", "doc exists + " + username);
 
                                     Account fetchedAccount =
                                             new Account(username, email, phoneNumber, loginQR, statusQR);
                                     CurrentAccount.setAccount(fetchedAccount);
+
+                                    // Account reconstructed - need to reconstruct records
                                     TEMPConstructRecords();
                                 } else {
-                                    // doc does not exist - proceed to registration
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    // disable backward navigation to this activity
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
+                                    // doc does not exist. I think this case is covered already, but just incase:
+                                    Log.d("logs", "Document does not exist!");
                                 }
                             }
                         } else {
                             // ERROR: query failed
-                            Log.d("tag", "DeviceID query failed!", task.getException());
+                            Log.d("logs", "DeviceID query failed!", task.getException());
                         }
                     }
         });
@@ -144,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        String qrScoreValue = (String) document.getData().get("Score");
                                                         DocumentSnapshot document = task.getResult();
                                                         String qrScore = "" + document.getData().get("Score");
                                                         int qrValue = Integer.parseInt(qrScore);
@@ -153,16 +161,14 @@ public class MainActivity extends AppCompatActivity {
                                                         Record newRecord = new Record(account, qr);
                                                         account.addRecord(newRecord);
                                                     } else {
+                                                        // ERROR: Query failed!
                                                         Log.d("logs", "Cached get failed: ", task.getException());
                                                     }
                                                 }
                                     });
                                 }
-                                // outside for loop - intent to AccountActivity
-                                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
                             } else {
+                                // ERROR: query unsuccessful
                                 Log.d("logs", "Error getting documents: ", task.getException());
                             }
                         }
@@ -172,6 +178,17 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
         // ====== Records reconstruction complete ======
+
+        /**
+         * TEMP: intent to MapActivity
+         * Due to asynchronous query execution, reconstructing records is not done soon enough.
+         * to "hide" the problem, temporarily send to MapActivity instead of AccountActivity.
+         * This gives the query enough time to finish and display properly!
+         */
+        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+        // disable backward navigation to this activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 
