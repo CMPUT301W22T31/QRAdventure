@@ -70,135 +70,23 @@ public class MainActivity extends AppCompatActivity {
 
         // ====== Query for accounts with matching device_id field ======
         // send to registration if no matching documents exist
-        db.collection("AccountDB")
-                .whereEqualTo("device_id", androidDeviceID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            // query completed
-                            // TODO: reformat this "for". Surely there's a better way than a for loop for 1 document??
-                            if (task.getResult().size() == 0) {
-                                // no documents found! go to registration
-                                Log.d("logs", "doc dne!");
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                // disable backward navigation to this activity
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                            for(QueryDocumentSnapshot doc: task.getResult()) {
-                                if (doc.exists()) {
-                                    //Fetch the user account
-                                    String email = (String) doc.getData().get("E-mail");
-                                    String loginQR = (String) doc.getData().get("LoginQR");
-                                    String phoneNumber = (String) doc.getData().get("Phone Number");
-                                    String statusQR = (String) doc.getData().get("StatusQR");
-                                    String username = (String) doc.getId();
-                                    Log.d("logs", "doc exists + " + username);
+        QueryHandler q = new QueryHandler();
 
-                                    Account fetchedAccount =
-                                            new Account(username, email, phoneNumber, loginQR, statusQR);
-                                    CurrentAccount.setAccount(fetchedAccount);
+        q.getLoginAccount(androidDeviceID, new AccountCallback() {
+            @Override
+            public void toActivity(Boolean alreadyCreated) {
+                Intent intent;
+                if (alreadyCreated){
+                    intent = new Intent(MainActivity.this, AccountActivity.class);
+                }
+                else{
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
+                }
 
-                                    // Account reconstructed - need to reconstruct records
-                                    TEMPConstructRecords();
-                                } else {
-                                    // doc does not exist. I think this case is covered already, but just incase:
-                                    Log.d("logs", "Document does not exist!");
-                                }
-                            }
-                        } else {
-                            // ERROR: query failed
-                            Log.d("logs", "DeviceID query failed!", task.getException());
-                        }
-                    }
+                // disable backward navigation to this activity
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
         });
-
-
-
-    }
-
-
-    /**
-     * **TEMPORARY**
-     * Method that holds the logic to reconstruct Account records.
-     */
-    public void TEMPConstructRecords() {
-        /*
-         * TODO: DELETE WHEN QUERY HANDLER OPERATIONAL
-         * get records for logged in account.
-         * Huey's comments:
-         * // The following is a query to grab all the QR codes that the player has added in their account
-         * This is really long because this is two calls to the firebase db
-         * Query steps:
-         * 1.) I need to grab all the QR codes added by the user in the AccountDB collection
-         * 2.) I need to grab all the scores by those QR codes in the QRDB
-         * 3.) combine those two to create a new QR object and store it on the singleton account class
-         */
-        Account account = CurrentAccount.getAccount();
-        try {
-            Log.d("logs", account.getUsername());
-            db.collection("AccountDB").document(CurrentAccount.getAccount().getUsername()).collection("My QR Records")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String qrHash = (String) document.getData().get("QR");
-                                    db.collection("QRDB").document(qrHash)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        DocumentSnapshot document = task.getResult();
-                                                        String qrScore = "" + document.getData().get("Score");
-                                                        int qrValue = Integer.parseInt(qrScore);
-                                                        QR qr = new QR(qrHash, qrValue, null, null);
-                                                        Log.d("logs", qrHash + " " + qrValue);
-                                                        Record newRecord = new Record(account, qr);
-                                                        account.addRecord(newRecord);
-                                                    } else {
-                                                        // ERROR: Query failed!
-                                                        Log.d("logs", "Cached get failed: ", task.getException());
-                                                    }
-                                                }
-                                    });
-                                }
-                            } else {
-                                // ERROR: query unsuccessful
-                                Log.d("logs", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-        }
-        catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-        }
-        // ====== Records reconstruction complete ======
-
-        /**
-         * TEMP: intent to MapActivity
-         * Due to asynchronous query execution, reconstructing records is not done soon enough.
-         * to "hide" the problem, temporarily send to MapActivity instead of AccountActivity.
-         * This gives the query enough time to finish and display properly!
-         */
-        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-        // disable backward navigation to this activity
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
-
-    /**
-     * ** TEMPORARY ** TODO: DELETE
-     * Sends to login activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void TEMPgoToLogin(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
     }
 }
