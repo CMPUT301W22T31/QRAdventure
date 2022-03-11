@@ -28,10 +28,8 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
-        navbar = findViewById(R.id.navbar_menu);
-        navbar.setItemIconTintList(null);
-        // get the account from the singleton
 
+        // get the account from the singleton
         account = CurrentAccount.getAccount();
 
         // give info to textviews to display
@@ -63,7 +61,8 @@ public class AccountActivity extends AppCompatActivity {
         TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
         displayPhoneNumber.setText(phoneNumber);
 
-
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
@@ -77,10 +76,16 @@ public class AccountActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    //Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    //startActivity(intent3);
-                    goToScan();
-
+                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent3);
+                    //goToScan();
+                    break;
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
+                    break;
+                case R.id.my_account:
+                    // already on this activity. Do nothing.
                     break;
             }
             return false;
@@ -182,33 +187,6 @@ public class AccountActivity extends AppCompatActivity {
      */
     public void goToMyCodes(View view) {
         Intent intent = new Intent(this, MyCodesActivity.class);
-        startActivity(intent);
-    }
-    /**
-     * Sends to account activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToAccount(View view) {
-        Intent intent = new Intent(this, AccountActivity.class);
-        startActivity(intent);
-    }
-
-
-    /**
-     * Sends to search player activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToSearchPlayers(View view) {
-        Intent intent = new Intent(this, SearchPlayersActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to leaderboard activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToLeaderboard(View view) {
-        Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);
     }
 

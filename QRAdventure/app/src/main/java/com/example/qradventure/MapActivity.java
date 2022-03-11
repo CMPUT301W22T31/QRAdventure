@@ -1,35 +1,32 @@
 package com.example.qradventure;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 /**
- * Activity displaying the profile of any player. Anyone can access this activity.
+ * Map Activity TODO: Document & Implement
  */
-public class ProfileActivity extends AppCompatActivity {
-    BottomNavigationView navbar;
-    Account account = CurrentAccount.getAccount();
+public class MapActivity extends AppCompatActivity {
 
+
+    /**
+     * TODO: What happens in onCreate?
+     * @param savedInstanceState - unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_map);
 
-        navbar = findViewById(R.id.navbar_menu);
+        // enable navbar functionality
+        BottomNavigationView navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
-
-        // unpack intent to get account username
-        // query DB for username. Pull relevant fields to display
-        setTitle("USERNAME123456789s profile");
-
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
@@ -51,21 +48,11 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    // do nothing, already on that activity
                     break;
+
             }
             return false;
         });
-
-    }
-
-    /**
-     * Sends to ViewCodes activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToViewCodes(View view) {
-        Intent intent = new Intent(this, ViewCodesActivity.class);
-        startActivity(intent);
     }
 }

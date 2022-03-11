@@ -4,36 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#8F8F8F"
     tools:context=".ScanActivity">
+
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Camera QR Scanner I guess. GOOD LUCK"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="80dp"
+        android:text="Click to activate camera"
+        app:layout_constraintBottom_toTopOf="@+id/qr_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGoToPostScan"
-        app:layout_constraintVertical_bias="0.211" />
-
-    <Button
-        android:id="@+id/buttonGoToPostScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="63dp"
-        android:text="TEMP: GOTO PostScan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/qr_button"
         android:layout_width="85dp"
         android:layout_height="68dp"
+        android:layout_marginBottom="344dp"
         android:text="SCAN QR CODE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
