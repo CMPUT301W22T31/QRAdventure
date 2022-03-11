@@ -244,6 +244,9 @@ public class PostScanActivity extends AppCompatActivity {
      */
     public void goToComments(View view) {
         Intent intent = new Intent(this, CommentsActivity.class);
+
+        intent.putExtra("Record ID", recordID);
+
         startActivity(intent);
     }
 

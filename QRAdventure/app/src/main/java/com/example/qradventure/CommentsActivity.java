@@ -3,6 +3,7 @@ package com.example.qradventure;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +35,7 @@ public class CommentsActivity extends AppCompatActivity {
     int count = 0;
     ListView commentListView;
     ArrayAdapter<String> commentAdapter;
-    ArrayList<String> comments;
+    ArrayList<String> commentArrayList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,8 @@ public class CommentsActivity extends AppCompatActivity {
 
         // Update list of comments to display
         commentListView = findViewById(R.id.list_comments);
-        comments = new ArrayList<>();
 
-        commentAdapter = new ArrayAdapter<String>(this, R.layout.content_comment, comments);
+        commentAdapter = new ArrayAdapter<String>(this, R.layout.content_comment, commentArrayList);
         commentListView.setAdapter(commentAdapter);
 
         // Update number of comments
@@ -71,7 +72,7 @@ public class CommentsActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
                                 count++;
-                                comments.add(comment.getText().toString());;
+                                commentArrayList.add(comment.getText().toString());;
                                 commentAdapter.notifyDataSetChanged();
                             }
                         } else {
@@ -86,20 +87,47 @@ public class CommentsActivity extends AppCompatActivity {
                 // Add comment to Record collection
                 HashMap<String, Object> CommentData = new HashMap<>();
                 CommentData.put("Comment", comment.getText().toString());
+                recordRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
+                count++;
 
                 // Update number of comments
                 String newTitle = "Comments (" + Integer.toString(count) + ")";
                 commentTitle.setText(newTitle);
 
-                recordRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
-
-                comments.add(comment.getText().toString());;
+                commentArrayList.add(comment.getText().toString());
                 commentAdapter.notifyDataSetChanged();
             }
         });
 
-
-
+//        navbar = findViewById(R.id.navbar_menu);
+//        navbar.setItemIconTintList(null);
+//        navbar.setOnItemSelectedListener((item) ->  {
+//            switch(item.getItemId()) {
+//                case R.id.leaderboards:
+//                    Log.d("check", "WORKING???");
+//                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+//                    startActivity(intent1);
+//                    break;
+//                case R.id.search_players:
+//                    Log.d("check", "YES WORKING???");
+//                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+//                    startActivity(intent2);
+//                    break;
+//                case R.id.scan:
+//                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+//                    startActivity(intent3);
+//                    //goToScan();
+//                    break;
+//                case R.id.map:
+//                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+//                    startActivity(intent5);
+//                    break;
+//                case R.id.my_account:
+//                    // already on this activity. Do nothing.
+//                    break;
+//            }
+//            return false;
+//        });
 
 
     }
