@@ -56,88 +56,81 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Main Activity");
 
-        // make sure to do this anytime an activity has a navbar
-        navbar = findViewById(R.id.navbar_menu);
-        navbar.setItemIconTintList(null);
-
         // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
 
-        // create a dummy account
+        // DUMMY TEST ACCOUNT
+        // TODO: DELETE
         Account account = new Account("Default Test Account", "temp", "temp", "temp", "temp");
-        // set CurrentAccount to this dummy account
         CurrentAccount.setAccount(account);
-
-        CollectionReference userRecords = db.collection("AccountDB");
 
         //Get local android device ID
         String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        //boolean to track if the device ID is found in the database
-        final boolean[] recognizedDeviceID = {false};
+        // ====== Query for accounts with matching device_id field ======
+        // send to registration if no matching documents exist
+        db.collection("AccountDB")
+                .whereEqualTo("device_id", androidDeviceID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            // query completed
+                            // TODO: reformat this "for". Surely there's a better way than a for loop for 1 document??
+                            for(QueryDocumentSnapshot doc: task.getResult()) {
+                                if (doc.exists()) {
+                                    //Fetch the user account
+                                    String email = (String) doc.getData().get("E-mail");
+                                    String loginQR = (String) doc.getData().get("LoginQR");
+                                    String phoneNumber = (String) doc.getData().get("Phone Number");
+                                    String statusQR = (String) doc.getData().get("StatusQR");
+                                    String username = (String) doc.getId();
 
-        //Query for device ID
-        Query accountsQuery = userRecords
-                .whereEqualTo("device_id", androidDeviceID);  //Second argument should be device ID
-
-        accountsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    //device ID is recognize so fetch the associated account details
-                    for(QueryDocumentSnapshot doc: task.getResult()) {
-
-
-                        //Fetch the user account
-                        Account fetchedAccount;
-                        String email = (String) doc.getData().get("E-mail");
-                        String loginQR = (String) doc.getData().get("LoginQR");
-                        String phoneNumber = (String) doc.getData().get("Phone Number");
-                        String statusQR = (String) doc.getData().get("StatusQR");
-                        String username = (String) doc.getId();
-
-                        fetchedAccount = new Account(username, email, phoneNumber, loginQR, statusQR);
-                        CurrentAccount.setAccount(fetchedAccount);
-                        recognizedDeviceID[0] = true;
-
-                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                        // disable backward navigation to this activity
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                                    Account fetchedAccount =
+                                            new Account(username, email, phoneNumber, loginQR, statusQR);
+                                    CurrentAccount.setAccount(fetchedAccount);
+                                    TEMPConstructRecords();
+                                } else {
+                                    // doc does not exist - proceed to registration
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    // disable backward navigation to this activity
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                            }
+                        } else {
+                            // ERROR: query failed
+                            Log.d("tag", "DeviceID query failed!", task.getException());
+                        }
                     }
-                }
-
-                //Device ID not recognized, send user to create a new account screen
-                if (!recognizedDeviceID[0]) {
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    // disable backward navigation to this activity
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-
-                }
-            }
         });
 
 
-        // DELETE THIS LATER - Huey
-        // As of right now we are logged in as Default Test Account on start up so I want to get all their records once the app boots up
-        // This is so that we have the records to be displayed in pages.
 
-        Log.d("logs","testing query");
-
-        // get all the added QR's by the user and put them in a list
+    }
 
 
-        // The following is a query to grab all the QR codes that the player has added in their account
-        // This is really long because this is two calls to the firebase db
-        // Query steps:
-        // 1.) I need to grab all the QR codes added by the user in the AccountDB collection
-        // 2.) I need to grab all the scores by those QR codes in the QRDB
-        // 3.) combine those two to create a new QR object and store it on the singleton account class
-
-        // This probably should be put in a query handle class...
+    /**
+     * **TEMPORARY**
+     * Method that holds the logic to reconstruct Account records.
+     */
+    public void TEMPConstructRecords() {
+        /*
+         * TODO: DELETE WHEN QUERY HANDLER OPERATIONAL
+         * get records for logged in account.
+         * Huey's comments:
+         * // The following is a query to grab all the QR codes that the player has added in their account
+         * This is really long because this is two calls to the firebase db
+         * Query steps:
+         * 1.) I need to grab all the QR codes added by the user in the AccountDB collection
+         * 2.) I need to grab all the scores by those QR codes in the QRDB
+         * 3.) combine those two to create a new QR object and store it on the singleton account class
+         */
+        Account account = CurrentAccount.getAccount();
         try {
-            db.collection("AccountDB").document(account.getUsername()).collection("My QR Records")
+            Log.d("logs", account.getUsername());
+            db.collection("AccountDB").document(CurrentAccount.getAccount().getUsername()).collection("My QR Records")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -145,24 +138,30 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     String qrHash = (String) document.getData().get("QR");
-                                    db.collection("QRDB").document(qrHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                String qrScoreValue = (String) document.getData().get("Score");
-                                                DocumentSnapshot document = task.getResult();
-                                                String qrScore = "" + document.getData().get("Score");
-                                                int qrValue = Integer.parseInt(qrScore);
-                                                QR qr = new QR(qrHash, qrValue, null, null);
-                                                Log.d("logs", qrHash + " " + qrValue);
-                                                Record newRecord = new Record(account, qr);
-                                                account.addRecord(newRecord);
-                                            } else {
-                                                Log.d("logs", "Cached get failed: ", task.getException());
-                                            }
-                                        }
+                                    db.collection("QRDB").document(qrHash)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        String qrScoreValue = (String) document.getData().get("Score");
+                                                        DocumentSnapshot document = task.getResult();
+                                                        String qrScore = "" + document.getData().get("Score");
+                                                        int qrValue = Integer.parseInt(qrScore);
+                                                        QR qr = new QR(qrHash, qrValue, null, null);
+                                                        Log.d("logs", qrHash + " " + qrValue);
+                                                        Record newRecord = new Record(account, qr);
+                                                        account.addRecord(newRecord);
+                                                    } else {
+                                                        Log.d("logs", "Cached get failed: ", task.getException());
+                                                    }
+                                                }
                                     });
                                 }
+                                // outside for loop - intent to AccountActivity
+                                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
                             } else {
                                 Log.d("logs", "Error getting documents: ", task.getException());
                             }
@@ -172,45 +171,12 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
-
-        // END OF QUERY
-        navbar.setOnItemSelectedListener((item) ->  {
-            switch(item.getItemId()) {
-                case R.id.leaderboards:
-                    Log.d("check", "WORKING???");
-                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
-                    startActivity(intent1);
-                    break;
-                case R.id.search_players:
-                    Log.d("check", "YES WORKING???");
-                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
-                    startActivity(intent2);
-                    break;
-                case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
-                    break;
-                case R.id.my_account:
-                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
-                    startActivity(intent4);
-                    break;
-
-                case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
-                    break;
-
-            }
-            return false;
-        });
-
-
+        // ====== Records reconstruction complete ======
     }
 
 
-
     /**
-     * ** TEMPORARY **
+     * ** TEMPORARY ** TODO: DELETE
      * Sends to login activity. Called when respective button is clicked.
      * @param view: unused
      */

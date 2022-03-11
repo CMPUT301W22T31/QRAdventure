@@ -35,16 +35,17 @@ public class AccountActivity extends AppCompatActivity {
         // give info to textviews to display
         // TODO: Move these to onResume() in case of updated info.
 
-        Log.d("logs", "setting text");
         try {
+            // get textviews
             TextView displayTotalScore = findViewById(R.id.total_score);
-
-            displayTotalScore.setText(detailFormatter(getTotalScore()));
             TextView displayCodesScanned = findViewById(R.id.codes_scanned);
-            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
             TextView displayLowestQR = findViewById(R.id.lowest_qr);
-            displayLowestQR.setText(detailFormatter(getLowestQR()));
             TextView displayHighestQR = findViewById(R.id.highest_qr);
+
+            // set textviews
+            displayTotalScore.setText(detailFormatter(getTotalScore()));
+            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
+            displayLowestQR.setText(detailFormatter(getLowestQR()));
             displayHighestQR.setText(detailFormatter(getHighestQR()));
         }
         catch (Exception e) {
@@ -108,7 +109,9 @@ public class AccountActivity extends AppCompatActivity {
     }
     // gets the lowest QR the player has scan to display
     private int getLowestQR() {
+        Log.d("logs", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         int smallest = account.getMyRecords().get(0).getQRscore();
+        Log.d("logs", "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         for (Record record: account.getMyRecords()
              ) {
             if (record.getQRscore() < smallest){
@@ -138,8 +141,7 @@ public class AccountActivity extends AppCompatActivity {
     // gets the cumulative score player has scanned so we can display it
     private int getTotalScore() {
         int sum = 0;
-        for (Record record: account.getMyRecords()
-        ) {
+        for (Record record: account.getMyRecords()) {
             sum += record.getQRscore();
         }
         return sum;
