@@ -162,12 +162,5 @@
 
 
     </LinearLayout>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navbar_menu"
-        android:layout_gravity=""
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/black"
-        app:menu="@menu/navbar_menu" />
 
 </LinearLayout>
