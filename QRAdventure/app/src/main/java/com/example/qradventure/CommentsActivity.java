@@ -58,23 +58,24 @@ public class CommentsActivity extends AppCompatActivity {
 
         // Update number of comments
         TextView commentTitle = findViewById(R.id.text_comments_title);
-        String commentTitleText = "Comments (" + Integer.toString(count) + ")";
+        String commentTitleText = "Comments";
         commentTitle.setText(commentTitleText);
 
         EditText comment = findViewById(R.id.editText_comment);
 
         // Count the number of comments and add comments to ArrayList
-        db.collection("Comments")
+        recordRef.collection("Comments")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
+                                String aComment = document.getData().get("Comment").toString();
+                                commentArrayList.add(aComment);
                                 count++;
-                                commentArrayList.add(comment.getText().toString());;
-                                commentAdapter.notifyDataSetChanged();
                             }
+                            commentAdapter.notifyDataSetChanged();
                         } else {
                             // Log.d(TAG, "Error getting documents: ", task.getException());
                         }
