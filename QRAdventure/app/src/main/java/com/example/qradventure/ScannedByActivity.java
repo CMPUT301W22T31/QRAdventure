@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DownloadManager;
 import android.os.Bundle;
+import android.util.Pair;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,7 +18,9 @@ import java.util.ArrayList;
 public class ScannedByActivity extends AppCompatActivity {
     String hash;
     ArrayList<String> players;
-    ArrayAdapter<String> adapter;
+    ArrayList<Long> scores;
+    ArrayList<Pair<String, Long>> playerInfo;
+    ArrayAdapter<Pair<String, Long>> adapter;
     ListView playerList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +29,17 @@ public class ScannedByActivity extends AppCompatActivity {
         setTitle("Scanned By:");
 
         playerList = findViewById(R.id.player_list);
-        players = (ArrayList<String>)getIntent().getSerializableExtra("PLAYERS");
+        players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
+        scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
+        playerInfo = new ArrayList<Pair<String, Long>>();
 
-        adapter = new PlayerListAdapter(this, players);
+        // This isn't very efficient, should try and find a better way of doing this
+        for (int i = 0; i < players.size(); i++){
+            playerInfo.add(new Pair<String, Long>(players.get(i), scores.get(i)));
+        }
+        adapter = new PlayerListAdapter(this, playerInfo);
 
         playerList.setAdapter(adapter);
-
 
 
     }

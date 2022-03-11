@@ -3,11 +3,14 @@ package com.example.qradventure;
 import android.content.Intent;
 import android.util.Log;
 
+
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -25,6 +28,12 @@ public class QueryHandler {
     }
 
 
+
+
+
+
+
+
     public void getOthersScanned(QR qr, QueryCallback myCallback){
 
         db = FirebaseFirestore.getInstance();
@@ -37,7 +46,9 @@ public class QueryHandler {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 String recordID;
-                ArrayList<String> othersScanned = new ArrayList<>();
+                ArrayList<String> playerNames = new ArrayList<String>();
+                ArrayList<Long> playerScores = new ArrayList<Long>();
+
 
                 if (task.isSuccessful()){
                     // Start list activity with the accounts
@@ -45,10 +56,17 @@ public class QueryHandler {
                     for (QueryDocumentSnapshot doc : task.getResult()){
                         recordID = doc.getId();
                         Log.d("RECORD:", recordID);
-                        othersScanned.add(recordID);
+                        String accName = recordID.substring(0, recordID.indexOf('-'));
+                        Map<String, Object> accData = doc.getData();
+                        Long totalScore = (Long)accData.get("UserScore");
+
+                        playerNames.add(accName);
+                        playerScores.add(totalScore);
+
+
                     }
 
-                    myCallback.callback(othersScanned);
+                    myCallback.callback(playerNames, playerScores);
 
                 }else{
                     Log.d("SUCCESS:", "NO");
@@ -57,6 +75,12 @@ public class QueryHandler {
 
             }
         });
+
+
+
+
+
+
 
     }
 

@@ -95,5 +95,13 @@ public class Account {
         return myRecords;
     }
 
+    public int getTotalScore(){
+        int sum = 0;
+        for (Record record: myRecords){
+            sum += record.getQRscore();
+        }
+        return sum;
+    }
+
 
 }
