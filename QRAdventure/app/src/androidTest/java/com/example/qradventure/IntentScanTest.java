@@ -7,25 +7,27 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Test class for a basic tour of the app
- * Tests login, navigation to primary activities, scan, and viewing the scanned code.
+ * Test class to trial adding a QR code to your account.
+ * Tests login, scan, and viewing the scanned qr code from your account.
  * *These tests assume the test device already has an associated account for login.*
  * Robotium test framework is used.
  */
 @RunWith(AndroidJUnit4.class)
-public class IntentTestScan {
+public class IntentScanTest {
     private Solo solo;
 
     // rule attribute allows functional testing of activities
@@ -46,13 +48,21 @@ public class IntentTestScan {
     }
 
     /**
+     * Closes activity after each test
+     * @throws Exception
+     */
+    @After
+    public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
+    }
+
+    /**
      * Checks the startup activity is correct
      * @throws Exception
      */
     @Test
     public void testStartup() throws Exception {
         // assert launch activity is correct
-        Activity activity = rule.getActivity();
         solo.assertCurrentActivity("Wrong Startup Activity!", MainActivity.class);
 
         // test that we make it to AccountActivity
@@ -63,48 +73,7 @@ public class IntentTestScan {
         assertTrue(solo.waitForText(username, 1, 2000));
     }
 
-    /**
-     * Tests the navbar, which should be present between all* 4 primary activities (-Scan)
-     * TODO: Adjust when ScanActivity is revised.
-     * @throws Exception
-     */
-    @Test
-    public void testNavbar() throws Exception {
-        // wait for launch to reach AccountActivity
-        solo.waitForActivity("AccountActivity", 5000);
 
-        /*
-        // test leaderboard button
-        // TODO: leaderboard activity needs the navbar. *part 4*
-        *View lbButton = solo.getView("leaderboards");
-        *solo.clickOnView(lbButton);
-        *solo.assertCurrentActivity("Leaderboard button failed!", LeaderboardActivity.class);
-        */
-
-        // test search players button
-        View spButton = solo.getView("search_players");
-        solo.clickOnView(spButton);
-        solo.assertCurrentActivity("Search Players button failed!", SearchPlayersActivity.class);
-
-        /*
-        // test scan button
-        * TODO: ScanActivity does not have a navbar.
-        * TODO: ScanActivity is subject to change. Adjust this as well.
-        View scanButton = solo.getView("scan");
-        solo.clickOnView(scanButton);
-        solo.assertCurrentActivity("Scan button failed!", ScanActivity.class);
-        */
-
-        // test map button
-        View mapButton = solo.getView("map");
-        solo.clickOnView(mapButton);
-        solo.assertCurrentActivity("Map button failed!", MapActivity.class);
-
-        // test my_account button
-        View accButton = solo.getView("my_account");
-        solo.clickOnView(accButton);
-        solo.assertCurrentActivity("Account button failed!", AccountActivity.class);
-    }
 
     /**
      * Tests the basic app flow for adding a QR code
@@ -113,15 +82,6 @@ public class IntentTestScan {
      */
     @Test
     public void testAddQR() throws Exception {
-
-        /*
-        // set up intent???
-        Intent intent = new Intent();
-        intent.putExtra("com.example.qradventure.QR_CONTENT", "silly goose");
-        rule.launchActivity(intent);
-         */
-
-
         // wait for launch to reach AccountActivity
         solo.waitForActivity("AccountActivity", 5000);
 
@@ -130,9 +90,31 @@ public class IntentTestScan {
         solo.clickOnView(scanButton);
         solo.assertCurrentActivity("Scan button failed!", ScanActivity.class);
 
-        // need to go directly to postactivity with intent extra:
-        // intent.putExtra("com.example.qradventure.QR_CONTENT", "silly goose");
+        // backdoor into PostScanActivity with an intent extra (dummy qr content)
+        Intent intent = new Intent(solo.getCurrentActivity(), PostScanActivity.class);
+        intent.putExtra("com.example.qradventure.QR_CONTENT", "test silly goose");
+        ActivityScenario.launch(intent);
 
+        // assert we made it to PostScanActivity
+        solo.assertCurrentActivity("Failed to reach PostScanActivity!", PostScanActivity.class);
 
+        // close dialogue and click add
+        // TODO: revise if PostScanActivity changes
+        solo.clickOnText("QR code scanned");
+        solo.clickOnText("ADD");
+
+        // assert navigation to AccountActivity worked
+        solo.assertCurrentActivity
+                ("AccountActivity Failed after clicking Add!", AccountActivity.class);
+
+        // View codes, a QR page, and the QR comments
+        solo.clickOnText("My Codes");
+        solo.assertCurrentActivity("My Codes failed!", MyCodesActivity.class);
+        solo.clickOnText("pts");
+        solo.assertCurrentActivity("QR Page Failed!", QRPageActivity.class);
+        solo.clickOnText("View Comments");
+        solo.assertCurrentActivity("View Comments failed!", CommentsActivity.class);
     }
+
+
 }
