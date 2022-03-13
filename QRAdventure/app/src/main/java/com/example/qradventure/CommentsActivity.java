@@ -48,7 +48,6 @@ public class CommentsActivity extends AppCompatActivity {
     BottomNavigationView navbar;
     HashMap<String, Comment> toBeSorted = new HashMap<String, Comment> ();
 
-    // https://www.geeksforgeeks.org/sorting-hashmap-according-key-value-java/
     public void sortComments() {
         ArrayList<String> sortedKeys = new ArrayList<String>(toBeSorted.keySet());
         Collections.sort(sortedKeys);
@@ -123,23 +122,26 @@ public class CommentsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Account myAccount = CurrentAccount.getAccount();
 
-                // Add comment to Record collection
-                HashMap<String, Object> CommentData = new HashMap<>();
-                CommentData.put("Comment", enteredComment.getText().toString());
-                CommentData.put("Author", myAccount.getUsername());
-                QRRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
-                count++;
+                if (enteredComment.getText().toString() != "") {
 
-                // Update number of comments
-                String newTitle = "Comments (" + Integer.toString(count) + ")";
-                commentTitle.setText(newTitle);
+                    // Add comment to Record collection
+                    HashMap<String, Object> CommentData = new HashMap<>();
+                    CommentData.put("Comment", enteredComment.getText().toString());
+                    CommentData.put("Author", myAccount.getUsername());
+                    QRRef.collection("Comments").document(Integer.toString(count + 1)).set(CommentData);
+                    count++;
 
-                Comment commentObject = new Comment(myAccount.getUsername(), enteredComment.getText().toString());
+                    // Update number of comments
+                    String newTitle = "Comments (" + Integer.toString(count) + ")";
+                    commentTitle.setText(newTitle);
 
-                commentArrayList.add(commentObject);
-                commentAdapter.notifyDataSetChanged();
+                    Comment commentObject = new Comment(myAccount.getUsername(), enteredComment.getText().toString());
 
-                enteredComment.setText("");
+                    commentArrayList.add(commentObject);
+                    commentAdapter.notifyDataSetChanged();
+
+                    enteredComment.setText("");
+                }
             }
         });
 
