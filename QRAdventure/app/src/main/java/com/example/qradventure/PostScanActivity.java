@@ -49,7 +49,11 @@ public class PostScanActivity extends AppCompatActivity {
         // unfold intent, create QR object.
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
+        Log.d("logdebug", "intent received " + QRContent);
         qr = new QR(QRContent);
+
+        // TODO: delete, temp for testing
+        Log.d("logs", "intent received " + QRContent);
 
         // For testing purposes, display a dialog of the QR scanned
         new AlertDialog.Builder(PostScanActivity.this).setTitle("Result")
