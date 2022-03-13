@@ -1,6 +1,7 @@
 package com.example.qradventure;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -21,7 +22,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -106,6 +110,7 @@ public class CommentsActivity extends AppCompatActivity {
                     }
                 });
 
+        // ====== back button functionality ======
         FloatingActionButton backButton = findViewById(R.id.button_back);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +149,27 @@ public class CommentsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // ====== Event listener (live update) ======
+        QRRef.collection("Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                // clear the old list
+                commentArrayList.clear();
+
+                // get the documents
+                for (QueryDocumentSnapshot commentDoc : queryDocumentSnapshots) {
+                    String author = (String) commentDoc.get("Author");
+                    String text = (String) commentDoc.get("Comment");
+                    Comment newComment = new Comment(author, text);
+                    commentArrayList.add(newComment);
+                }
+
+                // notify data set changed
+                commentAdapter.notifyDataSetChanged();
+            }
+        });
+
 
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
