@@ -77,9 +77,17 @@ public class AccountActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
-                    //goToScan();
+
+                    // Use IntentIntegrator to activate camera
+                    IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
+
                     break;
                 case R.id.map:
                     Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
@@ -192,15 +200,9 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Sends to scan activity. Called when respective button is clicked.
+     * Displays the camera for scanning a QR code.
      */
     public void goToScan() {
-//        Intent intent = new Intent(this, ScanActivity.class);
-//        startActivity(intent);
-
-        // TODO: Could activate camera immediately? Without need for button click?
-        // button logic: activates camera on click
-        //Button qrButton = findViewById(R.id.qr_button);
 
         // Use IntentIntegrator to activate camera
         IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
@@ -215,7 +217,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
     /**
-     * This method is called whenever a QR code is scanned
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
      * @param requestCode
      * @param resultCode
      * @param data

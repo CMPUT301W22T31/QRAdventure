@@ -15,12 +15,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 
 /**
  * Activity displaying the profile of any player. Anyone can access this activity.
  */
 public class ProfileActivity extends AppCompatActivity {
+    Account account = CurrentAccount.getAccount();
     private String username;
     BottomNavigationView navbar;
 
@@ -29,6 +31,10 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+
+        // unpack intent to get account username
+        // query DB for username. Pull relevant fields to display
+        setTitle("USERNAME123456789s profile");
         // unpack intent to get account username
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
@@ -49,8 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
+                    // Use IntentIntegrator to activate camera
+                    IntentIntegrator tempIntent = new IntentIntegrator(ProfileActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
@@ -92,9 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
                 });
         // ====== query DB for display fields ======
 
-
     }
-
     /**
      * Sends to ViewCodes activity. Called when respective button is clicked.
      * @param view: unused
