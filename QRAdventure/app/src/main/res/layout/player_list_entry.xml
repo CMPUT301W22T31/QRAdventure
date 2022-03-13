@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+
     >
 
 
@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/grey_rectangle"
         android:clickable="true"
-        android:onClick="goToMyCodes"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingTop="15dp"
@@ -24,13 +23,15 @@
 
         <TextView
             android:id="@+id/other_player_name"
-            android:layout_width="250dp"
+            android:layout_width="268dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/source_sans_pro"
             android:paddingLeft="25dp"
             android:text="My Codes"
             android:textColor="#FFFFFF"
-            android:textSize="25dp" />
+            android:textSize="25dp"
+            android:focusable="false"
+            android:clickable="false"/>
 
 
         <TextView
@@ -41,14 +42,13 @@
             android:text="My Score"
 
             android:textColor="#FFFFFF"
-            android:textSize="25dp" />
+            android:textSize="25dp"
+            android:focusable="false"
+            android:clickable="false"/>
 
 
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+
 
     </LinearLayout>
 
