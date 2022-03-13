@@ -4,20 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:gravity="top"
+    android:gravity="bottom"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:foregroundGravity="center"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
         app:cardBackgroundColor="#C8C8C8"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
 
         <GridView
@@ -28,16 +28,5 @@
             android:numColumns="2" />
 
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navbar_menu"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/navbar_menu" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
