@@ -158,7 +158,7 @@ public class PostScanActivity extends AppCompatActivity {
                                 HashMap<String, Object> recordData = new HashMap<>();
                                 recordData.put("User", myAccount.getUsername());
                                 recordData.put("QR", qr.getHash());
-                                recordData.put("UserScore", myAccount.getTotalScore());
+                                recordData.put("UserScore", qr.getScore());
 
                                 RecordDB.document(recordID).set(recordData);
                                 RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {

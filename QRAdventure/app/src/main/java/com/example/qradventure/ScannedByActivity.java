@@ -3,8 +3,11 @@ package com.example.qradventure;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -41,6 +44,28 @@ public class ScannedByActivity extends AppCompatActivity {
 
         playerList.setAdapter(adapter);
 
+        playerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String name = players.get(i);
+                goToProfile(name);
+            }
+        });
+
 
     }
+
+    /**
+     * Sends app to the Profile Activity
+     * Includes the username in the intent
+     * @param username - username of selected profile
+     */
+    public void goToProfile(String username) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+        startActivity(intent);
+    }
+
+
+
 }

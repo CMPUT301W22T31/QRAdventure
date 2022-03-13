@@ -1,6 +1,7 @@
 package com.example.qradventure;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -175,6 +177,25 @@ public class SearchPlayersActivity extends AppCompatActivity {
                         usernameAdapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+
+
+    /**
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        Intent intent = new Intent(SearchPlayersActivity.this, PostScanActivity.class);
+        intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+        startActivity(intent);
     }
 
 

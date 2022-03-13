@@ -150,6 +150,7 @@ public class AccountActivity extends AppCompatActivity {
         int sum = 0;
         for (Record record: account.getMyRecords()) {
             sum += record.getQRscore();
+
         }
         return sum;
     }
