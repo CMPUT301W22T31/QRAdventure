@@ -86,10 +86,15 @@ public class MyCodesActivity extends AppCompatActivity {
 
         FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
         backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
-                startActivity(intent);
+                                          @Override
+                                          public void onClick(View view) {
+                                              Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+                                              startActivity(intent);
+
+                                          }
+                                      });
+
+
 
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

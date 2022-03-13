@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 
@@ -66,8 +67,14 @@ public class QRPageActivity extends AppCompatActivity {
                     Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
                     break;
                 case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
+                    IntentIntegrator tempIntent = new IntentIntegrator(QRPageActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
