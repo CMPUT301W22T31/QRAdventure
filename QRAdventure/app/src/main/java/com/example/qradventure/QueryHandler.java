@@ -85,6 +85,10 @@ public class QueryHandler {
                                                     @Override
                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                         if (task.isSuccessful()) {
+                                                            if (task.getResult().size() == 0) {
+                                                                // no records found! Complete login.
+                                                                callback.toActivity(true);
+                                                            }
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
                                                                 db.collection("QRDB").document(qrHash)

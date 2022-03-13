@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
  * Activity displaying the profile of any player. Anyone can access this activity.
  */
 public class ProfileActivity extends AppCompatActivity {
+    Account account = CurrentAccount.getAccount();
     private String username;
     BottomNavigationView navbar;
 
@@ -29,6 +30,10 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+
+        // unpack intent to get account username
+        // query DB for username. Pull relevant fields to display
+        setTitle("USERNAME123456789s profile");
         // unpack intent to get account username
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
@@ -92,9 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
                 });
         // ====== query DB for display fields ======
 
-
     }
-
     /**
      * Sends to ViewCodes activity. Called when respective button is clicked.
      * @param view: unused
