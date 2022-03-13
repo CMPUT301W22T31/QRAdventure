@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -150,9 +152,13 @@ public class PostScanActivity extends AppCompatActivity {
                             if (document.exists()) {
 
                             } else {
+
+
+
                                 HashMap<String, Object> recordData = new HashMap<>();
                                 recordData.put("User", myAccount.getUsername());
                                 recordData.put("QR", qr.getHash());
+                                recordData.put("UserScore", myAccount.getTotalScore());
 
                                 RecordDB.document(recordID).set(recordData);
                                 RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -166,6 +172,20 @@ public class PostScanActivity extends AppCompatActivity {
                                 CollectionReference AccountDB = db.collection("AccountDB");
                                 AccountDB.document(myAccount.getUsername())
                                         .collection("My QR Records").document(recordID).set(recordData);
+
+
+                                // Update Total user score
+                                HashMap<String, Object> newUserData = new HashMap<String, Object>();
+                                newUserData.put("E-mail", myAccount.getEmail());
+                                newUserData.put("Phone Number", myAccount.getPhoneNumber());
+                                newUserData.put("LoginQR", myAccount.getLoginQR());
+                                newUserData.put("StatusQR", myAccount.getStatusQR());
+                                newUserData.put("TotalScore", myAccount.getTotalScore());
+                                String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                                newUserData.put("device_id", androidDeviceID);
+
+                                AccountDB.document(myAccount.getUsername()).set(newUserData);
+
                             }
                         }
                     }
@@ -221,13 +241,14 @@ public class PostScanActivity extends AppCompatActivity {
 
         QueryHandler q = new QueryHandler();
 
-        q.getOthersScanned(qr,new QueryCallback() {
+        q.getOthersScanned(qr.getHash(),new QueryCallback() {
             @Override
-            public void callback(ArrayList<String> data) {
+            public void callback(ArrayList<String> nameData, ArrayList<Long> scoreData) {
 
                 Intent intent = new Intent(PostScanActivity.this, ScannedByActivity.class);
 
-                intent.putExtra("PLAYERS", data);
+                intent.putExtra("NAMES", nameData);
+                intent.putExtra("SCORES", scoreData);
 
                 startActivity(intent);
             }

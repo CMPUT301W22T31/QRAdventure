@@ -5,12 +5,15 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,7 +34,6 @@ public class QueryHandler {
     public QueryHandler(){
         FirebaseFirestore.getInstance();
     }
-
 
     /**
      * Very large query for obtaining all the info for the current logged in user account
@@ -144,24 +146,26 @@ public class QueryHandler {
 
     /**
      * Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
-     * @param qr
+     * @param qrHash
      *      The QR code we are querying with
      * @param myCallback
      *      Callback function used after the query is done
      */
-    public void getOthersScanned(QR qr, QueryCallback myCallback){
+
+    public void getOthersScanned(String qrHash, QueryCallback myCallback){
 
         db = FirebaseFirestore.getInstance();
 
 
-
-        Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qr.getHash())
+        Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qrHash)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 String recordID;
-                ArrayList<String> othersScanned = new ArrayList<>();
+                ArrayList<String> playerNames = new ArrayList<String>();
+                ArrayList<Long> playerScores = new ArrayList<Long>();
+
 
                 if (task.isSuccessful()){
                     // Start list activity with the accounts
@@ -169,10 +173,17 @@ public class QueryHandler {
                     for (QueryDocumentSnapshot doc : task.getResult()){
                         recordID = doc.getId();
                         Log.d("RECORD:", recordID);
-                        othersScanned.add(recordID);
+                        String accName = recordID.substring(0, recordID.indexOf('-'));
+                        Map<String, Object> accData = doc.getData();
+                        Long totalScore = (Long)accData.get("UserScore");
+
+                        playerNames.add(accName);
+                        playerScores.add(totalScore);
+
+
                     }
 
-                    myCallback.callback(othersScanned);
+                    myCallback.callback(playerNames, playerScores);
 
                 }else{
                     Log.d("SUCCESS:", "NO");
@@ -181,6 +192,12 @@ public class QueryHandler {
 
             }
         });
+
+
+
+
+
+
 
     }
 
