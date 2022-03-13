@@ -43,134 +43,100 @@ import java.util.Map;
  * Activity where anyone can view or add comments attached to a particular QR code.
  */
 public class CommentsActivity extends AppCompatActivity {
-
-    String hash;
-    int count = 0;
+    int commentCount = 0;
     ListView commentListView;
-    ArrayAdapter commentAdapter;
+    ArrayAdapter<Comment> commentAdapter;
     ArrayList<Comment> commentArrayList = new ArrayList<Comment>();
+    TextView commentTitle;
     BottomNavigationView navbar;
-    HashMap<String, Comment> toBeSorted = new HashMap<String, Comment> ();
 
-    public void sortComments() {
-        ArrayList<String> sortedKeys = new ArrayList<String>(toBeSorted.keySet());
-        Collections.sort(sortedKeys);
-        for (String key : sortedKeys) {
-            // Add the Comment objects to the ArrayList
-            commentArrayList.add(toBeSorted.get(key));
-        }
-    }
 
+    /**
+     * Initialize onClick and onEvent listeners
+     * Listeners contains query logic to get and set comments in database
+     * Enables navbar
+     * @param savedInstanceState - Unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        setTitle("Player Comments");
 
-        // Intent for record ID
+
+        // Account & Intent for QR Hash
+        Account myAccount = CurrentAccount.getAccount();
         Intent intent = getIntent();
-        hash = intent.getStringExtra("QR Hash");
+        String hash = intent.getStringExtra("QR Hash");
 
+        // Get firestore references
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference QRRef = db.collection("QRDB").document(hash);
+        DocumentReference docRefQR = db.collection("QRDB").document(hash);
 
-        // Update list of comments to display
+        // Initialize display references
         commentListView = findViewById(R.id.list_comments);
-
         commentAdapter = new CommentList(this, commentArrayList);
         commentListView.setAdapter(commentAdapter);
+        commentTitle = findViewById(R.id.text_comments_title);
 
-        // Update number of comments
-        TextView commentTitle = findViewById(R.id.text_comments_title);
-        String commentTitleText = "Comments";
-        commentTitle.setText(commentTitleText);
-
-        EditText enteredComment = findViewById(R.id.editText_comment);
-
-        // Count the number of comments and add comments to ArrayList
-        QRRef.collection("Comments")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        // ====== Event listener (+ live updates!) ======
+        docRefQR.collection("Comments")
+                .orderBy("__name__")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                String commentAuthor = document.getData().get("Author").toString();
-                                String commentText = document.getData().get("Comment").toString();
-                                Comment aComment = new Comment(commentAuthor, commentText);
-                                // Store the document ID and the Comment to sort
-                                toBeSorted.put(document.getId(), aComment);
-                                count++;
-                            }
-                            sortComments();
-                            commentAdapter.notifyDataSetChanged();
-                        } else {
-                            // Log.d(TAG, "Error getting documents: ", task.getException());
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException error) {
+                        // clear the old list
+                        commentArrayList.clear();
+
+                        // get the documents
+                        for (QueryDocumentSnapshot commentDoc : queryDocumentSnapshots) {
+                            String author = (String) commentDoc.get("Author");
+                            String text = (String) commentDoc.get("Comment");
+                            Comment newComment = new Comment(author, text);
+                            commentArrayList.add(newComment);
                         }
+
+                        // notify data set changed
+                        commentAdapter.notifyDataSetChanged();
+
+                        // update count & title
+                        commentCount = queryDocumentSnapshots.size();
+                        String newTitle = "Comments (" + commentCount + ")";
+                        commentTitle.setText(newTitle);
                     }
-                });
+        });
+
+        // ====== Logic to add a comment ======
+        EditText etComment = findViewById(R.id.editText_comment);
+        Button addButton = findViewById(R.id.button_add_comment);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                // get and clear input
+                String inputText = etComment.getText().toString();
+                etComment.setText("");
+
+                if (inputText.length() > 0) {
+
+                    // Add comment to QR Comments collection
+                    HashMap<String, Object> CommentData = new HashMap<>();
+                    CommentData.put("Comment", inputText);
+                    CommentData.put("Author", myAccount.getUsername());
+                    docRefQR.collection("Comments").document(Integer.toString(commentCount + 1)).set(CommentData);
+                }
+            }
+        });
 
         // ====== back button functionality ======
         FloatingActionButton backButton = findViewById(R.id.button_back);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-                intent.putExtra("QRtitle", hash.substring(0,4));
-                intent.putExtra("QRHash", hash);
-                startActivity(intent);
+                finish();
             }
         });
 
-        Button addButton = findViewById(R.id.button_add_comment);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Account myAccount = CurrentAccount.getAccount();
-
-                if (enteredComment.getText().toString() != "") {
-
-                    // Add comment to Record collection
-                    HashMap<String, Object> CommentData = new HashMap<>();
-                    CommentData.put("Comment", enteredComment.getText().toString());
-                    CommentData.put("Author", myAccount.getUsername());
-                    QRRef.collection("Comments").document(Integer.toString(count + 1)).set(CommentData);
-                    count++;
-
-                    // Update number of comments
-                    String newTitle = "Comments (" + Integer.toString(count) + ")";
-                    commentTitle.setText(newTitle);
-
-                    Comment commentObject = new Comment(myAccount.getUsername(), enteredComment.getText().toString());
-
-                    commentArrayList.add(commentObject);
-                    commentAdapter.notifyDataSetChanged();
-
-                    enteredComment.setText("");
-                }
-            }
-        });
-
-        // ====== Event listener (live update) ======
-        QRRef.collection("Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                // clear the old list
-                commentArrayList.clear();
-
-                // get the documents
-                for (QueryDocumentSnapshot commentDoc : queryDocumentSnapshots) {
-                    String author = (String) commentDoc.get("Author");
-                    String text = (String) commentDoc.get("Comment");
-                    Comment newComment = new Comment(author, text);
-                    commentArrayList.add(newComment);
-                }
-
-                // notify data set changed
-                commentAdapter.notifyDataSetChanged();
-            }
-        });
-
-
+        // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
@@ -206,7 +172,5 @@ public class CommentsActivity extends AppCompatActivity {
             }
             return false;
         });
-
-
     }
 }
