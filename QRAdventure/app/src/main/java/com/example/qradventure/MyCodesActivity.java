@@ -75,11 +75,6 @@ public class MyCodesActivity extends AppCompatActivity {
             }
         });
 
-//
-//        CollectionReference QRCollectionReference = db.collection("AccountDB")
-//                .document(myAccount.getUsername())
-//                .collection("My QR Records")
-//                .document(QRRecord);
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

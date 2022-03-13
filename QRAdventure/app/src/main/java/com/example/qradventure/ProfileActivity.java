@@ -1,5 +1,6 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,7 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
 /**
@@ -16,6 +22,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class ProfileActivity extends AppCompatActivity {
     Account account = CurrentAccount.getAccount();
+    private String username;
+    BottomNavigationView navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +31,74 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
 
+
         // unpack intent to get account username
         // query DB for username. Pull relevant fields to display
         setTitle("USERNAME123456789s profile");
+        // unpack intent to get account username
+        Intent intent = getIntent();
+        username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
+
+        // ====== Enable navbar functionality ======
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
+        navbar.setOnItemSelectedListener((item) ->  {
+            switch(item.getItemId()) {
+                case R.id.leaderboards:
+                    Log.d("check", "WORKING???");
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Log.d("check", "YES WORKING???");
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.scan:
+                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent3);
+                    break;
+                case R.id.my_account:
+                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent4);
+                    break;
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
+                    break;
+            }
+            return false;
+        });
+        // ====== Enable navbar functionality ======
+
+        // ====== query DB for display fields ======
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("AccountDB").document(username)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                String email = (String) doc.getData().get("E-mail");
+                                String phone = (String) doc.getData().get("Phone Number");
+                                // TODO: Need a Score field.
+                                //String score = (String) doc.getData().get("Score");
+                                setTextViews(username, email, phone, "TODO");
+                            } else {
+                                // log: document dne
+                                Log.d("logs", "Document does not exist!", task.getException());
+                            }
+                        } else {
+                            // query failed
+                            Log.d("logs", "Query Failed!", task.getException());
+                        }
+                    }
+                });
+        // ====== query DB for display fields ======
+
+
     }
     /**
      * Sends to ViewCodes activity. Called when respective button is clicked.
@@ -33,6 +106,28 @@ public class ProfileActivity extends AppCompatActivity {
      */
     public void goToViewCodes(View view) {
         Intent intent = new Intent(this, ViewCodesActivity.class);
+        intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         startActivity(intent);
+    }
+
+    /**
+     * Updates the textviews to display user data
+     * @param name - account username
+     * @param email - account email
+     * @param phone - account phone #
+     * @param score - account score
+     */
+    public void setTextViews(String name, String email, String phone, String score) {
+        // get reference to the textviews
+        TextView tvUsername = findViewById(R.id.tvUsername);
+        TextView tvPhone = findViewById(R.id.tvPhone);
+        TextView tvEmail = findViewById(R.id.tvEmail);
+        TextView tvTotalScore = findViewById(R.id.tvTotalScore);
+
+        // set textview text
+        tvUsername.setText(name);
+        tvPhone.setText(email);
+        tvEmail.setText(phone);
+        tvTotalScore.setText(score);
     }
 }
