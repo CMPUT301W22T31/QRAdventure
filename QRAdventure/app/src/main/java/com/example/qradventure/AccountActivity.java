@@ -28,25 +28,24 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
-        navbar = findViewById(R.id.navbar_menu);
-        navbar.setItemIconTintList(null);
-        // get the account from the singleton
 
+        // get the account from the singleton
         account = CurrentAccount.getAccount();
 
         // give info to textviews to display
         // TODO: Move these to onResume() in case of updated info.
 
-        Log.d("logs", "setting text");
         try {
+            // get textviews
             TextView displayTotalScore = findViewById(R.id.total_score);
-
-            displayTotalScore.setText(detailFormatter(getTotalScore()));
             TextView displayCodesScanned = findViewById(R.id.codes_scanned);
-            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
             TextView displayLowestQR = findViewById(R.id.lowest_qr);
-            displayLowestQR.setText(detailFormatter(getLowestQR()));
             TextView displayHighestQR = findViewById(R.id.highest_qr);
+
+            // set textviews
+            displayTotalScore.setText(detailFormatter(getTotalScore()));
+            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
+            displayLowestQR.setText(detailFormatter(getLowestQR()));
             displayHighestQR.setText(detailFormatter(getHighestQR()));
         }
         catch (Exception e) {
@@ -63,7 +62,8 @@ public class AccountActivity extends AppCompatActivity {
         TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
         displayPhoneNumber.setText(phoneNumber);
 
-
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
@@ -77,10 +77,24 @@ public class AccountActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    //Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    //startActivity(intent3);
-                    goToScan();
 
+                    // Use IntentIntegrator to activate camera
+                    IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
+
+                    break;
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
+                    break;
+                case R.id.my_account:
+                    // already on this activity. Do nothing.
                     break;
             }
             return false;
@@ -103,6 +117,7 @@ public class AccountActivity extends AppCompatActivity {
     }
     // gets the lowest QR the player has scan to display
     private int getLowestQR() {
+        // TODO: verify this works. Sometimes records are not present.
         int smallest = account.getMyRecords().get(0).getQRscore();
         for (Record record: account.getMyRecords()
              ) {
@@ -133,8 +148,7 @@ public class AccountActivity extends AppCompatActivity {
     // gets the cumulative score player has scanned so we can display it
     private int getTotalScore() {
         int sum = 0;
-        for (Record record: account.getMyRecords()
-        ) {
+        for (Record record: account.getMyRecords()) {
             sum += record.getQRscore();
         }
         return sum;
@@ -184,44 +198,11 @@ public class AccountActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MyCodesActivity.class);
         startActivity(intent);
     }
-    /**
-     * Sends to account activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToAccount(View view) {
-        Intent intent = new Intent(this, AccountActivity.class);
-        startActivity(intent);
-    }
-
 
     /**
-     * Sends to search player activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToSearchPlayers(View view) {
-        Intent intent = new Intent(this, SearchPlayersActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to leaderboard activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToLeaderboard(View view) {
-        Intent intent = new Intent(this, LeaderboardActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Sends to scan activity. Called when respective button is clicked.
+     * Displays the camera for scanning a QR code.
      */
     public void goToScan() {
-//        Intent intent = new Intent(this, ScanActivity.class);
-//        startActivity(intent);
-
-        // TODO: Could activate camera immediately? Without need for button click?
-        // button logic: activates camera on click
-        //Button qrButton = findViewById(R.id.qr_button);
 
         // Use IntentIntegrator to activate camera
         IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
@@ -236,7 +217,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
     /**
-     * This method is called whenever a QR code is scanned
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
      * @param requestCode
      * @param resultCode
      * @param data

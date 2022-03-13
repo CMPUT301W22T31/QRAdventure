@@ -11,6 +11,7 @@ import androidx.core.util.Pair;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -92,7 +93,6 @@ public class PostScanActivity extends AppCompatActivity {
                             // TODO: append CURRENT ACCOUNT to the list of players that have scanned this QR
                             //       use set(data, SetOptions.merge());
 
-
                         } else {
                             // Document does not exist, therefore this QR is brand new!
                             Context context = getApplicationContext();
@@ -124,7 +124,6 @@ public class PostScanActivity extends AppCompatActivity {
                 }
             });
 
-            // TODO: Record logic. This is what remains of Michelle's work (untested?)
             //====== Create New Record ======//
 
             recordID = myAccount.getUsername() + "-" + qr.getHash();
@@ -133,17 +132,14 @@ public class PostScanActivity extends AppCompatActivity {
             Account currentAccount = CurrentAccount.getAccount();
             Record toAdd = new Record(currentAccount, qr);
 
-
             if (!currentAccount.containsRecord(toAdd)) {
 
                 currentAccount.addRecord(new Record(currentAccount, qr));
-
 
                 // Add User to list of user scanned this qr
                 HashMap<String, Object> userData = new HashMap<>();
                 userData.put("Username", myAccount.getUsername());
                 docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
-
 
                 CollectionReference RecordDB = db.collection("RecordDB");
 
@@ -180,11 +176,13 @@ public class PostScanActivity extends AppCompatActivity {
 
                                 // Update Total user score
                                 HashMap<String, Object> newUserData = new HashMap<String, Object>();
-                                newUserData.put("E-mail", myAccount.getUsername());
+                                newUserData.put("E-mail", myAccount.getEmail());
                                 newUserData.put("Phone Number", myAccount.getPhoneNumber());
                                 newUserData.put("LoginQR", myAccount.getLoginQR());
                                 newUserData.put("StatusQR", myAccount.getStatusQR());
                                 newUserData.put("TotalScore", myAccount.getTotalScore());
+                                String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                                newUserData.put("device_id", androidDeviceID);
 
                                 AccountDB.document(myAccount.getUsername()).set(newUserData);
 
@@ -196,7 +194,7 @@ public class PostScanActivity extends AppCompatActivity {
 
             // ====== database logic concluded ======
             // send user to a different activity (which? Account for now?).
-            Intent intent = new Intent(this, AccountActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
@@ -211,7 +209,7 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void clickDismiss(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AccountActivity.class);
         startActivity(intent);
     }
 
@@ -234,6 +232,8 @@ public class PostScanActivity extends AppCompatActivity {
 
     /**
      * Sends to ScannedBy activity. Called when respective button is clicked.
+     * Uses a queryhandler to retrieve the needed information and a callback to
+     * go to the desired activity
      * @param view: unused
      */
     public void goToScannedBy(View view) {
@@ -241,7 +241,7 @@ public class PostScanActivity extends AppCompatActivity {
 
         QueryHandler q = new QueryHandler();
 
-        q.getOthersScanned(qr,new QueryCallback() {
+        q.getOthersScanned(qr.getHash(),new QueryCallback() {
             @Override
             public void callback(ArrayList<String> nameData, ArrayList<Long> scoreData) {
 
@@ -263,6 +263,9 @@ public class PostScanActivity extends AppCompatActivity {
      */
     public void goToComments(View view) {
         Intent intent = new Intent(this, CommentsActivity.class);
+
+        intent.putExtra("QR Hash", qr.getHash());
+
         startActivity(intent);
     }
 

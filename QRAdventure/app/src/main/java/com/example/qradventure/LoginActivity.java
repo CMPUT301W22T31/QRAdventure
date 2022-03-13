@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,9 @@ public class LoginActivity extends AppCompatActivity {
      * Contains logic for account registration
      * @param savedInstanceState - (unused)
      */
+
+    boolean disableBackButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                 // Create new user
                 currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR);
 
+                //Get Device ID
+                String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
                 // Put Player data into HashMap
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("E-mail", email);
@@ -81,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("LoginQR", LoginQR);
                 data.put("StatusQR", StatusQR);
                 data.put("TotalScore", 0);
+                data.put("device_id", androidDeviceID);
 
                 if (!username.matches("")) {
                     DocumentReference docRef = db.collection("AccountDB").document(username);
@@ -138,9 +146,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+         disableBackButton = intent.getBooleanExtra("disable_back_button", false);
+
     }
 
-
+    //Restrict back button usage when forcing user to make an account
+    @Override
+    public void onBackPressed() {
+        if (disableBackButton) {
+            ;
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     /**
      * After logging in, set CurrentAccount and go to AccountActivity
