@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".QRPageActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_back_to_MyCodes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:layout_margin="2dp"
+        android:contentDescription="Back"
+        android:src="?attr/actionModeCloseDrawable"
+        app:backgroundTint="@color/grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -24,20 +36,20 @@
 
 
     </androidx.cardview.widget.CardView>
+
     <LinearLayout
-        android:onClick="goToComments"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
         android:background="@drawable/orange_rectangle"
         android:clickable="true"
+        android:onClick="goToComments"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingTop="15dp"
         android:paddingBottom="20dp"
         android:text="LOGIN CODE"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -69,7 +81,6 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
         android:background="@drawable/grey_rectangle"
         android:clickable="true"
         android:onClick="goToScannedBy"
@@ -112,14 +123,24 @@
         android:id="@+id/qr_title_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="82dp"
+        android:layout_marginTop="104dp"
         android:text="QR TITLE"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navbar_menu"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/navbar_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

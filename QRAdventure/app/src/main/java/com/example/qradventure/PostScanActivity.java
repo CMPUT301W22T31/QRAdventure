@@ -91,7 +91,6 @@ public class PostScanActivity extends AppCompatActivity {
                             // TODO: append CURRENT ACCOUNT to the list of players that have scanned this QR
                             //       use set(data, SetOptions.merge());
 
-
                         } else {
                             // Document does not exist, therefore this QR is brand new!
                             Context context = getApplicationContext();
@@ -131,17 +130,14 @@ public class PostScanActivity extends AppCompatActivity {
             Account currentAccount = CurrentAccount.getAccount();
             Record toAdd = new Record(currentAccount, qr);
 
-
             if (!currentAccount.containsRecord(toAdd)) {
 
                 currentAccount.addRecord(new Record(currentAccount, qr));
-
 
                 // Add User to list of user scanned this qr
                 HashMap<String, Object> userData = new HashMap<>();
                 userData.put("Username", myAccount.getUsername());
                 docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
-
 
                 CollectionReference RecordDB = db.collection("RecordDB");
 
@@ -246,6 +242,9 @@ public class PostScanActivity extends AppCompatActivity {
      */
     public void goToComments(View view) {
         Intent intent = new Intent(this, CommentsActivity.class);
+
+        intent.putExtra("QR Hash", qr.getHash());
+
         startActivity(intent);
     }
 

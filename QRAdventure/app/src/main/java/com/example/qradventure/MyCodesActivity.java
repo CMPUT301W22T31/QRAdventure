@@ -14,11 +14,15 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,10 +75,21 @@ public class MyCodesActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-                intent.putExtra("QRtitle", accountRecords.get(position).getQRHash().substring(0, 4));
+
+                intent.putExtra("QRtitle", accountRecords.get(position).getQRHash().substring(0,4));
+                intent.putExtra("QRHash", accountRecords.get(position).getQRHash());
+
                 startActivity(intent);
             }
         });
+
+
+        FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(intent);
 
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -150,6 +165,7 @@ public class MyCodesActivity extends AppCompatActivity {
                 .show();
 
                 return true;
+
             }
         });
 
