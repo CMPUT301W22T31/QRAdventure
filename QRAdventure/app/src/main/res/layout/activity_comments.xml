@@ -23,7 +23,7 @@
 
     <ListView
         android:id="@+id/list_comments"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/editText_comment"
@@ -34,9 +34,8 @@
 
     <EditText
         android:id="@+id/editText_comment"
-        android:layout_width="305dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="Comment"
         android:importantForAutofill="no"
@@ -44,16 +43,26 @@
         android:minHeight="48dp"
         android:textColorHint="#78909C"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_comments" />
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_add_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
         android:text="Add"
         app:layout_constraintBaseline_toBaselineOf="@+id/editText_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editText_comment" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navbar_menu"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/navbar_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
