@@ -216,6 +216,8 @@ public class PostScanActivity extends AppCompatActivity {
 
     /**
      * Sends to ScannedBy activity. Called when respective button is clicked.
+     * Uses a queryhandler to retrieve the needed information and a callback to
+     * go to the desired activity
      * @param view: unused
      */
     public void goToScannedBy(View view) {

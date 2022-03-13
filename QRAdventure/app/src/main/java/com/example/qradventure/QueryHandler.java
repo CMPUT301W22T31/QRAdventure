@@ -20,7 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Class for holding all Querys to the firestore database.
+ *
+ */
 public class QueryHandler {
 
     FirebaseFirestore db;
@@ -30,6 +33,15 @@ public class QueryHandler {
     }
 
 
+    /**
+     * Very large query for obtaining all the info for the current logged in user account
+     *
+     * @param androidDeviceID
+     *      Device ID of the android device. Used to automatically log in the account
+     *
+     * @param callback
+     *      Callback function used after the Query has completed
+     */
     public void getLoginAccount(String androidDeviceID, AccountCallback callback){
 
         db = FirebaseFirestore.getInstance();
@@ -126,9 +138,13 @@ public class QueryHandler {
     }
 
 
-
-
-
+    /**
+     * Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
+     * @param qr
+     *      The QR code we are querying with
+     * @param myCallback
+     *      Callback function used after the query is done
+     */
     public void getOthersScanned(QR qr, QueryCallback myCallback){
 
         db = FirebaseFirestore.getInstance();

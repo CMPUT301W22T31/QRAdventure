@@ -13,6 +13,10 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * This is an adapter for displaying a list of players, along with their score.
+ * Currently just used for viewing players who have scanned the same QR code
+ */
 public class PlayerListAdapter extends ArrayAdapter<String> {
 
     Context context;

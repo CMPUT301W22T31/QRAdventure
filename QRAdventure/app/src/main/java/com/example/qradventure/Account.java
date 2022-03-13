@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Represents an player account.
+ * Represents an player account. Tracks Contact info, Player QRs, and Records the player has scanned
  * All account usernames are unique.
  */
 public class Account {
@@ -15,9 +15,22 @@ public class Account {
     private String phoneNumber;
     private String loginQR;
     private String statusQR;
-    private ArrayList<Record> myRecords;
-    private Set<Record> alreadyHas;
+    private ArrayList<Record> myRecords; // A list is used here to enforce chronological order
+    private Set<Record> alreadyHas; // Used for tracking which records the player has
 
+    /**
+     * Constructor with the record list
+     * @param username
+     *      Unique username
+     * @param email
+     * @param phoneNumber
+     * @param loginQR
+     *      Player QR. Logs the user in when scanned
+     * @param statusQR
+     *      Player QR. Shows their game status when scanned
+     * @param myRecords
+     *
+     */
     public Account(String username, String email, String phoneNumber, String loginQR, String statusQR, ArrayList<Record> myRecords) {
         this.username = username;
         this.email = email;
@@ -28,7 +41,14 @@ public class Account {
         this.alreadyHas = new HashSet<Record>();
     }
 
-    //Constructor without the record list
+    /**
+     * Constructor without a list of records
+     * @param username
+     * @param email
+     * @param phoneNumber
+     * @param loginQR
+     * @param statusQR
+     */
     public Account(String username, String email, String phoneNumber, String loginQR, String statusQR) {
         this.username = username;
         this.email = email;
@@ -61,6 +81,12 @@ public class Account {
         return statusQR;
     }
 
+    /**
+     * Checks equality of two accounts
+     * @param o
+     *      One account we are checking
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

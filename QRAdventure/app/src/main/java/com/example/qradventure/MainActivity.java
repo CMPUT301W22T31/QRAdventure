@@ -41,6 +41,7 @@ import java.util.HashMap;
 
 /**
  * Startup Activity
+ *
  */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
