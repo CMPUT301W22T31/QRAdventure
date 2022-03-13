@@ -31,8 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
  */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
-    BottomNavigationView navbarMenu;
-    ActivityMainBinding binding;
+    BottomNavigationView navbar;
 
 
 
@@ -46,36 +45,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setTitle("Main Activity");
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        try {
-            binding.navbarMenu.setItemIconTintList(null);
-        }
-        catch (Exception e)
-        {
-            Log.d("logs", e.toString());
-        }
-        setContentView(binding.getRoot());
-        replaceFragment(new LocationFragment());
 
-        binding.navbarMenu.setOnItemSelectedListener(item -> {
+        // make sure to do this anytime an activity has a navbar
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
+
+        navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.my_account:
-
-                    replaceFragment(new AccountFragment());
+                    Intent intent1 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent1);
                     break;
                 case R.id.leaderboards:
-                    replaceFragment(new LeaderboardFragment());
+                    Intent intent2 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent2);
                     break;
                 case R.id.scan:
                     Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
                     startActivity(intent3);
                     break;
                 case R.id.search_players:
-                    replaceFragment(new SearchPlayersFragment());
+                    Intent intent4 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent4);
                     break;
                 case R.id.map:
-                    replaceFragment(new LocationFragment());
-                    break;
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
             }
             return true;
 
@@ -204,18 +199,6 @@ public class MainActivity extends AppCompatActivity {
         }
         // ====== Records reconstruction complete ======
 
-    }
-
-    // This transitions between fragments
-    // Handles animations as well
-    private void replaceFragment(Fragment fragment) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out);
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
-
-        fragmentTransaction.commit();
     }
     /**
      * Sends to edit info activity. Called when respective button is clicked.
