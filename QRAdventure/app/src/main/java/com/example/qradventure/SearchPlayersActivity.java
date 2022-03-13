@@ -192,10 +192,16 @@ public class SearchPlayersActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // get the QR contents, and send it to next activity
-        String content = result.getContents();
-        Intent intent = new Intent(SearchPlayersActivity.this, PostScanActivity.class);
-        intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
-        startActivity(intent);
+        try {
+            String content = result.getContents();
+            Log.d("logs", result.getContents());
+            Intent intent = new Intent(SearchPlayersActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+        }
+        catch (Exception e) {
+            Log.d("logs", e.toString());
+        }
     }
 
 
