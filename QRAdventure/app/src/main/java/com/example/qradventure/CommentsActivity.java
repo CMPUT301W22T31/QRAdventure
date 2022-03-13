@@ -31,11 +31,11 @@ import java.util.HashMap;
  */
 public class CommentsActivity extends AppCompatActivity {
 
-    String recordID;
+    String hash;
     int count = 0;
     ListView commentListView;
-    ArrayAdapter<String> commentAdapter;
-    ArrayList<String> commentArrayList = new ArrayList<String>();
+    ArrayAdapter commentAdapter;
+    ArrayList<Comment> commentArrayList = new ArrayList<Comment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +45,15 @@ public class CommentsActivity extends AppCompatActivity {
 
         // Intent for record ID
         Intent intent = getIntent();
-        recordID = intent.getStringExtra("Record ID");
+        hash = intent.getStringExtra("QR Hash");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference recordRef = db.collection("RecordDB").document(recordID);
+        DocumentReference QRRef = db.collection("QRDB").document(hash);
 
         // Update list of comments to display
         commentListView = findViewById(R.id.list_comments);
 
-        commentAdapter = new ArrayAdapter<String>(this, R.layout.content_comment, commentArrayList);
+        commentAdapter = new CommentList(this, commentArrayList);
         commentListView.setAdapter(commentAdapter);
 
         // Update number of comments
@@ -61,17 +61,19 @@ public class CommentsActivity extends AppCompatActivity {
         String commentTitleText = "Comments";
         commentTitle.setText(commentTitleText);
 
-        EditText comment = findViewById(R.id.editText_comment);
+        EditText enteredComment = findViewById(R.id.editText_comment);
 
         // Count the number of comments and add comments to ArrayList
-        recordRef.collection("Comments")
+        QRRef.collection("Comments")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
-                                String aComment = document.getData().get("Comment").toString();
+                                String commentAuthor = document.getData().get("Author").toString();
+                                String commentText = document.getData().get("Comment").toString();
+                                Comment aComment = new Comment(commentAuthor, commentText);
                                 commentArrayList.add(aComment);
                                 count++;
                             }
@@ -85,17 +87,22 @@ public class CommentsActivity extends AppCompatActivity {
         Button addButton = findViewById(R.id.button_add_comment);
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Account myAccount = CurrentAccount.getAccount();
+
                 // Add comment to Record collection
                 HashMap<String, Object> CommentData = new HashMap<>();
-                CommentData.put("Comment", comment.getText().toString());
-                recordRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
+                CommentData.put("Comment", enteredComment.getText().toString());
+                CommentData.put("Author", myAccount.getUsername());
+                QRRef.collection("Comments").document(myAccount.getUsername() + Integer.toString(count+1)).set(CommentData);
                 count++;
 
                 // Update number of comments
                 String newTitle = "Comments (" + Integer.toString(count) + ")";
                 commentTitle.setText(newTitle);
 
-                commentArrayList.add(comment.getText().toString());
+                Comment commentObject = new Comment(myAccount.getUsername(), enteredComment.getText().toString());
+
+                commentArrayList.add(commentObject);
                 commentAdapter.notifyDataSetChanged();
             }
         });

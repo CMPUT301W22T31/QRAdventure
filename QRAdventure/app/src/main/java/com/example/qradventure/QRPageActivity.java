@@ -56,7 +56,7 @@ public class QRPageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CommentsActivity.class);
         recordID = currentAccount.getUsername() + "-" + hash;
         // add QR hash to intent (?)
-        intent.putExtra("Record ID", recordID);
+        intent.putExtra("QR Hash", hash);
         startActivity(intent);
     }
 }

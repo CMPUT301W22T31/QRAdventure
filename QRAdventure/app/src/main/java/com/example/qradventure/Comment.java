@@ -4,11 +4,19 @@ package com.example.qradventure;
  * Represents a comment made by an Account
  */
 public class Comment {
-    private Account author;
+    private String authorUsername;
     private String text;
 
-    public Comment(Account author, String text) {
-        this.author = author;
+    public Comment(String authorUsername, String text) {
+        this.authorUsername = authorUsername;
         this.text = text;
+    }
+
+    public String getAuthorUsername() {
+        return authorUsername;
+    }
+
+    public String getText() {
+        return text;
     }
 }
