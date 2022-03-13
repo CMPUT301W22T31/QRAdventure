@@ -4,26 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".SearchPlayersActivity">
 
-    <Button
-        android:id="@+id/TEMPGoToProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="goToProfile"
-        android:text="USERNAME111778822"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:id="@+id/linearLayoutSearch"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="USERNAME"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/buttonConfirmSearch"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="0dp"
+            android:background="#00FFFFFF"
+            android:onClick="queryUsername"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.875"
+            app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_search" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/username_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search for players by username.\nDisplays a list (?) of players matching that username"
-        app:layout_constraintBottom_toTopOf="@+id/TEMPGoToProfile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:choiceMode="singleChoice"
+        android:gravity="top"
+        android:listSelector="#999999"
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSearch"
+        app:layout_constraintVertical_bias="0.0">
+
+    </ListView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navbar_menu"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/navbar_menu" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
