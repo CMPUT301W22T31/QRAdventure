@@ -229,15 +229,11 @@ public class AccountActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             // get the QR contents, and send it to next activity
-        try {
             String content = result.getContents();
-            Log.d("logs", result.getContents());
-            Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
-            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
-            startActivity(intent);
-        }
-        catch (Exception e) {
-            Log.d("logs", e.toString());
+            if(content != null) {
+                Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
+                intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+                startActivity(intent);
         }
     }
 }
