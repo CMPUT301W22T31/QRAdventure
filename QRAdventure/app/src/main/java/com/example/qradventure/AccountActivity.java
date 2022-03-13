@@ -77,9 +77,17 @@ public class AccountActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
-                    //goToScan();
+
+                    // Use IntentIntegrator to activate camera
+                    IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
+
                     break;
                 case R.id.map:
                     Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);

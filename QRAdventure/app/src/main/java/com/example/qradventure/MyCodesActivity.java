@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 
@@ -167,8 +168,15 @@ public class MyCodesActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
+                    // Use IntentIntegrator to activate camera
+                    IntentIntegrator tempIntent = new IntentIntegrator(MyCodesActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
