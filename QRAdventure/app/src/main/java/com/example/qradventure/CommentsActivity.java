@@ -25,7 +25,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -39,6 +45,17 @@ public class CommentsActivity extends AppCompatActivity {
     ArrayAdapter commentAdapter;
     ArrayList<Comment> commentArrayList = new ArrayList<Comment>();
     BottomNavigationView navbar;
+    HashMap<String, Comment> toBeSorted = new HashMap<String, Comment> ();
+
+    // https://www.geeksforgeeks.org/sorting-hashmap-according-key-value-java/
+    public void sortComments() {
+        ArrayList<String> sortedKeys = new ArrayList<String>(toBeSorted.keySet());
+        Collections.sort(sortedKeys);
+        for (String key : sortedKeys) {
+            // Add the Comment objects to the ArrayList
+            commentArrayList.add(toBeSorted.get(key));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +94,11 @@ public class CommentsActivity extends AppCompatActivity {
                                 String commentAuthor = document.getData().get("Author").toString();
                                 String commentText = document.getData().get("Comment").toString();
                                 Comment aComment = new Comment(commentAuthor, commentText);
-                                commentArrayList.add(aComment);
+                                // Store the document ID and the Comment to sort
+                                toBeSorted.put(document.getId(), aComment);
                                 count++;
                             }
+                            sortComments();
                             commentAdapter.notifyDataSetChanged();
                         } else {
                             // Log.d(TAG, "Error getting documents: ", task.getException());
@@ -107,7 +126,7 @@ public class CommentsActivity extends AppCompatActivity {
                 HashMap<String, Object> CommentData = new HashMap<>();
                 CommentData.put("Comment", enteredComment.getText().toString());
                 CommentData.put("Author", myAccount.getUsername());
-                QRRef.collection("Comments").document(myAccount.getUsername() + Integer.toString(count+1)).set(CommentData);
+                QRRef.collection("Comments").document(Integer.toString(count+1)).set(CommentData);
                 count++;
 
                 // Update number of comments
