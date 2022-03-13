@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -86,6 +87,17 @@ public class CommentsActivity extends AppCompatActivity {
                     }
                 });
 
+        FloatingActionButton backButton = findViewById(R.id.button_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
+                intent.putExtra("QRtitle", hash.substring(0,4));
+                intent.putExtra("QRHash", hash);
+                startActivity(intent);
+            }
+        });
+
         Button addButton = findViewById(R.id.button_add_comment);
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -106,6 +118,8 @@ public class CommentsActivity extends AppCompatActivity {
 
                 commentArrayList.add(commentObject);
                 commentAdapter.notifyDataSetChanged();
+
+                enteredComment.setText("");
             }
         });
 

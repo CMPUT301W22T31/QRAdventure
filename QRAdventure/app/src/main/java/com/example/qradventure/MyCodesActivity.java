@@ -8,9 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -61,7 +61,14 @@ public class MyCodesActivity extends AppCompatActivity {
             }
         });
 
-
+        FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(intent);
+            }
+        });
 
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);

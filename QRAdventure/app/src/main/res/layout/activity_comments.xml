@@ -7,17 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".CommentsActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:layout_margin="2dp"
+        android:contentDescription="Back"
+        android:src="?attr/actionModeCloseDrawable"
+        app:backgroundTint="@color/grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/text_comments_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="10dp"
         android:text="Comments (0)"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/list_comments"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,7 +61,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="23dp"
+        android:backgroundTint="@color/grey"
         android:text="Add"
+        app:iconTint="@color/grey"
         app:layout_constraintBaseline_toBaselineOf="@+id/editText_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editText_comment" />
@@ -65,4 +77,5 @@
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/navbar_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

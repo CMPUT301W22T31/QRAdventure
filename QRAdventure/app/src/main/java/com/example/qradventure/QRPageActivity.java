@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+
 
 /**
  * Activity that shows details about a particular QR code.
@@ -39,6 +44,43 @@ public class QRPageActivity extends AppCompatActivity {
         // unpack Intent to get the hash (String)
         // query DB for that hash to get relevant fields
 
+        FloatingActionButton backButton = findViewById(R.id.button_back_to_MyCodes);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MyCodesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // enable navbar functionality
+        BottomNavigationView navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
+        navbar.setOnItemSelectedListener((item) ->  {
+            switch(item.getItemId()) {
+                case R.id.leaderboards:
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    break;
+                case R.id.scan:
+                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
+                    startActivity(intent3);
+                    break;
+                case R.id.my_account:
+                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent4);
+                    break;
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
+                    break;
+            }
+            return false;
+        });
+
     }
 
     /**
@@ -47,7 +89,6 @@ public class QRPageActivity extends AppCompatActivity {
      */
     public void goToScannedBy(View view) {
         Intent intent = new Intent(this, ScannedByActivity.class);
-        // add QR hash to the intent (?)
         startActivity(intent);
     }
 
@@ -62,4 +103,5 @@ public class QRPageActivity extends AppCompatActivity {
         intent.putExtra("QR Hash", hash);
         startActivity(intent);
     }
+
 }

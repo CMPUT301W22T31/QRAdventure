@@ -41,7 +41,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/camera.xml" value="0.5" />
         <entry key="app/src/main/res/layout/content_comment.xml" value="0.15070921985815602" />
