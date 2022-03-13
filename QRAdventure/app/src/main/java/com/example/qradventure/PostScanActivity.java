@@ -174,7 +174,7 @@ public class PostScanActivity extends AppCompatActivity {
 
             // ====== database logic concluded ======
             // send user to a different activity (which? Account for now?).
-            Intent intent = new Intent(this, AccountActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
@@ -212,6 +212,8 @@ public class PostScanActivity extends AppCompatActivity {
 
     /**
      * Sends to ScannedBy activity. Called when respective button is clicked.
+     * Uses a queryhandler to retrieve the needed information and a callback to
+     * go to the desired activity
      * @param view: unused
      */
     public void goToScannedBy(View view) {

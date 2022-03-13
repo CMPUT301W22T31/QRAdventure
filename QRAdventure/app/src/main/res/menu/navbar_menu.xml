@@ -10,6 +10,7 @@
     <item android:title=""
         android:id="@+id/scan"
         android:icon="@drawable/qr_scanner"/>
+
     <item
         android:id="@+id/map"
         android:icon="@drawable/location2"
