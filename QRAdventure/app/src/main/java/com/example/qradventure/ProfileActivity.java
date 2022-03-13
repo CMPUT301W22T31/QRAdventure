@@ -31,7 +31,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
 
-
         // unpack intent to get account username
         // query DB for username. Pull relevant fields to display
         setTitle("USERNAME123456789s profile");
@@ -97,7 +96,6 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
         // ====== query DB for display fields ======
-
 
     }
     /**
