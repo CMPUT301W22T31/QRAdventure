@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,35 +20,45 @@ import java.util.ArrayList;
  * Activity that displays a list of all the players that have scanned a particular QR code.
  */
 public class ScannedByActivity extends AppCompatActivity {
-    String hash;
-    ArrayList<String> players;
-    ArrayList<Long> scores;
-    ArrayList<Pair<String, Long>> playerInfo;
-    ArrayAdapter<Pair<String, Long>> adapter;
-    ListView playerList;
+    PlayerPreview previewInfo;
+    ArrayList<PlayerPreview> previewArray;
+    ArrayAdapter<PlayerPreview> adapter;
+    ListView playersListView;
+
+    /**
+     * Sets display views
+     * Initializes onClickListeners
+     * @param savedInstanceState - Unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanned_by);
         setTitle("Scanned By:");
 
-        playerList = findViewById(R.id.player_list);
-        players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
-        scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
-        playerInfo = new ArrayList<Pair<String, Long>>();
+        // load data from intent
+        ArrayList<String> players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
+        ArrayList<Long> scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
 
-        // This isn't very efficient, should try and find a better way of doing this
+
+        // add data to an array
+        previewArray = new ArrayList<PlayerPreview>();
         for (int i = 0; i < players.size(); i++){
-            playerInfo.add(new Pair<String, Long>(players.get(i), scores.get(i)));
+            previewInfo = new PlayerPreview(players.get(i), scores.get(i));
+            Log.d("SBATAG", "Score " + i + ": " + scores.get(i));
+            previewArray.add(previewInfo);
         }
-        adapter = new PlayerListAdapter(this, playerInfo);
 
-        playerList.setAdapter(adapter);
+        // Initialize & Link adapter
+        playersListView = findViewById(R.id.preview_list);
+        adapter = new PlayerScoreAdapter(this, previewArray);
+        playersListView.setAdapter(adapter);
 
-        playerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Enable listview on click listener
+        playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String name = players.get(i);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String name = previewArray.get(position).getUsername();
                 goToProfile(name);
             }
         });
