@@ -107,56 +107,10 @@ public class MyCodesActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String QRRecord = myAccount.getUsername() + "-" + myAccount.getMyRecords().get(position).getQRHash();
+                                QueryHandler delete = new QueryHandler();
                                 try {
-                                    db.collection("AccountDB")
-                                            .document(myAccount.getUsername())
-                                            .collection("My QR Records")
-                                            .document(QRRecord)
-                                            .delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("logs", "DocumentSnapshot successfully deleted!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("logs", "Error deleting document", e);
-                                                }
-                                            });
-                                    db.collection("QRDB")
-                                            .document(myAccount.getMyRecords().get(position).getQRHash())
-                                            .collection("Scanned By")
-                                            .document(myAccount.getUsername())
-                                            .delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("logs", "DocumentSnapshot successfully deleted!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("logs", "Error deleting document", e);
-                                                }
-                                            });
-                                    db.collection("RecordDB")
-                                            .document(QRRecord)
-                                            .delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("logs", "DocumentSnapshot successfully deleted!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("logs", "Error deleting document", e);
-                                                }
-                                            });
+                                    delete.deleteRecord(myAccount, position);
+
                                 } catch (Exception e) {
                                     Log.d("logs", e.toString());
                                 }

@@ -1,6 +1,7 @@
 package com.example.qradventure;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,26 +69,20 @@ public class CommentsActivity extends AppCompatActivity {
 
         EditText enteredComment = findViewById(R.id.editText_comment);
 
-        // Count the number of comments and add comments to ArrayList
-        QRRef.collection("Comments")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                String commentAuthor = document.getData().get("Author").toString();
-                                String commentText = document.getData().get("Comment").toString();
-                                Comment aComment = new Comment(commentAuthor, commentText);
-                                commentArrayList.add(aComment);
-                                count++;
-                            }
-                            commentAdapter.notifyDataSetChanged();
-                        } else {
-                            // Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+        QueryHandler query = new QueryHandler();
+
+        query.getComments(hash, new Callback() {
+            @Override
+            public void callback(ArrayList<Object> args) {
+
+                for (Object o: args){
+                    commentArrayList.add( (Comment)o);
+                    count++;
+                }
+                commentAdapter.notifyDataSetChanged();
+            }
+        });
+
 
         FloatingActionButton backButton = findViewById(R.id.button_back);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -162,4 +158,28 @@ public class CommentsActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+    /**
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        if (content != null) {
+            Intent intent = new Intent(CommentsActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+        }
+    }
+
+
 }

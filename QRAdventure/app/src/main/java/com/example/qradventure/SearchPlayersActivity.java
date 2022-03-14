@@ -137,44 +137,29 @@ public class SearchPlayersActivity extends AppCompatActivity {
             return;
         }
 
-        // query AccountDB for documents that are similar to username
-        db = FirebaseFirestore.getInstance();
-        db.collection("AccountDB")
-                // query where document name starts with username
-                .whereGreaterThanOrEqualTo("__name__", username)
-                .whereLessThanOrEqualTo("__name__", username+"\uf8ff")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        QueryHandler query = new QueryHandler();
+
+
+        query.playerSearch(username, new Callback() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {
-                                // no results returned, notify via toast
+                    public void callback(ArrayList<Object> args) {
+
+                        if (args.size() > 0){
+                            for (Object o: args){
+                                playerNames.add((String)o);
+
+                            }
+                            usernameAdapter.notifyDataSetChanged();
+                        }else{
                                 Context context = getApplicationContext();
                                 CharSequence text = "No results found!";
                                 int duration = Toast.LENGTH_SHORT;
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
-                            } else {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    if (document.exists()) {
-                                        playerNames.add(document.getId());
-                                    } else {
-                                        // crash protection & log. TODO: Revise
-                                        Log.d("SearchPlayersActivity", "document dne");
-                                    }
-                                }
-                            }
-                        } else {
-                            // Query failed. Temporarily: display a toast
-                            Context context = getApplicationContext();
-                            CharSequence text = "Error: Query Failed!";
-                            int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
                         }
-                        // update listview adapter
-                        usernameAdapter.notifyDataSetChanged();
+
+
+
                     }
                 });
     }

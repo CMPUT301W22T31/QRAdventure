@@ -46,7 +46,7 @@ public class AccountActivity extends AppCompatActivity {
             displayTotalScore.setText(detailFormatter(account.getTotalScore()));
             displayCodesScanned.setText(detailFormatter(account.getMyRecords().size()));
             displayLowestQR.setText(detailFormatter(account.getLowestQR()));
-            displayHighestQR.setText(detailFormatter(account.getLowestQR()));
+            displayHighestQR.setText(detailFormatter(account.getHighestQR()));
         }
         catch (Exception e) {
             Log.d("logs", "Something went wrong while displaying!!! ");

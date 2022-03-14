@@ -3,9 +3,9 @@ package com.example.qradventure;
 import java.util.ArrayList;
 
 /**
- * Callback used when obtaining the current logged in user
+ * Generic callback function
  */
-public interface AccountCallback {
+public interface Callback {
 
     public void callback(ArrayList<Object> args);
 

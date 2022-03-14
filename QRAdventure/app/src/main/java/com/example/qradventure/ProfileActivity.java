@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import java.util.ArrayList;
+
 
 /**
  * Activity displaying the profile of any player. Anyone can access this activity.
@@ -79,30 +81,21 @@ public class ProfileActivity extends AppCompatActivity {
         // ====== Enable navbar functionality ======
 
         // ====== query DB for display fields ======
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("AccountDB").document(username)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            if (doc.exists()) {
-                                String email = (String) doc.getData().get("E-mail");
-                                String phone = (String) doc.getData().get("Phone Number");
-                                Long totalScore = (Long) doc.getData().get("TotalScore");
-                                setTextViews(username, email, phone, totalScore.toString());
-                            } else {
-                                // log: document dne
-                                Log.d("logs", "Document does not exist!", task.getException());
-                            }
-                        } else {
-                            // query failed
-                            Log.d("logs", "Query Failed!", task.getException());
-                        }
-                    }
-                });
-        // ====== query DB for display fields ======
+
+        QueryHandler query = new QueryHandler();
+
+        query.getProfile(username, new Callback() {
+            @Override
+            public void callback(ArrayList<Object> args) {
+
+
+                String email = (String) args.get(0);
+                String phone = (String) args.get(1);
+                Long totalScore = (Long)args.get(2);
+                setTextViews(username, email, phone, totalScore.toString());
+            }
+        });
+
 
     }
     /**
