@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
  * Robotium test framework is used.
  *
  * NOTE: occasionally the tests crash due to an unknown security permissions issue, but running
- * be successful. Try running them individually if the problem persists.
+ * them again should work. Try running them individually if the problem persists.
  */
 @RunWith(AndroidJUnit4.class)
 public class IntentNavigationTest {
