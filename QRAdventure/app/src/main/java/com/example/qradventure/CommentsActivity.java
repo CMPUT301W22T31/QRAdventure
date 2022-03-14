@@ -1,10 +1,8 @@
 package com.example.qradventure;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,29 +12,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -80,7 +69,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         // ====== Event listener (+ live updates!) ======
         docRefQR.collection("Comments")
-                .orderBy("__name__")
+                .orderBy("Position")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
@@ -122,7 +111,8 @@ public class CommentsActivity extends AppCompatActivity {
                     HashMap<String, Object> CommentData = new HashMap<>();
                     CommentData.put("Comment", inputText);
                     CommentData.put("Author", myAccount.getUsername());
-                    docRefQR.collection("Comments").document(Integer.toString(commentCount + 1)).set(CommentData);
+                    CommentData.put("Position", commentCount);
+                    docRefQR.collection("Comments").document(Integer.toString(commentCount)).set(CommentData);
                 }
             }
         });
