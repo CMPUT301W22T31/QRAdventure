@@ -25,11 +25,14 @@ public class AccountActivity extends AppCompatActivity {
     Account account;
     BottomNavigationView navbar;
 
+    /**
+     * Sets layout and Enables navbar
+     * @param savedInstanceState - unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        setTitle("Account Activity");
 
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
