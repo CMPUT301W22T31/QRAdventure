@@ -146,7 +146,14 @@ public class MyCodesActivity extends AppCompatActivity {
                                     Log.d("logs", e.toString());
                                 }
                                 Log.d("logs", QRRecord);
-                                myAccount.getMyRecords().remove(position);
+
+                                Record toDelete = accountRecords.get(position);
+
+                                myAccount.removeRecord(toDelete.getQRHash());
+
+
+
+                                CurrentAccount.setAccount(myAccount);
                                 qrListAdapter.notifyDataSetChanged();
 
                             }

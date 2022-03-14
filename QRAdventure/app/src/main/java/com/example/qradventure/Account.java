@@ -114,7 +114,12 @@ public class Account {
      */
     public boolean containsRecord(Record record){
 
-        return alreadyHas.contains(record);
+        for (Record r: myRecords){
+            if (record.equals(r)){
+                return true;
+            }
+        }
+        return false;
 
     }
 
@@ -132,6 +137,22 @@ public class Account {
         alreadyHas.add(record);
         myRecords.add(record);
         return true;
+
+    }
+
+    public void removeRecord(String hash){
+
+        int i = 0;
+        for (Record r: myRecords){
+            if (r.getQRHash() == hash){
+
+                myRecords.remove(i);
+                return;
+            }
+            i++;
+        }
+
+
 
     }
 

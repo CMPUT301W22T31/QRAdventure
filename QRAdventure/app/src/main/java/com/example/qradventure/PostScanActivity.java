@@ -135,6 +135,8 @@ public class PostScanActivity extends AppCompatActivity {
 
                 currentAccount.addRecord(new Record(currentAccount, qr));
 
+                CurrentAccount.setAccount(currentAccount);
+
                 // Add User to list of user scanned this qr
                 HashMap<String, Object> userData = new HashMap<>();
                 userData.put("Username", myAccount.getUsername());

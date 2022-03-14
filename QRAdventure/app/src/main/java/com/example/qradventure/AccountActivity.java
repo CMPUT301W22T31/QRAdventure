@@ -81,7 +81,6 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         // Give info to textviews to display
         try {
             // get textviews
@@ -154,6 +153,7 @@ public class AccountActivity extends AppCompatActivity {
      * @return the value of the highest score
      */
     private int getHighestQR() {
+
         int biggest = account.getMyRecords().get(0).getQRscore();
         for (Record record: account.getMyRecords()
         ) {
