@@ -287,7 +287,8 @@ public class QueryHandler {
         db = FirebaseFirestore.getInstance();
         String QRRecord = myAccount.getUsername() + "-" + myAccount.getMyRecords().get(position).getQRHash();
 
-
+        db.collection("AccountDB").document(myAccount.getUsername())
+                .update("TotalScore", myAccount.getTotalScore());
 
         db.collection("AccountDB")
                 .document(myAccount.getUsername())
@@ -338,6 +339,9 @@ public class QueryHandler {
                         Log.w("logs", "Error deleting document", e);
                     }
                 });
+
+
+
     }
 
 
@@ -528,6 +532,8 @@ public class QueryHandler {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Account account = new Account(username, "", "", "", "");
+
+
 
         db.collection("AccountDB").document(username).collection("My QR Records")
                 .get()

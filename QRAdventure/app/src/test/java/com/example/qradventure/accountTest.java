@@ -35,6 +35,15 @@ public class accountTest {
 
     }
 
+    @Test
+    public void testRemove(){
+        record = new Record(testAccount, testQR);
+        testAccount.addRecord(record);
+        assertTrue(testAccount.containsRecord(record));
+        testAccount.removeRecord(record.getQRHash());
+        assertFalse(testAccount.containsRecord(record));
+    }
+
     // Equality is based off the USERNAME, not any other aspect of account
     @Test
     public void testEquals(){

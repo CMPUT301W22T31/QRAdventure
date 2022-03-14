@@ -92,6 +92,13 @@ public class MyCodesActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String QRRecord = myAccount.getUsername() + "-" + myAccount.getMyRecords().get(position).getQRHash();
+
+                                Log.d("logs", QRRecord);
+
+                                Record toDelete = accountRecords.get(position);
+
+                                myAccount.removeRecord(toDelete.getQRHash());
+
                                 QueryHandler delete = new QueryHandler();
                                 try {
                                     delete.deleteRecord(myAccount, position);
@@ -99,12 +106,6 @@ public class MyCodesActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     Log.d("logs", e.toString());
                                 }
-                                Log.d("logs", QRRecord);
-
-                                Record toDelete = accountRecords.get(position);
-
-                                myAccount.removeRecord(toDelete.getQRHash());
-
 
 
                                 CurrentAccount.setAccount(myAccount);
