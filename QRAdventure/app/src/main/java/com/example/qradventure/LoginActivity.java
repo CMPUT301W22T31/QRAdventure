@@ -91,50 +91,40 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("device_id", androidDeviceID);
 
                 if (!username.matches("")) {
-                    DocumentReference docRef = db.collection("AccountDB").document(username);
 
                     // Check for a document matching the input username
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    QueryHandler query = new QueryHandler();
+
+                    query.checkNameTaken(data, username, new AccountCallback() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            // task is a document query
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    // Document exists, so username is taken!
-                                    Context context = getApplicationContext();
-                                    CharSequence text = "Username is taken";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
-                                    // TODO: Does this case need extra logic? Or just a toast?
+                        public void callback(ArrayList<Object> args) {
 
-                                } else {
-                                    // Document does not exist, so username is available!
-                                    Context context = getApplicationContext();
-                                    CharSequence text = "Username available! Creating account...";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
+                            Boolean alreadyCreated = (Boolean)args.get(0);
 
-                                    // Set data. Could add success/fail listeners?
-                                    docRef.set(data);
-
-                                    // on success: proceed to app!
-                                    signedIn();
-                                }
-
-                            } else {
-                                // document query was not successful
+                            if (!alreadyCreated){
                                 Context context = getApplicationContext();
-                                CharSequence text = "ERROR: query failed!";
+                                CharSequence text = "Username available! Creating account...";
                                 int duration = Toast.LENGTH_SHORT;
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
-                                Log.d(TAG, "get failed with ", task.getException());
+
+                                // Set data. Could add success/fail listeners?
+
+
+                                // on success: proceed to app!
+                                signedIn();
+                            }else{
+                                Context context = getApplicationContext();
+                                CharSequence text = "Username is taken";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                // TODO: Does this case need extra logic? Or just a toast?
                             }
+
                         }
                     });
+
                 } else {
                     // user input was empty, notify them via toast:
                     Context context = getApplicationContext();

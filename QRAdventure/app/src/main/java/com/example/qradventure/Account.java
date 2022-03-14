@@ -129,5 +129,31 @@ public class Account {
         return sum;
     }
 
+    // gets the lowest QR the player has scan to display
+    public int getLowestQR() {
+        // TODO: verify this works. Sometimes records are not present.
+        int smallest = myRecords.get(0).getQRscore();
+        for (Record record: myRecords
+        ) {
+            if (record.getQRscore() < smallest){
+                smallest = record.getQRscore();
+            }
+        }
+        return smallest;
+    }
+
+
+    // gets the highest QR the player has scan to display
+    public int getHighestQR() {
+        int biggest = myRecords.get(0).getQRscore();
+        for (Record record: myRecords
+        ) {
+            if (record.getQRscore() > biggest){
+                biggest = record.getQRscore();
+            }
+        }
+        return biggest;
+    }
+
 
 }

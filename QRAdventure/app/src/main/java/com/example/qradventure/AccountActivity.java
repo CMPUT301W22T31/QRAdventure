@@ -43,10 +43,10 @@ public class AccountActivity extends AppCompatActivity {
             TextView displayHighestQR = findViewById(R.id.highest_qr);
 
             // set textviews
-            displayTotalScore.setText(detailFormatter(getTotalScore()));
-            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
-            displayLowestQR.setText(detailFormatter(getLowestQR()));
-            displayHighestQR.setText(detailFormatter(getHighestQR()));
+            displayTotalScore.setText(detailFormatter(account.getTotalScore()));
+            displayCodesScanned.setText(detailFormatter(account.getMyRecords().size()));
+            displayLowestQR.setText(detailFormatter(account.getLowestQR()));
+            displayHighestQR.setText(detailFormatter(account.getLowestQR()));
         }
         catch (Exception e) {
             Log.d("logs", "Something went wrong while displaying!!! ");
@@ -115,45 +115,8 @@ public class AccountActivity extends AppCompatActivity {
             return new DecimalFormat("#,##0").format(numValue);
         }
     }
-    // gets the lowest QR the player has scan to display
-    private int getLowestQR() {
-        // TODO: verify this works. Sometimes records are not present.
-        int smallest = account.getMyRecords().get(0).getQRscore();
-        for (Record record: account.getMyRecords()
-             ) {
-            if (record.getQRscore() < smallest){
-                smallest = record.getQRscore();
-            }
-        }
-        return smallest;
-    }
 
-    // gets the highest QR the player has scan to display
-    private int getHighestQR() {
-        int biggest = account.getMyRecords().get(0).getQRscore();
-        for (Record record: account.getMyRecords()
-        ) {
-            if (record.getQRscore() > biggest){
-                biggest = record.getQRscore();
-            }
-        }
-        return biggest;
-    }
 
-    // gets the number of codes scanned by player so we can display it
-    private int getCodesScanned() {
-        return account.getMyRecords().size();
-    }
-
-    // gets the cumulative score player has scanned so we can display it
-    private int getTotalScore() {
-        int sum = 0;
-        for (Record record: account.getMyRecords()) {
-            sum += record.getQRscore();
-
-        }
-        return sum;
-    }
 
     /**
      * Sends to edit info activity. Called when respective button is clicked.

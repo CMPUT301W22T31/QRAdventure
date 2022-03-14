@@ -27,6 +27,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import java.util.ArrayList;
+
 /**
  * Startup Activity
  *
@@ -103,8 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
         q.getLoginAccount(androidDeviceID, new AccountCallback() {
             @Override
-            public void toActivity(Boolean alreadyCreated) {
+            public void callback(ArrayList<Object> args) {
                 Intent intent;
+                Boolean alreadyCreated = (Boolean)args.get(0);
                 if (alreadyCreated){
                     intent = new Intent(MainActivity.this, AccountActivity.class);
                 }

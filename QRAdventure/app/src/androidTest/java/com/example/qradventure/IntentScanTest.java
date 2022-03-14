@@ -88,7 +88,6 @@ public class IntentScanTest {
         // click on ScanActivity
         View scanButton = solo.getView("scan");
         solo.clickOnView(scanButton);
-        solo.assertCurrentActivity("Scan button failed!", ScanActivity.class);
 
         // backdoor into PostScanActivity with an intent extra (dummy qr content)
         Intent intent = new Intent(solo.getCurrentActivity(), PostScanActivity.class);

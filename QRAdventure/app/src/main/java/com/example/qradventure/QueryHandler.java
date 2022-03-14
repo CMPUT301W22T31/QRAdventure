@@ -1,5 +1,8 @@
 package com.example.qradventure;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 import android.util.Log;
@@ -11,6 +14,7 @@ import androidx.core.util.Pair;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -61,7 +65,9 @@ public class QueryHandler {
                                 // no documents found! go to registration
                                 Log.d("logs", "doc dne!");
                                 // disable backward navigation to this activity
-                                callback.toActivity(false);
+                                ArrayList<Object> args = new ArrayList<Object>();
+                                args.add(false);
+                                callback.callback(args);
                             }
                             for(QueryDocumentSnapshot doc: task.getResult()) {
                                 if (doc.exists()) {
@@ -89,7 +95,9 @@ public class QueryHandler {
                                                         if (task.isSuccessful()) {
                                                             if (task.getResult().size() == 0) {
                                                                 // no records found! Complete login.
-                                                                callback.toActivity(true);
+                                                                ArrayList<Object> args = new ArrayList<Object>();
+                                                                args.add(true);
+                                                                callback.callback(args);
                                                             }
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
@@ -110,8 +118,9 @@ public class QueryHandler {
                                                                                     // ERROR: Query failed!
                                                                                     Log.d("logs", "Cached get failed: ", task.getException());
                                                                                 }
-
-                                                                                callback.toActivity(true);
+                                                                                ArrayList<Object> args = new ArrayList<Object>();
+                                                                                args.add(true);
+                                                                                callback.callback(args);
                                                                             }
                                                                         });
                                                             }
@@ -141,6 +150,43 @@ public class QueryHandler {
                     }
                 });
 
+    }
+
+
+    public void checkNameTaken(HashMap<String, Object> data, String username, AccountCallback back){
+
+        db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("AccountDB").document(username);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                // task is a document query
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Document exists, so username is taken!
+                        ArrayList<Object> args = new ArrayList<Object>();
+                        args.add(true);
+                        back.callback(args);
+
+
+                    } else {
+                        // Document does not exist, so username is available!
+                        ArrayList<Object> args = new ArrayList<Object>();
+                        args.add(false);
+                        docRef.set(data);
+                        back.callback(args);
+                    }
+
+                } else {
+                    // document query was not successful
+                    int duration = Toast.LENGTH_SHORT;
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
 
@@ -200,6 +246,12 @@ public class QueryHandler {
 
 
     }
+
+
+
+
+
+
 
     /**
      * Used for account login
