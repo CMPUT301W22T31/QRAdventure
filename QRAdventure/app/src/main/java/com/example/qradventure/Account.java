@@ -117,6 +117,20 @@ public class Account {
 
     }
 
+    public void deleteRecord(String hash){
+        int i = 0;
+        for (Record r: myRecords){
+
+            if (r.getQRHash() == hash){
+                myRecords.remove(i);
+                return;
+            }
+            i++;
+
+        }
+
+    }
+
     public ArrayList<Record> getMyRecords() {
         return myRecords;
     }
