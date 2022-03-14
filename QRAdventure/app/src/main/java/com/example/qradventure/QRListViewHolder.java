@@ -11,6 +11,7 @@ public class QRListViewHolder {
     private TextView QRTitle;
     private TextView pts;
     private ImageView itemImage; // may change if we want custom qr images for each qr
+
     QRListViewHolder(View v) {
         itemImage = v.findViewById(R.id.imageView);
         QRTitle = v.findViewById(R.id.QR_title);

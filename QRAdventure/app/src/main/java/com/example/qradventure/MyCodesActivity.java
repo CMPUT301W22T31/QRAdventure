@@ -45,6 +45,10 @@ public class MyCodesActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView navbar;
 
+    /**
+     * Gets all the UI elements for displaying the QR codes and adds click listeners. Adds navbar
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         db = FirebaseFirestore.getInstance();
@@ -165,7 +169,13 @@ public class MyCodesActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Activity is called when the camera scans a QR code. Processes the result and redirects to
+     * PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

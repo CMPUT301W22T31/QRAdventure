@@ -169,7 +169,11 @@ public class Account {
         return sum;
     }
 
-    // gets the lowest QR the player has scan to display
+    /**
+     * Gets the QR with the lowest score
+     * @return
+     *      The lowest score
+     */
     public int getLowestQR() {
 
         if (myRecords.size() == 0){
@@ -188,7 +192,11 @@ public class Account {
     }
 
 
-    // gets the highest QR the player has scan to display
+    /**
+     * Gets the QR with the highest score
+     * @return
+     *      The Highest score
+     */
     public int getHighestQR() {
 
         if (myRecords.size() == 0){

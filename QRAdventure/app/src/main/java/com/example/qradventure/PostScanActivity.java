@@ -40,6 +40,10 @@ public class PostScanActivity extends AppCompatActivity {
     private QR qr;
     private String recordID;
 
+    /**
+     * Retrives content from the intent and calls addQR
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
