@@ -364,7 +364,11 @@ public class QueryHandler {
     }
 
 
-
+    /**
+     * Gets a list of comments for CommentsActivity
+     * @param hash Hash of the QR we are getting the comments from
+     * @param callback Callback function for the calling activity
+     */
     public void getComments(String hash, Callback callback){
 
         db = FirebaseFirestore.getInstance();
@@ -395,6 +399,14 @@ public class QueryHandler {
 
     }
 
+
+    /**
+     * Adds a QR to the database
+     * @param qr
+     *      What we are adding
+     * @param callback
+     *      Callback function for the calling activity
+     */
     public void addQR(QR qr, Callback callback) {
         db = FirebaseFirestore.getInstance();
 
@@ -452,8 +464,17 @@ public class QueryHandler {
     }
 
 
-
-
+    /**
+     * Adds a new record to the database
+     * @param androidDeviceID
+     *      Device of the account which is being used
+     * @param qr
+     *      QR code of the record
+     * @param myAccount
+     *      Account of the record
+     * @param recordID
+     *      ID of the record
+     */
     public void addRecord(String androidDeviceID, QR qr, Account myAccount, String recordID){
         db = FirebaseFirestore.getInstance();
 
@@ -509,6 +530,13 @@ public class QueryHandler {
 
     }
 
+    /**
+     * Gets information about another players profile
+     * @param username
+     *      The profile we are querying for
+     * @param callback
+     *      Callback function for the main thread
+     */
     public void getProfile(String username, Callback callback){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -546,7 +574,13 @@ public class QueryHandler {
 
     }
 
-
+    /**
+     * Querys for a users records
+     * @param username
+     *      Name of the account whos records we are getting
+     * @param callback
+     *      Callback function for the main thread
+     */
     public void loadRecords(String username, Callback callback){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

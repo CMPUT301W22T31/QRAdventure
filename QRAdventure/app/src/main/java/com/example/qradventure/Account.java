@@ -157,9 +157,6 @@ public class Account {
     }
 
 
-
-
-
     /**
      * Get the total sum of scores of the Account
      * @return sum of scores
