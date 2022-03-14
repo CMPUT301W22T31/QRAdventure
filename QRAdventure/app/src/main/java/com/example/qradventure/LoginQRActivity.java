@@ -15,7 +15,5 @@ public class LoginQRActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_qractivity);
         setTitle("Access Login QR Code");
-
-
     }
 }

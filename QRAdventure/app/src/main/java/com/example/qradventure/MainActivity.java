@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.example.qradventure.databinding.ActivityMainBinding;
+//import com.example.qradventure.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,8 +34,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView navbar;
-
-
 
     /**
      * **TEMP** logs into a default test account

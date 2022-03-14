@@ -24,8 +24,7 @@ import java.util.Map;
 
 
 /**
- * Class for holding all Querys to the firestore database.
- *
+ * Class for holding all Querys to the Firestore database.
  */
 public class QueryHandler {
 
@@ -136,14 +135,9 @@ public class QueryHandler {
                             // ERROR: query failed
                             Log.d("logs", "DeviceID query failed!", task.getException());
                         }
-
-
-
                     }
                 });
-
     }
-
 
     /**
      * Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
@@ -153,13 +147,10 @@ public class QueryHandler {
      * @param myCallback
      *      Callback function used after the query is done
      */
-
     public void getOthersScanned(String qrHash, QueryCallback myCallback){
 
         db = FirebaseFirestore.getInstance();
 
-        // READ THE TODO
-        //
         Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qrHash)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -191,13 +182,6 @@ public class QueryHandler {
 
             }
         });
-
-
-
-
-
-
-
     }
 
     /**

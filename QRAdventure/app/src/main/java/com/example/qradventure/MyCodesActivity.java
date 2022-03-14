@@ -48,7 +48,6 @@ public class MyCodesActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_my_codes);
         setTitle("My Codes");
         qrList = findViewById(R.id.qr_list);
@@ -83,18 +82,13 @@ public class MyCodesActivity extends AppCompatActivity {
             }
         });
 
-
         FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
         backButton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View view) {
-                                              Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
-                                              startActivity(intent);
-
+                                             finish();
                                           }
                                       });
-
-
 
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -170,7 +164,6 @@ public class MyCodesActivity extends AppCompatActivity {
                 .show();
 
                 return true;
-
             }
         });
 

@@ -136,6 +136,4 @@ public class ViewCodesActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 }

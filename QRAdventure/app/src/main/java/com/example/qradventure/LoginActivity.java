@@ -34,6 +34,7 @@ import java.util.HashMap;
 public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db;
     private Account currentAccount;
+    boolean disableBackButton;
 
     /**
      * Contains logic for existing account login
@@ -41,9 +42,6 @@ public class LoginActivity extends AppCompatActivity {
      * Contains logic for account registration
      * @param savedInstanceState - (unused)
      */
-
-    boolean disableBackButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         /*
         /* if currentAccount was found and set successfully, call: signedIn();
          */
-
 
         // ========== Account Registration ==========
         Button createButton = findViewById(R.id.buttonLogin);
@@ -152,6 +149,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //Restrict back button usage when forcing user to make an account
+
+    /**
+     * Behaviour when back button has been pressed
+     */
     @Override
     public void onBackPressed() {
         if (disableBackButton) {

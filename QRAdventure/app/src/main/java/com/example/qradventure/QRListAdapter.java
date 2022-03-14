@@ -13,11 +13,12 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 
-// Grid View adapter for the grid view in "MyCodesActivity" Class
+/**
+ * Grid View adapter for the grid view in "MyCodesActivity" Class
+  */
 public class QRListAdapter extends ArrayAdapter<Record>{
     Context context;
     private ArrayList<Record> accountRecords;
-
 
     public QRListAdapter(Context context, ArrayList<Record> accountRecords) {
         super(context, R.layout.single_qr, R.id.QR_title, accountRecords);

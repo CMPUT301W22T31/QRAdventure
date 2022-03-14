@@ -42,9 +42,6 @@ public class QRPageActivity extends AppCompatActivity {
             QRTitle.setText("PLACEHOLDER");
         }
 
-        // unpack Intent to get the hash (String)
-        // query DB for that hash to get relevant fields
-
         FloatingActionButton backButton = findViewById(R.id.button_back_to_MyCodes);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

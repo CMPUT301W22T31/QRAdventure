@@ -23,13 +23,15 @@ public class Account {
      * @param username
      *      Unique username
      * @param email
+     *      Email entered by the user
      * @param phoneNumber
+     *      Phone number entered by the user
      * @param loginQR
      *      Player QR. Logs the user in when scanned
      * @param statusQR
      *      Player QR. Shows their game status when scanned
      * @param myRecords
-     *
+     *      Collection of Records that this user has scanned
      */
     public Account(String username, String email, String phoneNumber, String loginQR, String statusQR, ArrayList<Record> myRecords) {
         this.username = username;
@@ -59,8 +61,6 @@ public class Account {
         this.alreadyHas = new HashSet<Record>();
     }
 
-
-
     public String getUsername() {
         return username;
     }
@@ -84,8 +84,9 @@ public class Account {
     /**
      * Checks equality of two accounts
      * @param o
-     *      One account we are checking
-     * @return
+     *      The object we are comparing the account with
+     * @return true if the two accounts are equal
+     *      false if the two accounts are not equal
      */
     @Override
     public boolean equals(Object o) {
@@ -95,17 +96,34 @@ public class Account {
         return Objects.equals(username, account.username);
     }
 
+    /**
+     * Returns the hash code of the account with the username
+     * @return hash code of the account with the username
+     */
     @Override
     public int hashCode() {
         return Objects.hash(username);
     }
 
+    /**
+     * Checks if the account already scanned this QR code
+     * @param record
+     *      Information of user and QR as a record
+     * @return true if the account contains a record
+     *      false if the account does not contain a record
+     */
     public boolean containsRecord(Record record){
 
         return alreadyHas.contains(record);
 
     }
 
+    /**
+     * Add a Record to the Account and an ArrayList of records
+     * @param record
+     * @return true if addition was successful
+     *      false if the Account already contained the record
+     */
     public Boolean addRecord(Record record){
 
         if (this.containsRecord(record)){
@@ -117,10 +135,10 @@ public class Account {
 
     }
 
-    public ArrayList<Record> getMyRecords() {
-        return myRecords;
-    }
-
+    /**
+     * Get the total sum of scores of the Account
+     * @return sum of scores
+     */
     public int getTotalScore(){
         int sum = 0;
         for (Record record: myRecords){
@@ -129,5 +147,7 @@ public class Account {
         return sum;
     }
 
-
+    public ArrayList<Record> getMyRecords() {
+        return myRecords;
+    }
 }

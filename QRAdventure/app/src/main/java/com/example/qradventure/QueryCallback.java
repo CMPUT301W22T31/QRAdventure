@@ -14,5 +14,4 @@ public interface QueryCallback {
 
     void callback(ArrayList<String> nameData, ArrayList<Long> scoreData );
 
-
 }
