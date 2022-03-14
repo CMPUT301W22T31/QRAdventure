@@ -15,7 +15,5 @@ public class StatusQRActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_qractivity);
         setTitle("Access Game Status QR Code");
-
-
     }
 }

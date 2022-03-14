@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -55,7 +57,6 @@ public class PostScanActivity extends AppCompatActivity {
                 .setPositiveButton("QR code scanned", null)
                 .setNegativeButton("Cancel", null)
                 .create().show();
-
     }
 
     /**
@@ -90,7 +91,6 @@ public class PostScanActivity extends AppCompatActivity {
 
                             // TODO: append CURRENT ACCOUNT to the list of players that have scanned this QR
                             //       use set(data, SetOptions.merge());
-
 
                         } else {
                             // Document does not exist, therefore this QR is brand new!
@@ -131,17 +131,16 @@ public class PostScanActivity extends AppCompatActivity {
             Account currentAccount = CurrentAccount.getAccount();
             Record toAdd = new Record(currentAccount, qr);
 
-
             if (!currentAccount.containsRecord(toAdd)) {
 
                 currentAccount.addRecord(new Record(currentAccount, qr));
 
+                CurrentAccount.setAccount(currentAccount);
 
                 // Add User to list of user scanned this qr
                 HashMap<String, Object> userData = new HashMap<>();
                 userData.put("Username", myAccount.getUsername());
                 docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
-
 
                 CollectionReference RecordDB = db.collection("RecordDB");
 
@@ -154,9 +153,13 @@ public class PostScanActivity extends AppCompatActivity {
                             if (document.exists()) {
 
                             } else {
+
+
+
                                 HashMap<String, Object> recordData = new HashMap<>();
                                 recordData.put("User", myAccount.getUsername());
                                 recordData.put("QR", qr.getHash());
+                                recordData.put("UserScore", qr.getScore());
 
                                 RecordDB.document(recordID).set(recordData);
                                 RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -170,6 +173,20 @@ public class PostScanActivity extends AppCompatActivity {
                                 CollectionReference AccountDB = db.collection("AccountDB");
                                 AccountDB.document(myAccount.getUsername())
                                         .collection("My QR Records").document(recordID).set(recordData);
+
+
+                                // Update Total user score
+                                HashMap<String, Object> newUserData = new HashMap<String, Object>();
+                                newUserData.put("E-mail", myAccount.getEmail());
+                                newUserData.put("Phone Number", myAccount.getPhoneNumber());
+                                newUserData.put("LoginQR", myAccount.getLoginQR());
+                                newUserData.put("StatusQR", myAccount.getStatusQR());
+                                newUserData.put("TotalScore", myAccount.getTotalScore());
+                                String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                                newUserData.put("device_id", androidDeviceID);
+
+                                AccountDB.document(myAccount.getUsername()).set(newUserData);
+
                             }
                         }
                     }
@@ -178,7 +195,7 @@ public class PostScanActivity extends AppCompatActivity {
 
             // ====== database logic concluded ======
             // send user to a different activity (which? Account for now?).
-            Intent intent = new Intent(this, AccountActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
@@ -202,7 +219,7 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void addGeolocation(View view) {
-        // related: need a setter method in QR.java?
+        // To be developed further
     }
 
     /**
@@ -216,26 +233,25 @@ public class PostScanActivity extends AppCompatActivity {
 
     /**
      * Sends to ScannedBy activity. Called when respective button is clicked.
+     * Uses a queryhandler to retrieve the needed information and a callback to
+     * go to the desired activity
      * @param view: unused
      */
     public void goToScannedBy(View view) {
-
-
         QueryHandler q = new QueryHandler();
 
-        q.getOthersScanned(qr,new QueryCallback() {
+        q.getOthersScanned(qr.getHash(),new QueryCallback() {
             @Override
-            public void callback(ArrayList<String> data) {
+            public void callback(ArrayList<String> nameData, ArrayList<Long> scoreData) {
 
                 Intent intent = new Intent(PostScanActivity.this, ScannedByActivity.class);
 
-                intent.putExtra("PLAYERS", data);
+                intent.putExtra("NAMES", nameData);
+                intent.putExtra("SCORES", scoreData);
 
                 startActivity(intent);
             }
         });
-
-
     }
 
     /**
@@ -244,10 +260,10 @@ public class PostScanActivity extends AppCompatActivity {
      */
     public void goToComments(View view) {
         Intent intent = new Intent(this, CommentsActivity.class);
+
+        intent.putExtra("QR Hash", qr.getHash());
+
         startActivity(intent);
     }
-
-
-
 
 }

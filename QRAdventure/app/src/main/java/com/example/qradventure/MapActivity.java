@@ -4,19 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 
 /**
- * Map Activity TODO: Document & Implement
+ * Displays the map of nearby QR codes
+ * To be developed later
  */
 public class MapActivity extends AppCompatActivity {
 
-
     /**
-     * TODO: What happens in onCreate?
+     * TODO:
      * @param savedInstanceState - unused
      */
     @Override
@@ -40,8 +43,15 @@ public class MapActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-                    startActivity(intent3);
+                    // Use IntentIntegrator to activate camera
+                    IntentIntegrator tempIntent = new IntentIntegrator(MapActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
@@ -55,4 +65,24 @@ public class MapActivity extends AppCompatActivity {
             return false;
         });
     }
+
+    /**
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+            String content = result.getContents();
+            if (content != null) {
+                Intent intent = new Intent(MapActivity.this, PostScanActivity.class);
+                intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+                startActivity(intent);
+            }
+    }
+
 }

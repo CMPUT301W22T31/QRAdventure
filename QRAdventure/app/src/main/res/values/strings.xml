@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">QRAdventure</string>
     <string name="EXTRA_QR_CONTENT">com.example.qradventure.QR_CONTENT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="EXTRA_USERNAME">com.example.qradventure.USERNAME</string>
+    <string name="EXTRA_HASH">com.example.qradventure.HASH</string>
 </resources>

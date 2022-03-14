@@ -1,77 +1,59 @@
 package com.example.qradventure;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 
+//import com.example.qradventure.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 /**
  * Startup Activity
+ * Checks for existing account and proceeds to app
+ * Otherwise, if no account exists, sends to LoginActivity
  */
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView navbar;
 
     /**
-     * **TEMP** logs into a default test account
+     * Holds logic for sending app to register, or proceed to app
      * @param savedInstanceState - (unused)
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Main Activity");
 
         // Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
 
-        // DUMMY TEST ACCOUNT
-        // TODO: DELETE
-        Account account = new Account("Default Test Account", "temp", "temp", "temp", "temp");
-        CurrentAccount.setAccount(account);
-
         //Get local android device ID
         String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
 
         // ====== Query for accounts with matching device_id field ======
         // send to registration if no matching documents exist
         QueryHandler q = new QueryHandler();
-
         q.getLoginAccount(androidDeviceID, new AccountCallback() {
             @Override
             public void toActivity(Boolean alreadyCreated) {
@@ -88,5 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
+
 }

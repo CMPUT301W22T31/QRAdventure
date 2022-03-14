@@ -5,12 +5,15 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -20,16 +23,27 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Class for holding all Querys to the Firestore database.
+ */
 public class QueryHandler {
 
     FirebaseFirestore db;
+    String TAG = "QueryHandler";
 
     public QueryHandler(){
         FirebaseFirestore.getInstance();
     }
 
-
+    /**
+     * Very large query for obtaining all the info for the current logged in user account
+     *
+     * @param androidDeviceID
+     *      Device ID of the android device. Used to automatically log in the account
+     *
+     * @param callback
+     *      Callback function used after the Query has completed
+     */
     public void getLoginAccount(String androidDeviceID, AccountCallback callback){
 
         db = FirebaseFirestore.getInstance();
@@ -73,6 +87,10 @@ public class QueryHandler {
                                                     @Override
                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                         if (task.isSuccessful()) {
+                                                            if (task.getResult().size() == 0) {
+                                                                // no records found! Complete login.
+                                                                callback.toActivity(true);
+                                                            }
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
                                                                 db.collection("QRDB").document(qrHash)
@@ -117,51 +135,53 @@ public class QueryHandler {
                             // ERROR: query failed
                             Log.d("logs", "DeviceID query failed!", task.getException());
                         }
-
-
-
                     }
                 });
-
     }
 
-
-
-
-
-    public void getOthersScanned(QR qr, QueryCallback myCallback){
+    /**
+     * Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
+     * TODO: The scores this returns are only the scores of the QR. Not the player's sum score.
+     * @param qrHash
+     *      The QR code we are querying with
+     * @param myCallback
+     *      Callback function used after the query is done
+     */
+    public void getOthersScanned(String qrHash, QueryCallback myCallback){
 
         db = FirebaseFirestore.getInstance();
 
-
-
-        Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qr.getHash())
+        Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qrHash)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 String recordID;
-                ArrayList<String> othersScanned = new ArrayList<>();
+                ArrayList<String> playerNames = new ArrayList<String>();
+                ArrayList<Long> playerScores = new ArrayList<Long>();
 
                 if (task.isSuccessful()){
                     // Start list activity with the accounts
-
                     for (QueryDocumentSnapshot doc : task.getResult()){
                         recordID = doc.getId();
-                        Log.d("RECORD:", recordID);
-                        othersScanned.add(recordID);
+                        Log.d(TAG, recordID);
+                        String accName = recordID.substring(0, recordID.indexOf('-'));
+                        Map<String, Object> accData = doc.getData();
+                        Long totalScore = (Long)accData.get("UserScore");
+                        Log.d(TAG, "accName = " + accName);
+                        Log.d(TAG, "totalScore = "+ totalScore);
+
+                        playerNames.add(accName);
+                        playerScores.add(totalScore);
                     }
-
-                    myCallback.callback(othersScanned);
-
+                    myCallback.callback(playerNames, playerScores);
                 }else{
-                    Log.d("SUCCESS:", "NO");
-
+                    // ERROR: Task failed
+                    Log.d(TAG, "QUERY FAILED");
                 }
 
             }
         });
-
     }
 
     /**

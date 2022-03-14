@@ -17,9 +17,15 @@ public class QR {
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
     private ArrayList<String> geolocation;
-    // TODO: add comments/comment section
+    private ArrayList<Comment> comments;
 
-    // two constructors
+    /**
+     * More detailed constructor
+     * @param hash Unique hash
+     * @param score
+     * @param scannedAccounts all accounts which have scanned this QR code
+     * @param geolocation unused for now
+     */
     public QR(String hash, int score, ArrayList<Account> scannedAccounts, ArrayList<String> geolocation) {
         this.hash = hash;
         this.score = score;
@@ -27,6 +33,11 @@ public class QR {
         this.geolocation = geolocation;
     }
 
+    /**
+     * Lest detailed constructor, with just the QR String
+     * @param QR
+     *      The String of the QR code
+     */
     public QR(String QR){
         hash = DigestUtils.sha256Hex(QR);
         calculateScore(hash);
@@ -34,6 +45,13 @@ public class QR {
         geolocation = new ArrayList<String>();
     }
 
+    /**
+     * Use for comparing QR codes
+     * @param o
+     *      QR code we are  comparing to
+     * @return
+     *      True if they are equal, False otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,11 +66,11 @@ public class QR {
     }
 
     /**
-     * Function to obtain the score from a hexidecimal hash
+     * Function to obtain the score from a hexidecimal hash. Uses the method suggested on Eclass
      * @param hash
-     *          String - The hash we wish to get the score from
+     *      The hash we wish to get the score from
      * @return
-     *          Int - The score as an integer
+     *      The score as an integer
      */
     public int calculateScore(String hash){
 
@@ -62,25 +80,22 @@ public class QR {
 
         int QRScore = 0;
 
+        // Loop the entire string
         for (int i = 0; i < hash.length() - 1; i++){
             current = hash.charAt(i);
             nextChar = hash.charAt(i + 1);
 
-
+            // Check if the characters are consecutive or not
             if (current == nextChar){
                 consecutive++;
-            }else{
-
-                if (current == '0'){
+            }else {
+                if (current == '0') {
                     QRScore += Math.pow(20, consecutive);
-                }
-                else{
+                } else {
                     QRScore += Math.pow(Character.digit(current, 16), consecutive);
                 }
                 consecutive = 0;
-
             }
-
         }
 
         // handle last character

@@ -1,10 +1,25 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.integration.android.IntentIntegrator;
+
+import java.util.ArrayList;
 
 
 /**
@@ -13,24 +28,126 @@ import android.view.View;
  * NOTE: This is functionally different from MyCodesActivity
  */
 public class ViewCodesActivity extends AppCompatActivity {
+    String username;
+    ArrayList<Record> records;
+    GridView qrList;
+    FirebaseFirestore db;
+    QRListAdapter qrListAdapter;
+    BottomNavigationView navbar;
+    String LOG = "VCActivity";
 
+    /**
+     * Initialize Gridview and click listener
+     * @param savedInstanceState - unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_codes);
-        setTitle("USERNAME123456789s Codes");
+        setContentView(R.layout.activity_my_codes);
+        db = FirebaseFirestore.getInstance();
 
-        // unpack the intent to get the account username
-        // query DB by username to get relevant fields
+        // unpack intent to get account username
+        Intent intent = getIntent();
+        username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
+
+        // enable GridView
+        qrList = findViewById(R.id.qr_list);
+        records = new ArrayList<Record>();
+        qrListAdapter = new QRListAdapter(this, records);
+        qrList.setAdapter(qrListAdapter);
+
+        // on click listener logic
+        qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
+                intent.putExtra("QRtitle", records.get(position).getQRHash().substring(0,4));
+                intent.putExtra("QRHash", records.get(position).getQRHash());
+                startActivity(intent);
+            }
+        });
+
+        // query DB to get records
+        loadRecords();
+
+        // ====== back button logic ======
+        FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        // ====== NAVBAR ======
+        navbar = findViewById(R.id.navbar_menu);
+        navbar.setItemIconTintList(null);
+        navbar.setOnItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
+                case R.id.leaderboards:
+                    Log.d("check", "WORKING???");
+                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
+                    startActivity(intent1);
+                    break;
+                case R.id.search_players:
+                    Log.d("check", "YES WORKING???");
+                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.scan:
+                    // Use IntentIntegrator to activate camera
+                    IntentIntegrator tempIntent = new IntentIntegrator(ViewCodesActivity.this);
+                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                    tempIntent.setCameraId(0);
+                    tempIntent.setOrientationLocked(false);
+                    tempIntent.setPrompt("Scanning");
+                    tempIntent.setBeepEnabled(true);
+                    tempIntent.setBarcodeImageEnabled(true);
+                    tempIntent.initiateScan();
+                    break;
+                case R.id.map:
+                    Intent intent4 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent4);
+                    break;
+                case R.id.my_account:
+                    Intent intent5 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent5);
+                    break;
+            }
+            return false;
+        });
 
     }
 
     /**
-     * Sends to QRPage activity. Called when respective button is clicked.
-     * @param view: unused
+     * Reconstructs the records associated with username
      */
-    public void goToQRPage(View view) {
-        Intent intent = new Intent(this, QRPageActivity.class);
-        startActivity(intent);
+    public void loadRecords() {
+        // dummy account since Record requires an account
+        Account account = new Account(username, "", "", "", "");
+
+        db.collection("AccountDB").document(username).collection("My QR Records")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot recordDoc : task.getResult()) {
+                                // reconstruct the record
+                                String hash = (String) recordDoc.get("QR");
+                                String score =  "" + recordDoc.get("UserScore");
+                                QR qr = new QR(hash, Integer.parseInt(score), null, null);
+                                Record newRecord = new Record(account, qr);
+
+                                // add the record and notify view!
+                                records.add(newRecord);
+                                qrListAdapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            // ERROR: QUERY FAILED
+                            Log.d(LOG, "QUERY FAILED ", task.getException());
+                        }
+                    }
+                });
     }
 }
