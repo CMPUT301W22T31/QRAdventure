@@ -16,7 +16,7 @@ public class Account {
     private String loginQR;
     private String statusQR;
     private ArrayList<Record> myRecords; // A list is used here to enforce chronological order
-    private Set<Record> alreadyHas; // Used for tracking which records the player has
+    //private Set<Record> alreadyHas; // Used for tracking which records the player has
 
     /**
      * Constructor with the record list
@@ -40,7 +40,6 @@ public class Account {
         this.loginQR = loginQR;
         this.statusQR = statusQR;
         this.myRecords = myRecords;
-        this.alreadyHas = new HashSet<Record>();
     }
 
     /**
@@ -58,7 +57,7 @@ public class Account {
         this.loginQR = loginQR;
         this.statusQR = statusQR;
         this.myRecords = new ArrayList<Record>();
-        this.alreadyHas = new HashSet<Record>();
+
     }
 
     public String getUsername() {
@@ -134,13 +133,15 @@ public class Account {
         if (this.containsRecord(record)){
             return false;
         }
-        alreadyHas.add(record);
         myRecords.add(record);
         return true;
 
     }
 
-
+    /**
+     * Removes a record from this account
+     * @param hash of the record we are removing
+     */
     public void removeRecord(String hash){
 
         int i = 0;

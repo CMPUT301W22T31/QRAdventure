@@ -150,7 +150,15 @@ public class QueryHandler {
                 });
     }
 
-
+    /**
+     * Checks if a certain name is taken and add the account if it is not taken
+     * Used when an account is being created
+     * informs the calling activity of the result
+     *
+     * @param data Data which will be set if username is not taken
+     * @param username The name we are checking
+     * @param callback Callback function
+     */
     public void checkNameTaken(HashMap<String, Object> data, String username, Callback callback){
 
         db = FirebaseFirestore.getInstance();
@@ -234,7 +242,11 @@ public class QueryHandler {
     }
 
 
-
+    /**
+     * Takes a string and querys a search result based off of the string
+     * @param username What we are searching for
+     * @param callback Callback function
+     */
     public void playerSearch(String username, Callback callback) {
 
 
@@ -250,7 +262,7 @@ public class QueryHandler {
                         ArrayList<Object> args = new ArrayList<Object>();
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
-                                // no results returned, notify via toast
+                                // no results returned
                                 callback.callback(args);
 
                             } else {
@@ -280,15 +292,22 @@ public class QueryHandler {
     }
 
 
-
-    public void deleteRecord(Account myAccount, int position){
+    /**
+     * Deletes a record from the databnase
+     * @param myAccount The account from which we are deleting the record
+     * @param toDelete The record which is being deleted
+     */
+    public void deleteRecord(Account myAccount, Record toDelete){
 
 
         db = FirebaseFirestore.getInstance();
-        String QRRecord = myAccount.getUsername() + "-" + myAccount.getMyRecords().get(position).getQRHash();
+        String QRRecord = myAccount.getUsername() + "-" + toDelete.getQRHash();
+
+        HashMap<String, Object> newScore = new HashMap<String, Object>();
+        newScore.put("TotalScore", myAccount.getTotalScore());
 
         db.collection("AccountDB").document(myAccount.getUsername())
-                .update("TotalScore", myAccount.getTotalScore());
+                .update(newScore);
 
         db.collection("AccountDB")
                 .document(myAccount.getUsername())
@@ -308,7 +327,7 @@ public class QueryHandler {
                     }
                 });
         db.collection("QRDB")
-                .document(myAccount.getMyRecords().get(position).getQRHash())
+                .document(toDelete.getQRHash())
                 .collection("Scanned By")
                 .document(myAccount.getUsername())
                 .delete()

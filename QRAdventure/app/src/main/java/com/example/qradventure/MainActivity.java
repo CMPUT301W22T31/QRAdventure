@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         // send to registration if no matching documents exist
         QueryHandler q = new QueryHandler();
 
+        // Check if account for this device had been created
         q.getLoginAccount(androidDeviceID, new Callback() {
 
             @Override
