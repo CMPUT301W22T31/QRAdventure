@@ -24,18 +24,19 @@ import java.util.ArrayList;
  * Activity displaying the profile of any player. Anyone can access this activity.
  */
 public class ProfileActivity extends AppCompatActivity {
-    Account account = CurrentAccount.getAccount();
     private String username;
     BottomNavigationView navbar;
 
+    /**
+     * Gets and displays fields of a player's profile
+     * Enables navbar
+     * @param savedInstanceState - unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // unpack intent to get account username
-        // query DB for username. Pull relevant fields to display
-        setTitle("USERNAME123456789s profile");
         // unpack intent to get account username
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
@@ -79,9 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         // ====== query DB for display fields ======
-
         QueryHandler query = new QueryHandler();
-
         query.getProfile(username, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {

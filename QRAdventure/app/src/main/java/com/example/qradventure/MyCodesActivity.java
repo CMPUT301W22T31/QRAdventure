@@ -45,22 +45,26 @@ public class MyCodesActivity extends AppCompatActivity {
     FirebaseFirestore db;
     BottomNavigationView navbar;
 
+    /**
+     * Sets button on click listeners
+     * Holds logic to delete QR codes
+     * Enables navbar
+     * @param savedInstanceState - unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        db = FirebaseFirestore.getInstance();
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_my_codes);
-        setTitle("My Codes");
-        qrList = findViewById(R.id.qr_list);
 
+        // get db, account references
+        db = FirebaseFirestore.getInstance();
         Account myAccount = CurrentAccount.getAccount();
-
         ArrayList<Record> accountRecords = myAccount.getMyRecords();
+
+        // initialize adapter
+        qrList = findViewById(R.id.qr_list);
         QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);
         qrList.setAdapter(qrListAdapter);
-
 
         // ====== on click listener : intent to activity ======
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

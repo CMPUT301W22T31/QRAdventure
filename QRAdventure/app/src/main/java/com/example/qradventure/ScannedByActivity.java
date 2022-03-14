@@ -34,14 +34,9 @@ public class ScannedByActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanned_by);
-        setTitle("Scanned By:");
 
         // load data from intent
         ArrayList<String> players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
-//<<<<<<< HEAD
-//        ArrayList<Long> scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
-//=======
-//>>>>>>> 18a88b4ff4e3c576e37bf1aed25ce20fffe2db12
 
         // add data to an array
         // TODO: QueryH to get player cumulative scores. Skipped for now.

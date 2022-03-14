@@ -12,6 +12,10 @@ import android.view.View;
  */
 public class LeaderboardActivity extends AppCompatActivity {
 
+    /**
+     * TODO: Develop activity (part 4)
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,13 +25,10 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     /**
      * Sends to profile activity. Called when a player is clicked.
-     * TEMPORARY: Using a button to navigate. Changed for proper navigation.
+     * TODO: Part 4
      * @param view: unused (button)
      */
     public void goToProfile(View view) {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        // use intent to carry over which profile was clicked? Just send their String username.
-        // To be developed further on
-        startActivity(intent);
+        // intent extra the username
     }
 }

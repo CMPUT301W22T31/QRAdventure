@@ -19,7 +19,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class MapActivity extends AppCompatActivity {
 
     /**
-     * TODO:
+     * Sets layout and enables navbar
      * @param savedInstanceState - unused
      */
     @Override
