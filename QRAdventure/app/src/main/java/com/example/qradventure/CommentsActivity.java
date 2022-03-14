@@ -1,5 +1,7 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +25,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +68,29 @@ public class CommentsActivity extends AppCompatActivity {
         commentListView.setAdapter(commentAdapter);
         commentTitle = findViewById(R.id.text_comments_title);
 
+
+        // Update number of comments
+        TextView commentTitle = findViewById(R.id.text_comments_title);
+        String commentTitleText = "Comments";
+        commentTitle.setText(commentTitleText);
+
+        EditText enteredComment = findViewById(R.id.editText_comment);
+
+//        QueryHandler query = new QueryHandler();
+//
+//        query.getComments(hash, new Callback() {
+//            @Override
+//            public void callback(ArrayList<Object> args) {
+//
+//                for (Object o: args){
+//                    commentArrayList.add( (Comment)o);
+//                    commentCount++;
+//                }
+//                commentAdapter.notifyDataSetChanged();
+//            }
+//        });
+
+
         // ====== Event listener (+ live updates!) ======
         docRefQR.collection("Comments")
                 .orderBy("Position")
@@ -82,6 +108,7 @@ public class CommentsActivity extends AppCompatActivity {
                             Comment newComment = new Comment(author, text);
                             commentArrayList.add(newComment);
                         }
+
 
                         // notify data set changed
                         commentAdapter.notifyDataSetChanged();
@@ -161,4 +188,28 @@ public class CommentsActivity extends AppCompatActivity {
             return false;
         });
     }
+
+
+
+
+    /**
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        if (content != null) {
+            Intent intent = new Intent(CommentsActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+        }
+    }
+
+
 }

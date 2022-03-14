@@ -124,30 +124,20 @@ public class ViewCodesActivity extends AppCompatActivity {
      */
     public void loadRecords() {
         // dummy account since Record requires an account
-        Account account = new Account(username, "", "", "", "");
+        QueryHandler query = new QueryHandler();
 
-        db.collection("AccountDB").document(username).collection("My QR Records")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot recordDoc : task.getResult()) {
-                                // reconstruct the record
-                                String hash = (String) recordDoc.get("QR");
-                                String score =  "" + recordDoc.get("UserScore");
-                                QR qr = new QR(hash, Integer.parseInt(score), null, null);
-                                Record newRecord = new Record(account, qr);
+        query.loadRecords(username, new Callback() {
+            @Override
+            public void callback(ArrayList<Object> args) {
 
-                                // add the record and notify view!
-                                records.add(newRecord);
-                                qrListAdapter.notifyDataSetChanged();
-                            }
-                        } else {
-                            // ERROR: QUERY FAILED
-                            Log.d(LOG, "QUERY FAILED ", task.getException());
-                        }
-                    }
-                });
+                for (Object o: args){
+                    records.add((Record)o);
+
+                }
+                qrListAdapter.notifyDataSetChanged();
+
+            }
+        });
+
     }
 }

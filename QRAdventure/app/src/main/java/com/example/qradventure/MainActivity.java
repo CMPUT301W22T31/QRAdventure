@@ -1,31 +1,24 @@
 package com.example.qradventure;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 
-import android.widget.Toast;
+
 
 
 //import com.example.qradventure.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
+
+import java.util.ArrayList;
 
 /**
  * Startup Activity
@@ -54,10 +47,13 @@ public class MainActivity extends AppCompatActivity {
         // ====== Query for accounts with matching device_id field ======
         // send to registration if no matching documents exist
         QueryHandler q = new QueryHandler();
-        q.getLoginAccount(androidDeviceID, new AccountCallback() {
+
+        q.getLoginAccount(androidDeviceID, new Callback() {
+
             @Override
-            public void toActivity(Boolean alreadyCreated) {
+            public void callback(ArrayList<Object> args) {
                 Intent intent;
+                Boolean alreadyCreated = (Boolean)args.get(0);
                 if (alreadyCreated){
                     intent = new Intent(MainActivity.this, AccountActivity.class);
                 }

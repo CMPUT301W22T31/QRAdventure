@@ -140,21 +140,24 @@ public class Account {
 
     }
 
+
     public void removeRecord(String hash){
 
         int i = 0;
         for (Record r: myRecords){
             if (r.getQRHash() == hash){
-
                 myRecords.remove(i);
                 return;
             }
             i++;
+
         }
 
-
-
     }
+
+
+
+
 
     /**
      * Get the total sum of scores of the Account
@@ -168,7 +171,49 @@ public class Account {
         return sum;
     }
 
+    // gets the lowest QR the player has scan to display
+    public int getLowestQR() {
+
+        if (myRecords.size() == 0){
+            return 0;
+        }
+
+        // TODO: verify this works. Sometimes records are not present.
+        int smallest = myRecords.get(0).getQRscore();
+        for (Record record: myRecords
+        ) {
+            if (record.getQRscore() < smallest){
+                smallest = record.getQRscore();
+            }
+        }
+        return smallest;
+    }
+
+
+    // gets the highest QR the player has scan to display
+    public int getHighestQR() {
+
+        if (myRecords.size() == 0){
+            return 0;
+        }
+
+        int biggest = myRecords.get(0).getQRscore();
+        for (Record record: myRecords
+        ) {
+            if (record.getQRscore() > biggest){
+                biggest = record.getQRscore();
+            }
+        }
+        return biggest;
+    }
+
+
+    public int getTotalCodesScanned(){
+        return myRecords.size();
+    }
+
     public ArrayList<Record> getMyRecords() {
         return myRecords;
     }
+
 }

@@ -49,7 +49,11 @@ public class PostScanActivity extends AppCompatActivity {
         // unfold intent, create QR object.
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
+        Log.d("logdebug", "intent received " + QRContent);
         qr = new QR(QRContent);
+
+        // TODO: delete, temp for testing
+        Log.d("logs", "intent received " + QRContent);
 
         // For testing purposes, display a dialog of the QR scanned
         new AlertDialog.Builder(PostScanActivity.this).setTitle("Result")
@@ -75,13 +79,14 @@ public class PostScanActivity extends AppCompatActivity {
 
             // reference: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
             // Check for a document matching the qr hash
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            QueryHandler query = new QueryHandler();
+
+            query.addQR(qr, new Callback() {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    // task is a document query
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
+                public void callback(ArrayList<Object> args) {
+                    Boolean exists = (Boolean)args.get(0);
+
+                    if (exists){
                             // Document exists, therefore QR already in DB!
                             Context context = getApplicationContext();
                             CharSequence text = "That QR is in the DB!";
@@ -92,36 +97,19 @@ public class PostScanActivity extends AppCompatActivity {
                             // TODO: append CURRENT ACCOUNT to the list of players that have scanned this QR
                             //       use set(data, SetOptions.merge());
 
-                        } else {
+
+                    }else{
                             // Document does not exist, therefore this QR is brand new!
                             Context context = getApplicationContext();
                             CharSequence text = "New QR! Adding to Database...";
                             int duration = Toast.LENGTH_LONG;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
-
-                            // add this QR to the database
-                            // TODO: populate all fields
-                            HashMap<String, Object> QRData = new HashMap<>();
-                            QRData.put("Score", qr.getScore()); // use a manual score to test, 1234?
-
-
-                            docRef.set(QRData); // set the data!
-                            // could include success/failure listener?
-
-                        }
-
-                    } else {
-                        // document query was not successful
-                        Context context = getApplicationContext();
-                        CharSequence text = "ERROR: query failed!";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                        Log.d(TAG, "get failed with ", task.getException());
                     }
+
                 }
             });
+
 
             //====== Create New Record ======//
 
@@ -144,53 +132,12 @@ public class PostScanActivity extends AppCompatActivity {
 
                 CollectionReference RecordDB = db.collection("RecordDB");
 
-                RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        // task is a document query
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
+                QueryHandler addRecord = new QueryHandler();
 
-                            } else {
+                String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+                addRecord.addRecord(androidDeviceID, qr, myAccount, recordID);
 
-
-                                HashMap<String, Object> recordData = new HashMap<>();
-                                recordData.put("User", myAccount.getUsername());
-                                recordData.put("QR", qr.getHash());
-                                recordData.put("UserScore", qr.getScore());
-
-                                RecordDB.document(recordID).set(recordData);
-                                RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                                            FirebaseFirestoreException error) {
-                                    }
-                                });
-
-                                //====== Add Record to user ======//
-                                CollectionReference AccountDB = db.collection("AccountDB");
-                                AccountDB.document(myAccount.getUsername())
-                                        .collection("My QR Records").document(recordID).set(recordData);
-
-
-                                // Update Total user score
-                                HashMap<String, Object> newUserData = new HashMap<String, Object>();
-                                newUserData.put("E-mail", myAccount.getEmail());
-                                newUserData.put("Phone Number", myAccount.getPhoneNumber());
-                                newUserData.put("LoginQR", myAccount.getLoginQR());
-                                newUserData.put("StatusQR", myAccount.getStatusQR());
-                                newUserData.put("TotalScore", myAccount.getTotalScore());
-                                String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                                newUserData.put("device_id", androidDeviceID);
-
-                                AccountDB.document(myAccount.getUsername()).set(newUserData);
-
-                            }
-                        }
-                    }
-                });
             }
 
             // ====== database logic concluded ======
