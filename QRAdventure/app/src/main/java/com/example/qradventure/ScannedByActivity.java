@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,6 +45,7 @@ public class ScannedByActivity extends AppCompatActivity {
         previewArray = new ArrayList<PlayerPreview>();
         for (int i = 0; i < players.size(); i++){
             previewInfo = new PlayerPreview(players.get(i), scores.get(i));
+            Log.d("SBATAG", "Score " + i + ": " + scores.get(i));
             previewArray.add(previewInfo);
         }
 

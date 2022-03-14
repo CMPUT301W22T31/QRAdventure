@@ -30,6 +30,7 @@ import java.util.Map;
 public class QueryHandler {
 
     FirebaseFirestore db;
+    String TAG = "QueryHandler";
 
     public QueryHandler(){
         FirebaseFirestore.getInstance();
@@ -166,28 +167,22 @@ public class QueryHandler {
                 ArrayList<String> playerNames = new ArrayList<String>();
                 ArrayList<Long> playerScores = new ArrayList<Long>();
 
-
                 if (task.isSuccessful()){
                     // Start list activity with the accounts
-
                     for (QueryDocumentSnapshot doc : task.getResult()){
                         recordID = doc.getId();
-                        Log.d("RECORD:", recordID);
+                        Log.d(TAG, recordID);
                         String accName = recordID.substring(0, recordID.indexOf('-'));
                         Map<String, Object> accData = doc.getData();
                         Long totalScore = (Long)accData.get("UserScore");
 
                         playerNames.add(accName);
                         playerScores.add(totalScore);
-
-
                     }
-
                     myCallback.callback(playerNames, playerScores);
-
                 }else{
-                    Log.d("SUCCESS:", "NO");
-
+                    // ERROR: Task failed
+                    Log.d(TAG, "QUERY FAILED");
                 }
 
             }
