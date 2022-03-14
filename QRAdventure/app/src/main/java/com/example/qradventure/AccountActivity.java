@@ -18,6 +18,8 @@ import java.text.DecimalFormat;
 
 /**
  * Activity where the logged in player can manage their account
+ * Displays number of codes scanned, total score, highest and lowest score
+ * Leads to account's codes, stats, unique login code and status code
  */
 public class AccountActivity extends AppCompatActivity {
     Account account;
@@ -29,12 +31,11 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         setTitle("Account Activity");
 
-        // get the account from the singleton
+        // Get the account from the singleton
         account = CurrentAccount.getAccount();
 
-        // give info to textviews to display
+        // Give info to textviews to display
         // TODO: Move these to onResume() in case of updated info.
-
         try {
             // get textviews
             TextView displayTotalScore = findViewById(R.id.total_score);
@@ -101,10 +102,17 @@ public class AccountActivity extends AppCompatActivity {
         });
 
     }
-    // if the number is too big, put it in this format
-    // for example, if the user has 1345 qr's scanned
-    // it would say 1.34k in the page
+
+    /**
+     * Changes the format of the number for readability
+     * @param number
+     *      The number to change the format of
+     * @return the changed value as a String
+     */
     private String detailFormatter(Number number) {
+        // if the number is too big, put it in this format
+        // for example, if the user has 1345 qr's scanned
+        // it would say 1.34k in the page
         char[] suffix = {' ', 'k', 'M', 'B', 'T', 'P', 'E'};
         long numValue = number.longValue();
         int value = (int) Math.floor(Math.log10(numValue));
@@ -115,7 +123,11 @@ public class AccountActivity extends AppCompatActivity {
             return new DecimalFormat("#,##0").format(numValue);
         }
     }
-    // gets the lowest QR the player has scan to display
+
+    /**
+     * Gets the lowest QR the player has scanned
+     * @return the value of the lowest score
+     */
     private int getLowestQR() {
         // TODO: verify this works. Sometimes records are not present.
         int smallest = account.getMyRecords().get(0).getQRscore();
@@ -128,7 +140,10 @@ public class AccountActivity extends AppCompatActivity {
         return smallest;
     }
 
-    // gets the highest QR the player has scan to display
+    /**
+     * Gets the highest QR the player has scanned
+     * @return the value of the highest score
+     */
     private int getHighestQR() {
         int biggest = account.getMyRecords().get(0).getQRscore();
         for (Record record: account.getMyRecords()
@@ -140,12 +155,18 @@ public class AccountActivity extends AppCompatActivity {
         return biggest;
     }
 
-    // gets the number of codes scanned by player so we can display it
+    /**
+     * Gets the number of codes the player has scanned
+     * @return the size of the ArrayList of records
+     */
     private int getCodesScanned() {
         return account.getMyRecords().size();
     }
 
-    // gets the cumulative score player has scanned so we can display it
+    /**
+     * Get the total sum of scores of the Account
+     * @return sum of scores
+     */
     private int getTotalScore() {
         int sum = 0;
         for (Record record: account.getMyRecords()) {

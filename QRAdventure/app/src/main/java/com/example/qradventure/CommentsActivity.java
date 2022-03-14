@@ -50,7 +50,6 @@ public class CommentsActivity extends AppCompatActivity {
     TextView commentTitle;
     BottomNavigationView navbar;
 
-
     /**
      * Initialize onClick and onEvent listeners
      * Listeners contains query logic to get and set comments in database
@@ -61,7 +60,6 @@ public class CommentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-
 
         // Account & Intent for QR Hash
         Account myAccount = CurrentAccount.getAccount();

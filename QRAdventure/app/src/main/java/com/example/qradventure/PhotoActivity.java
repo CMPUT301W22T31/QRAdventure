@@ -15,6 +15,5 @@ public class PhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
         setTitle("Take a photo");
-
     }
 }

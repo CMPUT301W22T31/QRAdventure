@@ -10,6 +10,13 @@ public class PlayerPreview {
     private String username;
     private Long totalScore;
 
+    /**
+     * Constructor
+     * @param name
+     *      username of the player
+     * @param score
+     *      total score of the player
+     */
     public PlayerPreview(String name, Long score) {
         this.username = name;
         this.totalScore = score;

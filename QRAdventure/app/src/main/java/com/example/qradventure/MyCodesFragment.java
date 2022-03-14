@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyCodesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment of list of codes scanned by player
+ * To be developed further
  */
 public class MyCodesFragment extends Fragment {
     GridView qrList;

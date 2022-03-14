@@ -31,7 +31,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-
         // unpack intent to get account username
         // query DB for username. Pull relevant fields to display
         setTitle("USERNAME123456789s profile");
@@ -76,7 +75,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
             return false;
         });
-        // ====== Enable navbar functionality ======
 
         // ====== query DB for display fields ======
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -102,7 +100,6 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     }
                 });
-        // ====== query DB for display fields ======
 
     }
     /**

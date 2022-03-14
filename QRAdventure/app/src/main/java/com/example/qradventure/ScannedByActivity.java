@@ -40,7 +40,6 @@ public class ScannedByActivity extends AppCompatActivity {
         ArrayList<String> players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
         ArrayList<Long> scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
 
-
         // add data to an array
         previewArray = new ArrayList<PlayerPreview>();
         for (int i = 0; i < players.size(); i++){
@@ -62,8 +61,6 @@ public class ScannedByActivity extends AppCompatActivity {
                 goToProfile(name);
             }
         });
-
-
     }
 
     /**
@@ -76,7 +73,5 @@ public class ScannedByActivity extends AppCompatActivity {
         intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         startActivity(intent);
     }
-
-
 
 }
