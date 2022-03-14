@@ -1,4 +1,9 @@
 # QRAdventure
+
+
+Database link: https://console.firebase.google.com/u/1/project/qradventure-28162/firestore/data/~2FAccountDB~2Ftradke
+
+
 Notes for part 3:
 
 
