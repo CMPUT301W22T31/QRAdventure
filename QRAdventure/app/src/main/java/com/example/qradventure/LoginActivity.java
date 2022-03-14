@@ -28,16 +28,14 @@ import java.util.HashMap;
 
 /**
  * LoginActivity
- * Checks for an account associated with this device and signs them in
- * Otherwise, this activity handles account creation.
+ * Handles Account Registration
+ * TODO: Rename Activity
  */
 public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db;
     private Account currentAccount;
-    boolean disableBackButton;
 
     /**
-     * Contains logic for existing account login
      * Sets up button listener for account registration
      * Contains logic for account registration
      * @param savedInstanceState - (unused)
@@ -47,13 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         db = FirebaseFirestore.getInstance();
-
-        /* TODO: add logic to query db for an account that belongs to this device
-        /* Alternative method: This device stores their account locally, so retrieve it!
-        /* If exists, *must* set attribute: currentAccount =
-        /*
-        /* if currentAccount was found and set successfully, call: signedIn();
-         */
 
         // ========== Account Registration ==========
         Button createButton = findViewById(R.id.buttonLogin);
@@ -143,23 +134,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-         disableBackButton = intent.getBooleanExtra("disable_back_button", false);
 
-    }
-
-    //Restrict back button usage when forcing user to make an account
-
-    /**
-     * Behaviour when back button has been pressed
-     */
-    @Override
-    public void onBackPressed() {
-        if (disableBackButton) {
-            ;
-        } else {
-            super.onBackPressed();
-        }
     }
 
     /**

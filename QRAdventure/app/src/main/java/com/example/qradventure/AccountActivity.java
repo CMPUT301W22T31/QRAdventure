@@ -94,16 +94,18 @@ public class AccountActivity extends AppCompatActivity {
             TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
 
             // set textviews
-            displayTotalScore.setText(detailFormatter(getTotalScore()));
-            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
-            displayLowestQR.setText(detailFormatter(getLowestQR()));
-            displayHighestQR.setText(detailFormatter(getHighestQR()));
             String username = account.getUsername();
             String email = account.getEmail();
             String phoneNumber = account.getPhoneNumber();
             displayUsername.setText(username);
             displayEmail.setText(email);
             displayPhoneNumber.setText(phoneNumber);
+
+            displayTotalScore.setText(detailFormatter(getTotalScore()));
+            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
+            displayLowestQR.setText(detailFormatter(getLowestQR()));
+            displayHighestQR.setText(detailFormatter(getHighestQR()));
+
         }
         catch (Exception e) {
             Log.d("logs", "Something went wrong while displaying!!! ");
