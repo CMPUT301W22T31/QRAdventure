@@ -20,7 +20,7 @@ public class CurrentAccount {
 
     /**
      * Returns the current account. Creates it if it does not exist
-     * @returnThe current account
+     * @return The current account
      */
     public static Account getAccount() {
         if (account == null) {
