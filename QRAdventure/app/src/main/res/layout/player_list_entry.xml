@@ -1,62 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="10dp"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    >
+    android:layout_height="wrap_content"
+    android:background="@android:drawable/editbox_background_normal"
+    android:backgroundTint="#C1C0C0">
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/other_player_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/grey_rectangle"
-        android:clickable="true"
-        android:onClick="goToMyCodes"
-        android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="20dp">
+        android:padding="20dp"
+        android:text="Username"
+        android:textSize="24sp"
+        android:layout_weight="1">
+    </TextView>
 
-
-        <TextView
-            android:id="@+id/other_player_name"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/source_sans_pro"
-            android:paddingLeft="25dp"
-            android:text="My Codes"
-            android:textColor="#FFFFFF"
-            android:textSize="25dp" />
-
-
-        <TextView
-            android:id="@+id/other_player_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/source_sans_pro"
-            android:text="My Score"
-
-            android:textColor="#FFFFFF"
-            android:textSize="25dp" />
-
-
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-
-
-
-
-
+    <TextView
+        android:id="@+id/other_player_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="Score"
+        android:textSize="24sp"
+        android:textAlignment="viewEnd"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1">
+    </TextView>
 
 </LinearLayout>
 
