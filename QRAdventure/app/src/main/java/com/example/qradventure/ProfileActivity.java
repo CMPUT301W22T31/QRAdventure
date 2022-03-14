@@ -90,9 +90,8 @@ public class ProfileActivity extends AppCompatActivity {
                             if (doc.exists()) {
                                 String email = (String) doc.getData().get("E-mail");
                                 String phone = (String) doc.getData().get("Phone Number");
-                                // TODO: Need a Score field.
-                                //String score = (String) doc.getData().get("Score");
-                                setTextViews(username, email, phone, "TODO");
+                                Long totalScore = (Long) doc.getData().get("TotalScore");
+                                setTextViews(username, email, phone, totalScore.toString());
                             } else {
                                 // log: document dne
                                 Log.d("logs", "Document does not exist!", task.getException());
