@@ -147,6 +147,7 @@ public class QueryHandler {
 
     /**
      * Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
+     * TODO: The scores this returns are only the scores of the QR. Not the player's sum score.
      * @param qrHash
      *      The QR code we are querying with
      * @param myCallback
@@ -157,7 +158,8 @@ public class QueryHandler {
 
         db = FirebaseFirestore.getInstance();
 
-
+        // READ THE TODO
+        //
         Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qrHash)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -175,6 +177,8 @@ public class QueryHandler {
                         String accName = recordID.substring(0, recordID.indexOf('-'));
                         Map<String, Object> accData = doc.getData();
                         Long totalScore = (Long)accData.get("UserScore");
+                        Log.d(TAG, "accName = " + accName);
+                        Log.d(TAG, "totalScore = "+ totalScore);
 
                         playerNames.add(accName);
                         playerScores.add(totalScore);

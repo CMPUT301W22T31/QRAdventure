@@ -38,14 +38,12 @@ public class ScannedByActivity extends AppCompatActivity {
 
         // load data from intent
         ArrayList<String> players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
-        ArrayList<Long> scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
-
 
         // add data to an array
+        // TODO: QueryH to get player cumulative scores. Skipped for now.
         previewArray = new ArrayList<PlayerPreview>();
         for (int i = 0; i < players.size(); i++){
-            previewInfo = new PlayerPreview(players.get(i), scores.get(i));
-            Log.d("SBATAG", "Score " + i + ": " + scores.get(i));
+            previewInfo = new PlayerPreview(players.get(i), "");
             previewArray.add(previewInfo);
         }
 
