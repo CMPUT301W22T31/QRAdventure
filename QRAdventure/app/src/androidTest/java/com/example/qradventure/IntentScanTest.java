@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -77,6 +78,7 @@ public class IntentScanTest {
 
     /**
      * Tests the basic app flow for adding a QR code
+     * Must already have an account registed on the device
      * TODO: Adjust when ScanActivity is revised.
      * @throws Exception
      */
@@ -87,6 +89,7 @@ public class IntentScanTest {
 
         // click on ScanActivity
         View scanButton = solo.getView("scan");
+        Thread.sleep(100);
         solo.clickOnView(scanButton);
 
         // backdoor into PostScanActivity with an intent extra (dummy qr content)
@@ -113,6 +116,15 @@ public class IntentScanTest {
         solo.assertCurrentActivity("QR Page Failed!", QRPageActivity.class);
         solo.clickOnText("View Comments");
         solo.assertCurrentActivity("View Comments failed!", CommentsActivity.class);
+
+        solo.enterText( (EditText)solo.getView(R.id.editText_comment), "This is a comment" );
+
+
+        solo.clickOnText("Add");
+
+        assertTrue(solo.waitForText("This is a comment", 1, 2000));
+
+
     }
 
 
