@@ -34,35 +34,6 @@ public class AccountActivity extends AppCompatActivity {
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
 
-        // Give info to textviews to display
-        // TODO: Move these to onResume() in case of updated info.
-        try {
-            // get textviews
-            TextView displayTotalScore = findViewById(R.id.total_score);
-            TextView displayCodesScanned = findViewById(R.id.codes_scanned);
-            TextView displayLowestQR = findViewById(R.id.lowest_qr);
-            TextView displayHighestQR = findViewById(R.id.highest_qr);
-
-            // set textviews
-            displayTotalScore.setText(detailFormatter(getTotalScore()));
-            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
-            displayLowestQR.setText(detailFormatter(getLowestQR()));
-            displayHighestQR.setText(detailFormatter(getHighestQR()));
-        }
-        catch (Exception e) {
-            Log.d("logs", "Something went wrong while displaying!!! ");
-        }
-
-        String username = account.getUsername();
-        String email = account.getEmail();
-        String phoneNumber = account.getPhoneNumber();
-        TextView displayUsername = findViewById(R.id.user_username);
-        displayUsername.setText(username);
-        TextView displayEmail = findViewById(R.id.user_email);
-        displayEmail.setText(email);
-        TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
-        displayPhoneNumber.setText(phoneNumber);
-
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
@@ -101,6 +72,42 @@ public class AccountActivity extends AppCompatActivity {
             return false;
         });
 
+    }
+
+    /**
+     * On resume, display all the textviews.
+     * So if text data changes after returning TO this activity, the views are updated.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Give info to textviews to display
+        try {
+            // get textviews
+            TextView displayTotalScore = findViewById(R.id.total_score);
+            TextView displayCodesScanned = findViewById(R.id.codes_scanned);
+            TextView displayLowestQR = findViewById(R.id.lowest_qr);
+            TextView displayHighestQR = findViewById(R.id.highest_qr);
+            TextView displayUsername = findViewById(R.id.user_username);
+            TextView displayEmail = findViewById(R.id.user_email);
+            TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
+
+            // set textviews
+            displayTotalScore.setText(detailFormatter(getTotalScore()));
+            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
+            displayLowestQR.setText(detailFormatter(getLowestQR()));
+            displayHighestQR.setText(detailFormatter(getHighestQR()));
+            String username = account.getUsername();
+            String email = account.getEmail();
+            String phoneNumber = account.getPhoneNumber();
+            displayUsername.setText(username);
+            displayEmail.setText(email);
+            displayPhoneNumber.setText(phoneNumber);
+        }
+        catch (Exception e) {
+            Log.d("logs", "Something went wrong while displaying!!! ");
+        }
     }
 
     /**
