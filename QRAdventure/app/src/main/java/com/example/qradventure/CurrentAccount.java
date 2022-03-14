@@ -17,14 +17,11 @@ public class CurrentAccount {
     private CurrentAccount() {
     }
 
+
     /**
-     * Lazy singleton implementation: getInstance() is static
-     * @return
-     *      CurrentAccount object - the only instance of this class.
+     * Returns the current account. Creates it if it does not exist
+     * @returnThe current account
      */
-    // DOCS: Lazy singleton implementation
-    // getInstance() is static so it can be called without making a new instance of the class.
-    // *returns: CurrentAccount - the only instance of this singleton class
     public static Account getAccount() {
         if (account == null) {
             account = new Account("Filler", "filler", "filler", "filler",

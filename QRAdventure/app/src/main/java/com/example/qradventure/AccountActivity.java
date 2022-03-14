@@ -33,7 +33,6 @@ public class AccountActivity extends AppCompatActivity {
 
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
-
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
@@ -81,6 +80,10 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        account = CurrentAccount.getAccount();
+
+
         // Give info to textviews to display
         try {
             // get textviews
@@ -100,10 +103,10 @@ public class AccountActivity extends AppCompatActivity {
             displayEmail.setText(email);
             displayPhoneNumber.setText(phoneNumber);
 
-            displayTotalScore.setText(detailFormatter(getTotalScore()));
-            displayCodesScanned.setText(detailFormatter(getCodesScanned()));
-            displayLowestQR.setText(detailFormatter(getLowestQR()));
-            displayHighestQR.setText(detailFormatter(getHighestQR()));
+            displayTotalScore.setText(detailFormatter(account.getTotalScore()));
+            displayCodesScanned.setText(detailFormatter(account.getTotalCodesScanned()));
+            displayLowestQR.setText(detailFormatter(account.getLowestQR()));
+            displayHighestQR.setText(detailFormatter(account.getHighestQR()));
 
         }
         catch (Exception e) {
@@ -132,58 +135,6 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Gets the lowest QR the player has scanned
-     * @return the value of the lowest score
-     */
-    private int getLowestQR() {
-        // TODO: verify this works. Sometimes records are not present.
-        int smallest = account.getMyRecords().get(0).getQRscore();
-        for (Record record: account.getMyRecords()
-             ) {
-            if (record.getQRscore() < smallest){
-                smallest = record.getQRscore();
-            }
-        }
-        return smallest;
-    }
-
-    /**
-     * Gets the highest QR the player has scanned
-     * @return the value of the highest score
-     */
-    private int getHighestQR() {
-
-        int biggest = account.getMyRecords().get(0).getQRscore();
-        for (Record record: account.getMyRecords()
-        ) {
-            if (record.getQRscore() > biggest){
-                biggest = record.getQRscore();
-            }
-        }
-        return biggest;
-    }
-
-    /**
-     * Gets the number of codes the player has scanned
-     * @return the size of the ArrayList of records
-     */
-    private int getCodesScanned() {
-        return account.getMyRecords().size();
-    }
-
-    /**
-     * Get the total sum of scores of the Account
-     * @return sum of scores
-     */
-    private int getTotalScore() {
-        int sum = 0;
-        for (Record record: account.getMyRecords()) {
-            sum += record.getQRscore();
-
-        }
-        return sum;
-    }
 
     /**
      * Sends to edit info activity. Called when respective button is clicked.

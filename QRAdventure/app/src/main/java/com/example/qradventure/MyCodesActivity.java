@@ -1,6 +1,7 @@
 package com.example.qradventure;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,8 +30,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -92,65 +95,26 @@ public class MyCodesActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String QRRecord = myAccount.getUsername() + "-" + myAccount.getMyRecords().get(position).getQRHash();
-                                try {
-                                    db.collection("AccountDB")
-                                            .document(myAccount.getUsername())
-                                            .collection("My QR Records")
-                                            .document(QRRecord)
-                                            .delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("logs", "DocumentSnapshot successfully deleted!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("logs", "Error deleting document", e);
-                                                }
-                                            });
-                                    db.collection("QRDB")
-                                            .document(myAccount.getMyRecords().get(position).getQRHash())
-                                            .collection("Scanned By")
-                                            .document(myAccount.getUsername())
-                                            .delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("logs", "DocumentSnapshot successfully deleted!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("logs", "Error deleting document", e);
-                                                }
-                                            });
-                                    db.collection("RecordDB")
-                                            .document(QRRecord)
-                                            .delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("logs", "DocumentSnapshot successfully deleted!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("logs", "Error deleting document", e);
-                                                }
-                                            });
-                                } catch (Exception e) {
-                                    Log.d("logs", e.toString());
-                                }
+
                                 Log.d("logs", QRRecord);
 
                                 Record toDelete = accountRecords.get(position);
 
                                 myAccount.removeRecord(toDelete.getQRHash());
 
+                                QueryHandler delete = new QueryHandler();
+                                try {
+                                    delete.deleteRecord(myAccount, toDelete);
+
+                                } catch (Exception e) {
+                                    Log.d("logs", e.toString());
+                                }
+
+                                HashMap<String, Object> newScore = new HashMap<String, Object>();
+                                newScore.put("TotalScore", myAccount.getTotalScore());
+
+                                db.collection("AccountDB").document(myAccount.getUsername())
+                                        .update(newScore);
 
 
                                 CurrentAccount.setAccount(myAccount);
@@ -199,4 +163,23 @@ public class MyCodesActivity extends AppCompatActivity {
             return false;
         });
     }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        if (content != null) {
+            Intent intent = new Intent(MyCodesActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+        }
+    }
+
+
+
+
 }

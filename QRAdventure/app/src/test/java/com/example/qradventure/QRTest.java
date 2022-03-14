@@ -14,13 +14,17 @@ import org.junit.Test;
 public class QRTest {
 
     private QR testQR;
+    private QR testQR2;
     private String testStr;
+    private String testStr2;
 
 
     @Before
     public void setUp(){
         testStr = "wikipedia.org";
+        testStr2 = "other";
         testQR = new QR(testStr);
+        testQR2 = new QR(testStr);
     }
 
 
@@ -47,6 +51,10 @@ public class QRTest {
         assertEquals(testQR.calculateScore(testHash6), 17);
         assertEquals(testQR.calculateScore(testHash7), 122);
 
+    }
+
+    @Test public void testEquals(){
+        assertTrue(testQR.equals(testQR2));
     }
 
 }

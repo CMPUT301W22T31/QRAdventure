@@ -1,25 +1,16 @@
 package com.example.qradventure;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -79,50 +70,40 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("device_id", androidDeviceID);
 
                 if (!username.matches("")) {
-                    DocumentReference docRef = db.collection("AccountDB").document(username);
 
                     // Check for a document matching the input username
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    QueryHandler query = new QueryHandler();
+
+                    query.checkNameTaken(data, username, new Callback() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            // task is a document query
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    // Document exists, so username is taken!
-                                    Context context = getApplicationContext();
-                                    CharSequence text = "Username is taken";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
-                                    // TODO: Does this case need extra logic? Or just a toast?
+                        public void callback(ArrayList<Object> args) {
 
-                                } else {
-                                    // Document does not exist, so username is available!
-                                    Context context = getApplicationContext();
-                                    CharSequence text = "Username available! Creating account...";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
+                            Boolean alreadyCreated = (Boolean)args.get(0);
 
-                                    // Set data. Could add success/fail listeners?
-                                    docRef.set(data);
-
-                                    // on success: proceed to app!
-                                    signedIn();
-                                }
-
-                            } else {
-                                // document query was not successful
+                            if (!alreadyCreated){
                                 Context context = getApplicationContext();
-                                CharSequence text = "ERROR: query failed!";
+                                CharSequence text = "Username available! Creating account...";
                                 int duration = Toast.LENGTH_SHORT;
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
-                                Log.d(TAG, "get failed with ", task.getException());
+
+                                // Set data. Could add success/fail listeners?
+
+
+                                // on success: proceed to app!
+                                signedIn();
+                            }else{
+                                Context context = getApplicationContext();
+                                CharSequence text = "Username is taken";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                // TODO: Does this case need extra logic? Or just a toast?
                             }
+
                         }
                     });
+
                 } else {
                     // user input was empty, notify them via toast:
                     Context context = getApplicationContext();
