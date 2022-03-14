@@ -54,42 +54,33 @@ public class MyCodesActivity extends AppCompatActivity {
 
         Account myAccount = CurrentAccount.getAccount();
 
-        Log.d("logs", "Logged in as" + myAccount.getUsername());
         ArrayList<Record> accountRecords = myAccount.getMyRecords();
-        //Log.d("logs", "" + accountRecords.size());
-        for (Record record : accountRecords
-        ) {
-            Log.d("logs", record.getQRHash().substring(0, 4) + " " + record.getQRscore());
-        }
-
-        //String[] pts = {"23","342","34","34"};
-
         QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);
         qrList.setAdapter(qrListAdapter);
 
-//        Log.d("logs",""+ qrListAdapter.qrRecords.length);
 
+        // ====== on click listener : intent to activity ======
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                // intent to QRPageActivity
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-
                 intent.putExtra("QRtitle", accountRecords.get(position).getQRHash().substring(0,4));
                 intent.putExtra("QRHash", accountRecords.get(position).getQRHash());
-
                 startActivity(intent);
             }
         });
 
+        // ====== Back Button Logic ======
         FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
         backButton.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                                              finish();
                                           }
-                                      });
+        });
 
+        // ====== Long Click Listener for Delete Functionality ======
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -167,6 +158,7 @@ public class MyCodesActivity extends AppCompatActivity {
             }
         });
 
+        // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) -> {

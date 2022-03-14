@@ -13,6 +13,7 @@ import android.widget.GridView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -69,6 +70,15 @@ public class ViewCodesActivity extends AppCompatActivity {
         // query DB to get records
         loadRecords();
 
+        // ====== back button logic ======
+        FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         // ====== NAVBAR ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
@@ -95,9 +105,13 @@ public class ViewCodesActivity extends AppCompatActivity {
                     tempIntent.setBarcodeImageEnabled(true);
                     tempIntent.initiateScan();
                     break;
-                case R.id.my_account:
-                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
+                case R.id.map:
+                    Intent intent4 = new Intent(getApplicationContext(), MapActivity.class);
                     startActivity(intent4);
+                    break;
+                case R.id.my_account:
+                    Intent intent5 = new Intent(getApplicationContext(), AccountActivity.class);
+                    startActivity(intent5);
                     break;
             }
             return false;
