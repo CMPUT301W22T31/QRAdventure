@@ -17,8 +17,6 @@ public class LeaderboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
         setTitle("Leaderboard");
-
-
     }
 
     /**
@@ -29,6 +27,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     public void goToProfile(View view) {
         Intent intent = new Intent(this, ProfileActivity.class);
         // use intent to carry over which profile was clicked? Just send their String username.
+        // To be developed further on
         startActivity(intent);
     }
 }

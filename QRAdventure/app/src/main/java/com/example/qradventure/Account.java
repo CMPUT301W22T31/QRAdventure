@@ -23,13 +23,15 @@ public class Account {
      * @param username
      *      Unique username
      * @param email
+     *      Email entered by the user
      * @param phoneNumber
+     *      Phone number entered by the user
      * @param loginQR
      *      Player QR. Logs the user in when scanned
      * @param statusQR
      *      Player QR. Shows their game status when scanned
      * @param myRecords
-     *
+     *      Collection of Records that this user has scanned
      */
     public Account(String username, String email, String phoneNumber, String loginQR, String statusQR, ArrayList<Record> myRecords) {
         this.username = username;
@@ -59,8 +61,6 @@ public class Account {
         this.alreadyHas = new HashSet<Record>();
     }
 
-
-
     public String getUsername() {
         return username;
     }
@@ -84,8 +84,9 @@ public class Account {
     /**
      * Checks equality of two accounts
      * @param o
-     *      One account we are checking
-     * @return
+     *      The object we are comparing the account with
+     * @return true if the two accounts are equal
+     *      false if the two accounts are not equal
      */
     @Override
     public boolean equals(Object o) {
@@ -95,17 +96,39 @@ public class Account {
         return Objects.equals(username, account.username);
     }
 
+    /**
+     * Returns the hash code of the account with the username
+     * @return hash code of the account with the username
+     */
     @Override
     public int hashCode() {
         return Objects.hash(username);
     }
 
+    /**
+     * Checks if the account already scanned this QR code
+     * @param record
+     *      Information of user and QR as a record
+     * @return true if the account contains a record
+     *      false if the account does not contain a record
+     */
     public boolean containsRecord(Record record){
 
-        return alreadyHas.contains(record);
+        for (Record r: myRecords){
+            if (record.equals(r)){
+                return true;
+            }
+        }
+        return false;
 
     }
 
+    /**
+     * Add a Record to the Account and an ArrayList of records
+     * @param record
+     * @return true if addition was successful
+     *      false if the Account already contained the record
+     */
     public Boolean addRecord(Record record){
 
         if (this.containsRecord(record)){
@@ -117,10 +140,11 @@ public class Account {
 
     }
 
-    public void deleteRecord(String hash){
+
+    public void removeRecord(String hash){
+
         int i = 0;
         for (Record r: myRecords){
-
             if (r.getQRHash() == hash){
                 myRecords.remove(i);
                 return;
@@ -131,10 +155,14 @@ public class Account {
 
     }
 
-    public ArrayList<Record> getMyRecords() {
-        return myRecords;
-    }
 
+
+
+
+    /**
+     * Get the total sum of scores of the Account
+     * @return sum of scores
+     */
     public int getTotalScore(){
         int sum = 0;
         for (Record record: myRecords){
@@ -145,6 +173,11 @@ public class Account {
 
     // gets the lowest QR the player has scan to display
     public int getLowestQR() {
+
+        if (myRecords.size() == 0){
+            return 0;
+        }
+
         // TODO: verify this works. Sometimes records are not present.
         int smallest = myRecords.get(0).getQRscore();
         for (Record record: myRecords
@@ -159,6 +192,11 @@ public class Account {
 
     // gets the highest QR the player has scan to display
     public int getHighestQR() {
+
+        if (myRecords.size() == 0){
+            return 0;
+        }
+
         int biggest = myRecords.get(0).getQRscore();
         for (Record record: myRecords
         ) {
@@ -169,5 +207,13 @@ public class Account {
         return biggest;
     }
 
+
+    public int getTotalCodesScanned(){
+        return myRecords.size();
+    }
+
+    public ArrayList<Record> getMyRecords() {
+        return myRecords;
+    }
 
 }

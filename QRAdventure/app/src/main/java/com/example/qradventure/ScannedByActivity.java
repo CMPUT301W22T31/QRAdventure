@@ -38,14 +38,16 @@ public class ScannedByActivity extends AppCompatActivity {
 
         // load data from intent
         ArrayList<String> players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
-        ArrayList<Long> scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
-
+//<<<<<<< HEAD
+//        ArrayList<Long> scores = (ArrayList<Long>)getIntent().getSerializableExtra("SCORES");
+//=======
+//>>>>>>> 18a88b4ff4e3c576e37bf1aed25ce20fffe2db12
 
         // add data to an array
+        // TODO: QueryH to get player cumulative scores. Skipped for now.
         previewArray = new ArrayList<PlayerPreview>();
         for (int i = 0; i < players.size(); i++){
-            previewInfo = new PlayerPreview(players.get(i), scores.get(i));
-            Log.d("SBATAG", "Score " + i + ": " + scores.get(i));
+            previewInfo = new PlayerPreview(players.get(i), "");
             previewArray.add(previewInfo);
         }
 
@@ -62,8 +64,6 @@ public class ScannedByActivity extends AppCompatActivity {
                 goToProfile(name);
             }
         });
-
-
     }
 
     /**
@@ -76,7 +76,5 @@ public class ScannedByActivity extends AppCompatActivity {
         intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         startActivity(intent);
     }
-
-
 
 }

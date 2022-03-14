@@ -62,6 +62,8 @@ public class SearchPlayersActivity extends AppCompatActivity {
             }
         });
 
+
+
         // enable navbar functionality
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
@@ -97,8 +99,6 @@ public class SearchPlayersActivity extends AppCompatActivity {
             }
             return false;
         });
-
-
     }
 
     /**
@@ -163,8 +163,6 @@ public class SearchPlayersActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity

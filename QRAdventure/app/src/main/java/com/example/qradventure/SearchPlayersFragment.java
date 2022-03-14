@@ -13,9 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchPlayersFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment for player search
+ * To be implemented further
  */
 public class SearchPlayersFragment extends Fragment {
 

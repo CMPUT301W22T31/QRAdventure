@@ -13,13 +13,13 @@ import com.google.zxing.integration.android.IntentResult;
 
 
 /**
- * Map Activity TODO: Document & Implement
+ * Displays the map of nearby QR codes
+ * To be developed later
  */
 public class MapActivity extends AppCompatActivity {
 
-
     /**
-     * TODO: What happens in onCreate?
+     * TODO:
      * @param savedInstanceState - unused
      */
     @Override
@@ -65,9 +65,6 @@ public class MapActivity extends AppCompatActivity {
             return false;
         });
     }
-
-
-
 
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity

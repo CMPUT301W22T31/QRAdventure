@@ -49,7 +49,8 @@ public class CurrentAccount {
      *          String - unique username of account
      */
     public void setByUsername(String username) {
-        // This might be useful for LoginQRActivity?
+        // This might be useful for LoginQRActivity
+        // To be developed further on
     }
 
 }

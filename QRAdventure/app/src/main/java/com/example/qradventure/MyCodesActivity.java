@@ -48,54 +48,39 @@ public class MyCodesActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_my_codes);
         setTitle("My Codes");
         qrList = findViewById(R.id.qr_list);
 
         Account myAccount = CurrentAccount.getAccount();
 
-        Log.d("logs", "Logged in as" + myAccount.getUsername());
         ArrayList<Record> accountRecords = myAccount.getMyRecords();
-        //Log.d("logs", "" + accountRecords.size());
-        for (Record record : accountRecords
-        ) {
-            Log.d("logs", record.getQRHash().substring(0, 4) + " " + record.getQRscore());
-        }
-
-        //String[] pts = {"23","342","34","34"};
-
         QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);
         qrList.setAdapter(qrListAdapter);
 
-//        Log.d("logs",""+ qrListAdapter.qrRecords.length);
 
+        // ====== on click listener : intent to activity ======
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                // intent to QRPageActivity
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-
                 intent.putExtra("QRtitle", accountRecords.get(position).getQRHash().substring(0,4));
                 intent.putExtra("QRHash", accountRecords.get(position).getQRHash());
-
                 startActivity(intent);
             }
         });
 
-
+        // ====== Back Button Logic ======
         FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
         backButton.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View view) {
-                                              Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
-                                              startActivity(intent);
-
+            @Override
+            public void onClick(View view) {
+                                             finish();
                                           }
-                                      });
+        });
 
-
-
+        // ====== Long Click Listener for Delete Functionality ======
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -115,7 +100,14 @@ public class MyCodesActivity extends AppCompatActivity {
                                     Log.d("logs", e.toString());
                                 }
                                 Log.d("logs", QRRecord);
-                                myAccount.getMyRecords().remove(position);
+
+                                Record toDelete = accountRecords.get(position);
+
+                                myAccount.removeRecord(toDelete.getQRHash());
+
+
+
+                                CurrentAccount.setAccount(myAccount);
                                 qrListAdapter.notifyDataSetChanged();
 
                             }
@@ -124,10 +116,10 @@ public class MyCodesActivity extends AppCompatActivity {
                 .show();
 
                 return true;
-
             }
         });
 
+        // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) -> {
@@ -162,35 +154,3 @@ public class MyCodesActivity extends AppCompatActivity {
         });
     }
 }
-
-
-
-
-
-
-
-//        navbar = findViewById(R.id.navbar_menu);
-//        navbar.setItemIconTintList(null);
-//        navbar.setOnItemSelectedListener((item) -> {
-//            switch (item.getItemId()) {
-//                case R.id.leaderboards:
-//                    Log.d("check", "WORKING???");
-//                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
-//                    startActivity(intent1);
-//                    break;
-//                case R.id.search_players:
-//                    Log.d("check", "YES WORKING???");
-//                    Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
-//                    startActivity(intent2);
-//                    break;
-//                case R.id.scan:
-//                    Intent intent3 = new Intent(getApplicationContext(), ScanActivity.class);
-//                    startActivity(intent3);
-//                    break;
-//                case R.id.my_account:
-//                    Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
-//                    startActivity(intent4);
-//                    break;
-//            }
-//            return false;
-//        });

@@ -8,14 +8,21 @@ package com.example.qradventure;
  */
 public class PlayerPreview {
     private String username;
-    private Long totalScore;
+    private String totalScore;
 
-    public PlayerPreview(String name, Long score) {
+    /**
+     * Constructor
+     * @param name
+     *      username of the player
+     * @param score
+     *      total score of the player
+     */
+    public PlayerPreview(String name, String score) {
         this.username = name;
         this.totalScore = score;
     }
 
-    public Long getScore() {
+    public String getScore() {
         return this.totalScore;
     }
 

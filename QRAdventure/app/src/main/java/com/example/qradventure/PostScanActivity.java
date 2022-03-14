@@ -61,7 +61,6 @@ public class PostScanActivity extends AppCompatActivity {
                 .setPositiveButton("QR code scanned", null)
                 .setNegativeButton("Cancel", null)
                 .create().show();
-
     }
 
     /**
@@ -124,6 +123,8 @@ public class PostScanActivity extends AppCompatActivity {
 
                 currentAccount.addRecord(new Record(currentAccount, qr));
 
+                CurrentAccount.setAccount(currentAccount);
+
                 // Add User to list of user scanned this qr
                 HashMap<String, Object> userData = new HashMap<>();
                 userData.put("Username", myAccount.getUsername());
@@ -165,7 +166,7 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void addGeolocation(View view) {
-        // related: need a setter method in QR.java?
+        // To be developed further
     }
 
     /**
@@ -184,8 +185,6 @@ public class PostScanActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void goToScannedBy(View view) {
-
-
         QueryHandler q = new QueryHandler();
 
         q.getOthersScanned(qr.getHash(),new QueryCallback() {
@@ -200,8 +199,6 @@ public class PostScanActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     /**
@@ -215,8 +212,5 @@ public class PostScanActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
-
-
-
 
 }

@@ -7,26 +7,4 @@
     android:background="@color/test"
     tools:context=".MainActivity">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navbar_menu"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/navbar_menu" />
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="409dp"
-        android:layout_height="684dp"
-        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </FrameLayout>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

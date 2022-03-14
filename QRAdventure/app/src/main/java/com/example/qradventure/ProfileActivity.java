@@ -33,7 +33,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-
         // unpack intent to get account username
         // query DB for username. Pull relevant fields to display
         setTitle("USERNAME123456789s profile");
@@ -78,7 +77,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
             return false;
         });
-        // ====== Enable navbar functionality ======
 
         // ====== query DB for display fields ======
 
@@ -95,6 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
                 setTextViews(username, email, phone, totalScore.toString());
             }
         });
+
 
 
     }

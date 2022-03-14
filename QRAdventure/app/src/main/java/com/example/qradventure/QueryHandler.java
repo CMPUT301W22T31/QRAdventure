@@ -30,8 +30,7 @@ import java.util.Map;
 
 
 /**
- * Class for holding all Querys to the firestore database.
- *
+ * Class for holding all Querys to the Firestore database.
  */
 public class QueryHandler {
 
@@ -147,12 +146,8 @@ public class QueryHandler {
                             // ERROR: query failed
                             Log.d("logs", "DeviceID query failed!", task.getException());
                         }
-
-
-
                     }
                 });
-
     }
 
 
@@ -195,16 +190,15 @@ public class QueryHandler {
 
     /**
      * Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
+     * TODO: The scores this returns are only the scores of the QR. Not the player's sum score.
      * @param qrHash
      *      The QR code we are querying with
      * @param myCallback
      *      Callback function used after the query is done
      */
-
     public void getOthersScanned(String qrHash, QueryCallback myCallback){
 
         db = FirebaseFirestore.getInstance();
-
 
         Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qrHash)
         .get()
@@ -223,6 +217,8 @@ public class QueryHandler {
                         String accName = recordID.substring(0, recordID.indexOf('-'));
                         Map<String, Object> accData = doc.getData();
                         Long totalScore = (Long)accData.get("UserScore");
+                        Log.d(TAG, "accName = " + accName);
+                        Log.d(TAG, "totalScore = "+ totalScore);
 
                         playerNames.add(accName);
                         playerScores.add(totalScore);
@@ -235,13 +231,6 @@ public class QueryHandler {
 
             }
         });
-
-
-
-
-
-
-
     }
 
 
@@ -379,6 +368,8 @@ public class QueryHandler {
                         }
                     }
                 });
+
+
     }
 
     public void addQR(QR qr, Callback callback) {
@@ -534,7 +525,7 @@ public class QueryHandler {
 
 
     public void loadRecords(String username, Callback callback){
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Account account = new Account(username, "", "", "", "");
 
@@ -557,8 +548,12 @@ public class QueryHandler {
 
                                 args.add(newRecord);
 
+
+
                                 // add the record and notify view!
                             }
+
+                            callback.callback(args);
                         } else {
                             // ERROR: QUERY FAILED
                             Log.d("VCActivity", "QUERY FAILED ", task.getException());

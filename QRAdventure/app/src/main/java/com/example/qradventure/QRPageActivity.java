@@ -44,15 +44,12 @@ public class QRPageActivity extends AppCompatActivity {
             QRTitle.setText("PLACEHOLDER");
         }
 
-        // unpack Intent to get the hash (String)
-        // query DB for that hash to get relevant fields
-
+        // ====== back button logic ======
         FloatingActionButton backButton = findViewById(R.id.button_back_to_MyCodes);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MyCodesActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -67,6 +64,7 @@ public class QRPageActivity extends AppCompatActivity {
                     break;
                 case R.id.search_players:
                     Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent2);
                     break;
                 case R.id.scan:
                     IntentIntegrator tempIntent = new IntentIntegrator(QRPageActivity.this);

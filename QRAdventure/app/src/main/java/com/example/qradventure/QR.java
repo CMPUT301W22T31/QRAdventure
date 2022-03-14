@@ -17,7 +17,7 @@ public class QR {
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
     private ArrayList<String> geolocation;
-    // TODO: add comments/comment section
+    private ArrayList<Comment> comments;
 
     /**
      * More detailed constructor
@@ -35,7 +35,8 @@ public class QR {
 
     /**
      * Lest detailed constructor, with just the QR String
-     * @param QR The String of the QR code
+     * @param QR
+     *      The String of the QR code
      */
     public QR(String QR){
         hash = DigestUtils.sha256Hex(QR);
@@ -87,18 +88,14 @@ public class QR {
             // Check if the characters are consecutive or not
             if (current == nextChar){
                 consecutive++;
-            }else{
-
-                if (current == '0'){
+            }else {
+                if (current == '0') {
                     QRScore += Math.pow(20, consecutive);
-                }
-                else{
+                } else {
                     QRScore += Math.pow(Character.digit(current, 16), consecutive);
                 }
                 consecutive = 0;
-
             }
-
         }
 
         // handle last character
