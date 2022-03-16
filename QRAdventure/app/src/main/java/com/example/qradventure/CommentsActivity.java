@@ -177,7 +177,7 @@ public class CommentsActivity extends AppCompatActivity {
                     tempIntent.initiateScan();
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
                     startActivity(intent5);
                     break;
                 case R.id.my_account:

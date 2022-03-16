@@ -163,6 +163,10 @@ public class MyCodesActivity extends AppCompatActivity {
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
                     break;
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(intent5);
+                    break;
             }
             return false;
         });
