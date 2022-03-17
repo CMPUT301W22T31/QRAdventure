@@ -164,7 +164,7 @@ public class MyCodesActivity extends AppCompatActivity {
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
                     startActivity(intent5);
                     break;
             }
