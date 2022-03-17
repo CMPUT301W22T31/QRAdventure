@@ -47,7 +47,7 @@ public class PostScanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_scan);
+        setContentView(R.layout.activity_post_scan2);
         setTitle("Post Scan Activity");
 
         // unfold intent, create QR object.
