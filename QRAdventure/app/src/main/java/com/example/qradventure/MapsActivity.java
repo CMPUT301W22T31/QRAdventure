@@ -1,5 +1,6 @@
 package com.example.qradventure;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.qradventure.databinding.ActivityMapsBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -91,5 +93,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(coords).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(coords));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords,15f));
+    }
+    /**
+     * Activity is called when the camera scans a QR code. Processes the result and redirects to
+     * PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        if (content != null) {
+            Intent intent = new Intent(MapsActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+        }
     }
 }
