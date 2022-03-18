@@ -2,6 +2,7 @@ package com.example.qradventure;
 
 import android.util.Log;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -39,7 +40,7 @@ public class QR {
      *      The String of the QR code
      */
     public QR(String QR){
-        hash = DigestUtils.sha256Hex(QR);
+        hash = new String(Hex.encodeHex(DigestUtils.md5(QR)));
         calculateScore(hash);
         scannedAccounts = new ArrayList<Account>();
         geolocation = new ArrayList<String>();
