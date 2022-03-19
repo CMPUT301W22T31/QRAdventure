@@ -4,8 +4,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,8 +25,10 @@ import java.util.ArrayList;
 public class QRPageActivity extends AppCompatActivity {
     String hash;
     String title;
+    Bitmap image;
     TextView QRTitle;
     String recordID;
+    ImageView qrPicture;
     Account currentAccount = CurrentAccount.getAccount();
 
     @Override
@@ -35,11 +39,17 @@ public class QRPageActivity extends AppCompatActivity {
         // set textview for qr name
         // try: temporary to prevent crashes
         QRTitle = findViewById(R.id.qr_title_header);
+        qrPicture = findViewById(R.id.qr_picture);
         try {
             Bundle bundle = getIntent().getExtras(); // get string from previous activity
             title = bundle.getString("QRtitle");
             QRTitle.setText(title);
             hash = bundle.getString("QRHash");
+            image = (Bitmap)bundle.getParcelable("QRPicture");
+
+            if (image != null)
+                qrPicture.setImageBitmap(image);
+
         } catch(Exception e) {
             QRTitle.setText("PLACEHOLDER");
         }

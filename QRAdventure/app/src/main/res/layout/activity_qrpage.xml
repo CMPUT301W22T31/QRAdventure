@@ -30,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/qr_title_header">
 
         <ImageView
+            android:id="@+id/qr_picture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_android_black_24dp" />

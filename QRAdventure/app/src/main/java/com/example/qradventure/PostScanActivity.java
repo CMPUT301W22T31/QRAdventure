@@ -2,18 +2,28 @@ package com.example.qradventure;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.icu.text.RelativeDateTimeFormatter;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,9 +46,13 @@ import java.util.HashMap;
  * Activity that comes immediately after scanning a QR code.
  * Allows the player to manage and interact with the code they have just scanned.
  */
-public class PostScanActivity extends AppCompatActivity {
+public class PostScanActivity extends AppCompatActivity implements  ImageFragment.imageListener {
     private QR qr;
     private String recordID;
+    private Button photoButton;
+    private ActivityResultLauncher cameraLaunch;
+    private Boolean keepImage = false;
+    private Bitmap image;
 
     /**
      * Sets layout and gets QR Content from intent
@@ -54,6 +68,41 @@ public class PostScanActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
         qr = new QR(QRContent);
+
+        photoButton = findViewById(R.id.buttonRecordPhoto);
+
+
+        cameraLaunch = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null){
+                            Bundle bundle = result.getData().getExtras();
+
+                            ImageFragment showPicture = new ImageFragment();
+                            showPicture.setArguments(bundle);
+                            showPicture.show(getSupportFragmentManager(), "CONFIRM_IMAGE");
+
+                            image = (Bitmap)bundle.get("data");
+
+                        }
+
+                    }
+                });
+
+
+                photoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                        if (intent.resolveActivity(getPackageManager()) != null){
+                            cameraLaunch.launch(intent);
+                        }
+
+                    }
+                });
+
 
         // For testing purposes, display a dialog of the QR scanned
         new AlertDialog.Builder(PostScanActivity.this).setTitle("Result")
@@ -118,10 +167,12 @@ public class PostScanActivity extends AppCompatActivity {
             // Add the record to the current account
             Account currentAccount = CurrentAccount.getAccount();
             Record toAdd = new Record(currentAccount, qr);
+            if (keepImage)
+                toAdd.setImage(image);
 
             if (!currentAccount.containsRecord(toAdd)) {
 
-                currentAccount.addRecord(new Record(currentAccount, qr));
+                currentAccount.addRecord(toAdd);
 
                 CurrentAccount.setAccount(currentAccount);
 
@@ -150,6 +201,12 @@ public class PostScanActivity extends AppCompatActivity {
             Toast.makeText(this, "Something went wrong..", Toast.LENGTH_SHORT).show();
             Log.d("logs", "Something went wrong");
         }
+    }
+
+
+    @Override
+    public void keepImage(Boolean res) {
+        keepImage = res;
     }
 
     /**

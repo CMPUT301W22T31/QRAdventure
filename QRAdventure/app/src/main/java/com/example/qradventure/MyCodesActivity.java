@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -74,6 +75,11 @@ public class MyCodesActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
                 intent.putExtra("QRtitle", accountRecords.get(position).getQRHash().substring(0,4));
                 intent.putExtra("QRHash", accountRecords.get(position).getQRHash());
+
+                Bitmap image = accountRecords.get(position).getImage();
+                intent.putExtra("QRPicture", image);
+
+
                 startActivity(intent);
             }
         });
