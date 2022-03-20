@@ -1,29 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LeaderboardActivity">
+    tools:context=".LeaderboardActivity"
+    android:background="@color/black">
 
-    <Button
-        android:id="@+id/TEMPsomePlayer"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:onClick="goToProfile"
-        android:text="USERNAME123456"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/grey"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/buttonFilter1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="filterHighScores"
+            android:text="High Scores"></Button>
+
+        <Button
+            android:id="@+id/buttonFilter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Best QR">
+        </Button>
+
+        <Button
+            android:id="@+id/buttonFilter3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Scans">
+        </Button>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/preview_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="PLAYER LEADERBOARD LIST ?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/personalPlacementRegion"
+        app:layout_constraintTop_toBottomOf="@id/topPanel"
+        app:layout_constraintVertical_bias="0.0">
+
+    </ListView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/personalPlacementRegion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/navbar_menu"
+        android:background="@color/grey">
+
+        <TextView
+            android:id="@+id/tvPRHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personal Ranking"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tvMyRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="###"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPRHeader" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navbar_menu"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/navbar_menu" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

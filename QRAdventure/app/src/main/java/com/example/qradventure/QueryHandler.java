@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -626,10 +627,42 @@ public class QueryHandler {
     }
 
     /**
-     * Used for account login
+     * Queries for the top 5 accounts by Total Score
+     * Callback returns an array of PlayerPreview objects.
+     * @param callback
      */
-    public void LoginQuery(String androidDeviceID) {
+    public void getHighScores(Callback callback) {
+        ArrayList<Object> previewArray = new ArrayList<Object>();
         db = FirebaseFirestore.getInstance();
+
+        // query over accounts, returns top 5 documents by TotalScore
+        db.collection("AccountDB")
+                .orderBy("TotalScore", Query.Direction.DESCENDING)
+                .limit(5)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "num docs: " + task.getResult().size());
+                            for (QueryDocumentSnapshot accDocRef : task.getResult()) {
+                                // get relevant preview data
+                                String username = accDocRef.getId();
+                                String score = "" + accDocRef.get("TotalScore").toString();
+                                Log.d(TAG, "preview is: " + username + score);
+
+                                // create preview and add to array
+                                PlayerPreview newPreview = new PlayerPreview(username, score);
+                                previewArray.add(newPreview);
+                            }
+                            // outside for loop, callback the array
+                            callback.callback(previewArray);
+
+                        } else {
+                            Log.d(TAG, "get High Scores unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
     }
 
 
