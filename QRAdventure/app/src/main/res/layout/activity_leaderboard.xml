@@ -21,22 +21,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="filterHighScores"
+            android:onClick="displayHighScores"
             android:text="High Scores"></Button>
 
         <Button
             android:id="@+id/buttonFilter2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Best QR">
-        </Button>
+            android:onClick="displayBestQR"
+            android:text="Best QR"></Button>
 
         <Button
             android:id="@+id/buttonFilter3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Scans">
-        </Button>
+            android:onClick="displayMostScanned"
+            android:text="Total Scans"></Button>
 
     </LinearLayout>
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -59,7 +60,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         // set default filter: High Score
         currentFilter = 0; // 0 is no filter. Need 0 on startup.
-        filterHighScores(findViewById(R.id.buttonFilter1));
+        displayHighScores(findViewById(R.id.buttonFilter1));
 
         // enable navbar functionality
         navbar = findViewById(R.id.navbar_menu);
@@ -97,21 +98,65 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
     }
 
-
     /**
-     * Calls query to get display data
-     * Sets the listview data
-     * Called on activity startup, and when button is clicked.
+     * *Controller Method*
+     * Validates filter selection; Calls query to display top players by TotalScore
      * @param v: button that called this method
      */
-    public void filterHighScores(View v) {
+    public void displayHighScores(View v) {
         // This is filter 1. do nothing if already on this filter.
         if (currentFilter == 1) { return; }
         currentFilter = 1;
+        String filter = "TotalScore";
 
-        // Call for a query of High Scores
+        queryTopRanks(filter);
+
+        int score = CurrentAccount.getAccount().getTotalScore();
+        displayMyPercentile(filter, score);
+    }
+
+    /**
+     * *Controller Method*
+     * Validates filter selection; Calls query to display top players by BestQR
+     * @param v: button that called this method
+     */
+    public void displayBestQR(View v) {
+        // This is filter 1. do nothing if already on this filter.
+        if (currentFilter == 2) { return; }
+        currentFilter = 2;
+        String filter = "BestQR";
+
+        queryTopRanks(filter);
+
+        int score = CurrentAccount.getAccount().getHighestQR();
+        displayMyPercentile(filter, score);
+    }
+
+    /**
+     * Validates filter selection
+     * Controls calls for displaying top ranks and displaying your percentile
+     * @param v: button that called this method
+     */
+    public void displayMostScanned(View v) {
+        // This is filter 1. do nothing if already on this filter.
+        if (currentFilter == 3) { return; }
+        currentFilter = 3;
+        String filter = "scanCount";
+
+        queryTopRanks(filter);
+
+        int score = CurrentAccount.getAccount().getTotalCodesScanned();
+        displayMyPercentile(filter, score);
+    }
+
+    /**
+     * Uses QueryHandler and Callback to get the top ranked players
+     * Clears and then fills previewArray with the results
+     * @param filter - (String) field over which to filter the top players
+     */
+    public void queryTopRanks(String filter) {
         QueryHandler qh = new QueryHandler();
-        qh.getHighScores(new Callback() {
+        qh.getTopRanks(filter, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
                 // Use the array query callback provided
@@ -122,9 +167,48 @@ public class LeaderboardActivity extends AppCompatActivity {
                     previewArray.add(previewInfo);
                 }
                 adapter.notifyDataSetChanged();
+            }
+        });
+    }
 
-                //previewInfo = (PlayerPreview) args.get(0);
-                //Log.d(TAG, "0th preview is: " + previewInfo.getUsername() + previewInfo.getScore());
+    /**
+     * Uses QueryHandler and Callback to get your percentile among all players
+     * Note: egregious rounding - this serves only as an estimate!
+     * @param filter - (String) Field over which to filter your percentile
+     * @param score - (int) score to determine percentile of
+     */
+    public void displayMyPercentile(String filter, int score) {
+        QueryHandler qh = new QueryHandler();
+
+        // ===== Stacked callbacks =====
+        // Step 1) get count of players with worse scores
+        qh.countLowerScores(filter, score, new Callback() {
+            @Override
+            public void callback(ArrayList<Object> args) {
+                int countLower = (int) args.get(0);
+
+                // Step 2) Get total player count
+                qh.countTotalPlayers(new Callback() {
+                    @Override
+                    public void callback(ArrayList<Object> args) {
+                        int countTotal = (int) args.get(0);
+
+                        // Step 3) Calculate percentile: 100 * (lower/total)
+                        int percentile = (countLower*100) / countTotal;
+
+                        // logs TODO: Delete
+                        Log.d(TAG, "==== Percentile Calculation ====");
+                        Log.d(TAG, "lower/total = " + countLower + " / " + countTotal);
+                        Log.d(TAG, "Percentile = " + percentile);
+
+                        // format percentile for display
+                        String stringPercentile = percentile + "th Percentile!";
+
+                        // set the textview!
+                        TextView tvPercentile = findViewById(R.id.tvMyRank);
+                        tvPercentile.setText(stringPercentile);
+                    }
+                });
             }
         });
     }

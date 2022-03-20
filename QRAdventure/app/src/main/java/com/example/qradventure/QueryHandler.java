@@ -627,18 +627,21 @@ public class QueryHandler {
     }
 
     /**
-     * Queries for the top 5 accounts by Total Score
-     * Callback returns an array of PlayerPreview objects.
-     * @param callback
+     * Queries for the top ranked players by a certain field (filter).
+     * Callback returns an arraylist of PlayerPreview objects.
+     * @param callback - callback to return previewArray when query complete.
      */
-    public void getHighScores(Callback callback) {
+    public void getTopRanks(String fieldFilter, Callback callback) {
         ArrayList<Object> previewArray = new ArrayList<Object>();
         db = FirebaseFirestore.getInstance();
 
-        // query over accounts, returns top 5 documents by TotalScore
+        // Number of results to return; adjustable!
+        int numReturned = 5;
+
+        // query over accounts, returns top 5 documents by fieldFilter
         db.collection("AccountDB")
-                .orderBy("TotalScore", Query.Direction.DESCENDING)
-                .limit(5)
+                .orderBy(fieldFilter, Query.Direction.DESCENDING)
+                .limit(numReturned)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -648,7 +651,7 @@ public class QueryHandler {
                             for (QueryDocumentSnapshot accDocRef : task.getResult()) {
                                 // get relevant preview data
                                 String username = accDocRef.getId();
-                                String score = "" + accDocRef.get("TotalScore").toString();
+                                String score = "" + accDocRef.get(fieldFilter).toString();
                                 Log.d(TAG, "preview is: " + username + score);
 
                                 // create preview and add to array
@@ -659,7 +662,60 @@ public class QueryHandler {
                             callback.callback(previewArray);
 
                         } else {
-                            Log.d(TAG, "get High Scores unsuccessful!: ", task.getException());
+                            Log.d(TAG, "getTopRanks unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Performs simple query that returns the number of players whose
+     * score is lower than the given score (over given fieldFilter)
+     * Note: Can alter query to be inclusive/exclusive of given score. Opt for inclusive.
+     * @param fieldFilter - field over which to rank players
+     * @param callback - callback to return count to
+     */
+    public void countLowerScores(String fieldFilter, int score, Callback callback) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("AccountDB")
+                .whereLessThanOrEqualTo(fieldFilter, score)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "num docs: " + task.getResult().size());
+
+                            // create the array of 1 element; callback
+                            ArrayList<Object> countArray = new ArrayList<Object>();
+                            countArray.add(task.getResult().size());
+                            callback.callback(countArray);
+                        } else {
+                            Log.d(TAG, "countLowerScores unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    /**
+     * Performs simple query that returns the total number of Accounts
+     * @param callback - callback to return count to
+     */
+    public void countTotalPlayers(Callback callback) {
+        db = FirebaseFirestore.getInstance();
+        db.collection("AccountDB")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // create the array of 1 element; callback
+                            ArrayList<Object> countArray = new ArrayList<Object>();
+                            countArray.add(task.getResult().size());
+                            callback.callback(countArray);
+                        } else {
+                            Log.d(TAG, "countTotalPlayers unsuccessful!: ", task.getException());
                         }
                     }
                 });
