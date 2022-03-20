@@ -51,6 +51,8 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+
+        // Call FusedLocationProviderClient class to grab location of user
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Get the account from the singleton
@@ -99,7 +101,6 @@ public class AccountActivity extends AppCompatActivity {
                     }
                     else {
                             ActivityCompat.requestPermissions(AccountActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-
                         }
                     break;
                 case R.id.my_account:
@@ -129,35 +130,6 @@ public class AccountActivity extends AppCompatActivity {
         }
 
     }
-    @SuppressLint("MissingPermission")
-    private void getLocation() {
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                Location location = task.getResult();
-                if(location != null) {
-                    Geocoder geocoder = new Geocoder(AccountActivity.this, Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        Log.d("logs", "latitude = " + addresses.get(0).getLatitude());
-                        Log.d("logs", "longitude = " + addresses.get(0).getLongitude());
-                        ArrayList<Double> userLocation = new ArrayList<Double>();
-                        userLocation.add(addresses.get(0).getLongitude());
-                        userLocation.add(addresses.get(0).getLatitude());
-                        account.setLocation(userLocation);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    Log.d("logs", "location is null!");
-                }
-
-            }
-        });
-    }
-
     /**
      * On resume, display all the textviews.
      * So if text data changes after returning TO this activity, the views are updated.
