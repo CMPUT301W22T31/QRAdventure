@@ -52,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -102,33 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    @SuppressLint("MissingPermission")
-    private void getLocation() {
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                Location location = task.getResult();
-                if(location != null) {
-                    Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        Log.d("logs", "latitude = " + addresses.get(0).getLatitude());
-                        Log.d("logs", "longitude = " + addresses.get(0).getLongitude());
-                        ArrayList<Double> userLocation = new ArrayList<Double>();
-                        userLocation.add(addresses.get(0).getLongitude());
-                        userLocation.add(addresses.get(0).getLatitude());
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    Log.d("logs", "location is null!");
-                }
-
-            }
-        });
-    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -141,6 +116,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Log.d("logs", account.getLocation().get(0).toString());
+        Log.d("logs", account.getLocation().get(1).toString());
 
         // Add a marker in Sydney and move the camera
         LatLng coords = new LatLng(account.getLocation().get(1), account.getLocation().get(0));
