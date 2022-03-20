@@ -17,7 +17,7 @@ public class QR {
     private final String hash;
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
-    private ArrayList<String> geolocation;
+    private ArrayList<String> geolocation; // first index is longitude, second is latitude
     private ArrayList<Comment> comments;
 
     /**
@@ -114,7 +114,13 @@ public class QR {
         score = QRScore;
         return score;
     }
+    public void setGeolocation(ArrayList<String>geolocation) {
+        this.geolocation = geolocation;
+    }
 
+    public ArrayList<String> getGeolocation() {
+        return geolocation;
+    }
 
     public int getScore() {
         return this.score;

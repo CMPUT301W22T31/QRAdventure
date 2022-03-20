@@ -1,19 +1,36 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -24,6 +41,7 @@ import java.text.DecimalFormat;
 public class AccountActivity extends AppCompatActivity {
     Account account;
     BottomNavigationView navbar;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     /**
      * Sets layout and Enables navbar
@@ -33,9 +51,12 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
+        Log.d("logs", "Current location: " + account.getLocation().toString());
+
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
@@ -64,8 +85,22 @@ public class AccountActivity extends AppCompatActivity {
 
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(AccountActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+
+                    }
+                    else {
+                            ActivityCompat.requestPermissions(AccountActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+
+                        }
                     break;
                 case R.id.my_account:
                     // already on this activity. Do nothing.
@@ -74,6 +109,53 @@ public class AccountActivity extends AppCompatActivity {
             return false;
         });
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            MapGrabber mapGrabber = new MapGrabber(fusedLocationProviderClient);
+            mapGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
+
+    }
+    @SuppressLint("MissingPermission")
+    private void getLocation() {
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if(location != null) {
+                    Geocoder geocoder = new Geocoder(AccountActivity.this, Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                        Log.d("logs", "latitude = " + addresses.get(0).getLatitude());
+                        Log.d("logs", "longitude = " + addresses.get(0).getLongitude());
+                        ArrayList<Double> userLocation = new ArrayList<Double>();
+                        userLocation.add(addresses.get(0).getLongitude());
+                        userLocation.add(addresses.get(0).getLatitude());
+                        account.setLocation(userLocation);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Log.d("logs", "location is null!");
+                }
+
+            }
+        });
     }
 
     /**

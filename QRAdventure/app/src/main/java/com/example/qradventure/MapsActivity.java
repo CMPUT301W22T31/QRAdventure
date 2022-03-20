@@ -1,12 +1,23 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,14 +25,24 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.qradventure.databinding.ActivityMapsBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.common.collect.Maps;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+    Account account;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
 
     @Override
@@ -35,6 +56,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        // Get the account from the singleton
+        account = CurrentAccount.getAccount();
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        //getLocation();
+
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
@@ -75,6 +102,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    @SuppressLint("MissingPermission")
+    private void getLocation() {
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if(location != null) {
+                    Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                        Log.d("logs", "latitude = " + addresses.get(0).getLatitude());
+                        Log.d("logs", "longitude = " + addresses.get(0).getLongitude());
+                        ArrayList<Double> userLocation = new ArrayList<Double>();
+                        userLocation.add(addresses.get(0).getLongitude());
+                        userLocation.add(addresses.get(0).getLatitude());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Log.d("logs", "location is null!");
+                }
+
+            }
+        });
+    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -89,10 +143,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng coords = new LatLng(53.533172, -113.506660);
-        mMap.addMarker(new MarkerOptions().position(coords).title("Marker in Sydney"));
+        LatLng coords = new LatLng(account.getLocation().get(1), account.getLocation().get(0));
+        mMap.addMarker(new MarkerOptions().position(coords).title(account.getUsername()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(coords));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords,15f));
+
     }
     /**
      * Activity is called when the camera scans a QR code. Processes the result and redirects to
@@ -113,4 +168,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startActivity(intent);
         }
     }
+
 }

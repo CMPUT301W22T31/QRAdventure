@@ -409,7 +409,6 @@ public class QueryHandler {
      */
     public void addQR(QR qr, Callback callback) {
         db = FirebaseFirestore.getInstance();
-
         DocumentReference docRef = db.collection("QRDB").document(qr.getHash());
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -435,9 +434,7 @@ public class QueryHandler {
                         // add this QR to the database
                         // TODO: populate all fields
                         HashMap<String, Object> QRData = new HashMap<>();
-                        QRData.put("Score", qr.getScore()); // use a manual score to test, 1234?
-
-
+                        QRData.put("Score", qr.getScore()); // use a manual score to test, 1234
 
                         docRef.set(QRData); // set the data!
                         // could include success/failure listener?
