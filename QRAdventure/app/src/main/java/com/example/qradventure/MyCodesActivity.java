@@ -73,12 +73,12 @@ public class MyCodesActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // intent to QRPageActivity
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-                intent.putExtra("QRtitle", accountRecords.get(position).getQRHash().substring(0,4));
-                intent.putExtra("QRHash", accountRecords.get(position).getQRHash());
 
-                Bitmap image = accountRecords.get(position).getImage();
+                Record clickedRecord = accountRecords.get(position);
+                intent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                intent.putExtra("QRHash", clickedRecord.getQRHash());
+                Bitmap image = clickedRecord.getImage();
                 intent.putExtra("QRPicture", image);
-
 
                 startActivity(intent);
             }

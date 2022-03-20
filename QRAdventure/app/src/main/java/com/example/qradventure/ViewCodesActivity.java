@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,8 +62,13 @@ public class ViewCodesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-                intent.putExtra("QRtitle", records.get(position).getQRHash().substring(0,4));
-                intent.putExtra("QRHash", records.get(position).getQRHash());
+
+                Record clickedRecord = records.get(position);
+
+                intent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                intent.putExtra("QRHash", clickedRecord.getQRHash());
+                Bitmap image = clickedRecord.getImage();
+                intent.putExtra("QRPicture", image);
                 startActivity(intent);
             }
         });

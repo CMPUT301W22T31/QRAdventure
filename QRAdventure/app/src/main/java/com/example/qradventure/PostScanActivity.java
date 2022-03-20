@@ -85,8 +85,15 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
 
                             image = (Bitmap)bundle.get("data");
 
-                        }
+                            Log.d("IMAGE-SIZE:", Integer.toString(image.getByteCount()));
 
+                            if (image.getByteCount() > (long)64000){
+                                image = Bitmap.createScaledBitmap(image, 96 ,128, true);
+                            }
+
+
+
+                        }
                     }
                 });
 
@@ -170,6 +177,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
             if (keepImage)
                 toAdd.setImage(image);
 
+
             if (!currentAccount.containsRecord(toAdd)) {
 
                 currentAccount.addRecord(toAdd);
@@ -187,13 +195,13 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
 
                 String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                addRecord.addRecord(androidDeviceID, qr, myAccount, recordID);
+                addRecord.addRecord(androidDeviceID, qr, myAccount, toAdd);
 
             }
 
             // ====== database logic concluded ======
             // send user to a different activity (which? Account for now?).
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, AccountActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }

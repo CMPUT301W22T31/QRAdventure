@@ -3,6 +3,8 @@ package com.example.qradventure;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.Blob;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,6 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,8 +107,31 @@ public class QueryHandler {
                                                                 args.add(true);
                                                                 callback.callback(args);
                                                             }
+
+
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
+
+
+                                                                Blob imageBlob = (Blob)document.getData().get("ImageData");
+
+                                                                /*
+                                                                This needed to check if there is not an image since
+                                                                anything in an inner class must be final. Can't use
+                                                                null or else it will crash
+                                                                */
+                                                                byte[] imageData = "filler".getBytes();
+
+                                                                try{
+                                                                    imageData = imageBlob.toBytes();
+                                                                }
+                                                                catch(Exception e){// Just do nothing, since we want imageData to retain its dummy value
+
+                                                                }
+
+                                                                Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
+
                                                                 db.collection("QRDB").document(qrHash)
                                                                         .get()
                                                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -111,11 +140,16 @@ public class QueryHandler {
                                                                                 if (task.isSuccessful()) {
                                                                                     DocumentSnapshot document = task.getResult();
                                                                                     String qrScore = "" + document.getData().get("Score");
+
                                                                                     int qrValue = Integer.parseInt(qrScore);
                                                                                     QR qr = new QR(qrHash, qrValue, null, null);
                                                                                     Log.d("logs", qrHash + " " + qrValue);
                                                                                     Record newRecord = new Record(account, qr);
+
+                                                                                    newRecord.setImage(image);
+
                                                                                     account.addRecord(newRecord);
+
                                                                                 } else {
                                                                                     // ERROR: Query failed!
                                                                                     Log.d("logs", "Cached get failed: ", task.getException());
@@ -472,13 +506,15 @@ public class QueryHandler {
      *      QR code of the record
      * @param myAccount
      *      Account of the record
-     * @param recordID
-     *      ID of the record
+     * @param toAdd
+     *      The record we are adding
      */
-    public void addRecord(String androidDeviceID, QR qr, Account myAccount, String recordID){
+    public void addRecord(String androidDeviceID, QR qr, Account myAccount, Record toAdd){
         db = FirebaseFirestore.getInstance();
-
+        String recordID = toAdd.getID();
         CollectionReference RecordDB = db.collection("RecordDB");
+
+
         RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -495,6 +531,17 @@ public class QueryHandler {
                         recordData.put("User", myAccount.getUsername());
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
+
+                        if (toAdd.getImage() != null){
+                            Bitmap image = toAdd.getImage();
+                            ByteArrayOutputStream out = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                            byte[] imageData = out.toByteArray();
+                            Blob imageBlob = Blob.fromBytes(imageData);
+                            recordData.put("ImageData", imageBlob);
+
+                        }
+
 
                         RecordDB.document(recordID).set(recordData);
                         RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -602,8 +649,17 @@ public class QueryHandler {
                                 // reconstruct the record
                                 String hash = (String) recordDoc.get("QR");
                                 String score =  "" + recordDoc.get("UserScore");
+                                Blob imageBlob = (Blob)recordDoc.getData().get("ImageData");
+
+
+
                                 QR qr = new QR(hash, Integer.parseInt(score), null, null);
                                 Record newRecord = new Record(account, qr);
+                                if (imageBlob!=null){
+                                    byte[] imageData = imageBlob.toBytes();
+                                    Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                                    newRecord.setImage(image);
+                                }
 
                                 args.add(newRecord);
 
