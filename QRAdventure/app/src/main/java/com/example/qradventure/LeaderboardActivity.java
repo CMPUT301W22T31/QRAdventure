@@ -124,7 +124,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         // This is filter 1. do nothing if already on this filter.
         if (currentFilter == 2) { return; }
         currentFilter = 2;
-        String filter = "BestQR";
+        String filter = "bestQR";
 
         queryTopRanks(filter);
 
