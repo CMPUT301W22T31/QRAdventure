@@ -78,14 +78,6 @@ public class MyCodesActivity extends AppCompatActivity {
             }
         });
 
-        // ====== Back Button Logic ======
-        FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                                             finish();
-                                          }
-        });
 
         // ====== Long Click Listener for Delete Functionality ======
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -162,6 +154,10 @@ public class MyCodesActivity extends AppCompatActivity {
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
+                    break;
+                case R.id.map:
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
                     break;
             }
             return false;
