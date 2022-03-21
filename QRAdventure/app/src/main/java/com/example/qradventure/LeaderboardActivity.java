@@ -68,11 +68,11 @@ public class LeaderboardActivity extends AppCompatActivity {
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
-                    Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
-                    startActivity(intent1);
+                    // Already on this activity. Do nothing.
                     break;
                 case R.id.search_players:
-                    // Already on this activity. Do nothing.
+                    Intent intent1 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
+                    startActivity(intent1);
                     break;
                 case R.id.scan:
                     // Use IntentIntegrator to activate camera
