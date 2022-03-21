@@ -106,6 +106,9 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                         if (intent.resolveActivity(getPackageManager()) != null){
                             cameraLaunch.launch(intent);
                         }
+                        else{
+                            Toast.makeText(PostScanActivity.this, "Somthing went wrong", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });
