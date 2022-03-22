@@ -14,7 +14,7 @@ import java.util.Objects;
  * This class represents a QR code. Uniquely Identified by its hash string.
  */
 public class QR {
-    private final String hash;
+    private final String hash ;
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
     private ArrayList<String> geolocation;
@@ -40,7 +40,7 @@ public class QR {
      *      The String of the QR code
      */
     public QR(String QR){
-        hash = new String(Hex.encodeHex(DigestUtils.md5(QR)));
+        hash = new String(Hex.encodeHex(DigestUtils.sha256(QR)));
         calculateScore(hash);
         scannedAccounts = new ArrayList<Account>();
         geolocation = new ArrayList<String>();
