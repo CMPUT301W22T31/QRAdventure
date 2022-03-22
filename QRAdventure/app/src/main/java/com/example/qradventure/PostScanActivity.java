@@ -91,8 +91,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                                 image = Bitmap.createScaledBitmap(image, 96 ,128, true);
                             }
 
-
-
                         }
                     }
                 });
@@ -114,12 +112,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                 });
 
 
-        // For testing purposes, display a dialog of the QR scanned
-        new AlertDialog.Builder(PostScanActivity.this).setTitle("Result")
-                .setMessage(QRContent)
-                .setPositiveButton("QR code scanned", null)
-                .setNegativeButton("Cancel", null)
-                .create().show();
     }
 
     /**
