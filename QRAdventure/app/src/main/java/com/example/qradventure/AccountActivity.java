@@ -53,15 +53,7 @@ public class AccountActivity extends AppCompatActivity {
                     break;
                 case R.id.scan:
 
-                    // Use IntentIntegrator to activate camera
-                    IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
-                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                    tempIntent.setCameraId(0);
-                    tempIntent.setOrientationLocked(false);
-                    tempIntent.setPrompt("Scanning");
-                    tempIntent.setBeepEnabled(true);
-                    tempIntent.setBarcodeImageEnabled(true);
-                    tempIntent.initiateScan();
+                    scanner.scan(AccountActivity.this);
 
                     break;
                 case R.id.map:
