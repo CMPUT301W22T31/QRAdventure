@@ -90,9 +90,11 @@ public class LeaderboardActivity extends AppCompatActivity {
                     case 3:
                         // "Top 25 selected"
                         fetchCount = 25;
+                        break;
                     default:
                         // default top 10
                         fetchCount = 10;
+                        break;
                 }
             }
             @Override
@@ -161,6 +163,8 @@ public class LeaderboardActivity extends AppCompatActivity {
      * @param v: button that called this method
      */
     public void displayHighScores(View v) {
+        Log.d(TAG, "fetchcount = "+fetchCount);
+
         // This is filter 1. do nothing if already on this filter.
         if (currentFilter == 1 && previewArray.size() == fetchCount) { return; }
 

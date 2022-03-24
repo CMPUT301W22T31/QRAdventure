@@ -42,7 +42,9 @@
                 android:fontFamily="@font/fredoka_one"
                 android:padding="20dp"
                 android:text="Username"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:maxWidth="150dp"
+                android:maxHeight="100dp"/>
 
             <TextView
                 android:id="@+id/other_player_score"
