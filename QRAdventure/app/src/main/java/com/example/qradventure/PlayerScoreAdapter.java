@@ -63,6 +63,9 @@ public class PlayerScoreAdapter extends ArrayAdapter<PlayerPreview> {
         } else if (rank == 3) {
             // color filter BRONZE
             trophy.setColorFilter(Color.argb(255,178,127,78));
+        } else {
+            // set alpha to 0 to hide trophy
+            trophy.setColorFilter(Color.argb(0,178,127,78));
         }
 
         // get and set the textviews
