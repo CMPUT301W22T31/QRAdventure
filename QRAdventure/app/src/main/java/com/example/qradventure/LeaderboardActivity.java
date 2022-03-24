@@ -112,7 +112,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         queryTopRanks(filter);
 
         int score = CurrentAccount.getAccount().getTotalScore();
-        displayMyPercentile(filter, score);
+        calculateMyPercentile(filter, score);
     }
 
     /**
@@ -129,7 +129,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         queryTopRanks(filter);
 
         int score = CurrentAccount.getAccount().getHighestQR();
-        displayMyPercentile(filter, score);
+        calculateMyPercentile(filter, score);
     }
 
     /**
@@ -146,7 +146,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         queryTopRanks(filter);
 
         int score = CurrentAccount.getAccount().getTotalCodesScanned();
-        displayMyPercentile(filter, score);
+        calculateMyPercentile(filter, score);
     }
 
     /**
@@ -177,7 +177,7 @@ public class LeaderboardActivity extends AppCompatActivity {
      * @param filter - (String) Field over which to filter your percentile
      * @param score - (int) score to determine percentile of
      */
-    public void displayMyPercentile(String filter, int score) {
+    public void calculateMyPercentile(String filter, int score) {
         QueryHandler qh = new QueryHandler();
 
         // ===== Stacked callbacks =====
@@ -196,21 +196,38 @@ public class LeaderboardActivity extends AppCompatActivity {
                         // Step 3) Calculate percentile: 100 * (lower/total)
                         int percentile = (countLower*100) / countTotal;
 
-                        // logs TODO: Delete
-                        Log.d(TAG, "==== Percentile Calculation ====");
-                        Log.d(TAG, "lower/total = " + countLower + " / " + countTotal);
-                        Log.d(TAG, "Percentile = " + percentile);
+                        // send this number to be formatted & displayed
+                        formatMyPercentile(percentile);
 
-                        // format percentile for display
-                        String stringPercentile = percentile + "th Percentile!";
 
-                        // set the textview!
-                        TextView tvPercentile = findViewById(R.id.tvMyRank);
-                        tvPercentile.setText(stringPercentile);
                     }
                 });
             }
         });
+    }
+
+    /**
+     * Formats a percentile for display by correcting suffix (50th, 51st, 53rd, etc)
+     * @param percentile - (int) number to display
+     */
+    public void formatMyPercentile(int percentile) {
+        String percString = "";
+        int tens = percentile % 10;
+
+        // generate suffix exhaustively; 0th - 100th inclusive
+        if (tens == 1) {
+            percString = percentile + "st";
+        } else if(tens == 2) {
+            percString = percentile + "nd";
+        } else if(tens == 3) {
+            percString = percentile + "rd";
+        } else {
+            percString = percentile + "th";
+        }
+
+        // set the textview
+        TextView tvPercentile = findViewById(R.id.tvMyRank);
+        tvPercentile.setText(percString);
     }
 
 

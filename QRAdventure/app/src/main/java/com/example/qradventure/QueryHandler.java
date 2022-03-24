@@ -626,7 +626,8 @@ public class QueryHandler {
         ArrayList<Object> previewArray = new ArrayList<Object>();
 
         // Number of results to return; adjustable!
-        int numReturned = 5;
+        // TODO: Fix trophy bug when list is too long (scrolling)
+        int numReturned = 12;
 
         // query over accounts, returns top 5 documents by fieldFilter
         db.collection("AccountDB")
@@ -637,15 +638,15 @@ public class QueryHandler {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "num docs: " + task.getResult().size());
+                            int rank = 0;
                             for (QueryDocumentSnapshot accDocRef : task.getResult()) {
+                                rank = rank + 1;
                                 // get relevant preview data
                                 String username = accDocRef.getId();
                                 String score = "" + accDocRef.get(fieldFilter).toString();
-                                Log.d(TAG, "preview is: " + username + score);
 
                                 // create preview and add to array
-                                PlayerPreview newPreview = new PlayerPreview(username, score);
+                                PlayerPreview newPreview = new PlayerPreview(username, score, rank);
                                 previewArray.add(newPreview);
                             }
                             // outside for loop, callback the array
@@ -674,8 +675,6 @@ public class QueryHandler {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "num docs: " + task.getResult().size());
-
                             // create the array of 1 element; callback
                             ArrayList<Object> countArray = new ArrayList<Object>();
                             countArray.add(task.getResult().size());

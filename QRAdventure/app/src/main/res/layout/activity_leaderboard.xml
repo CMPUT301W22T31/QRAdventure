@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/grey"
+        android:background="@color/teal_700"
         android:orientation="horizontal">
 
         <Button
@@ -21,66 +21,108 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:fontFamily="@font/fredoka_one"
             android:onClick="displayHighScores"
-            android:text="High Scores"></Button>
+            android:text="High Scores" />
 
         <Button
             android:id="@+id/buttonFilter2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:fontFamily="@font/fredoka_one"
             android:onClick="displayBestQR"
-            android:text="Best QR"></Button>
+            android:text="Best QR"/>
 
         <Button
             android:id="@+id/buttonFilter3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:fontFamily="@font/fredoka_one"
             android:onClick="displayMostScanned"
-            android:text="Total Scans"></Button>
+            android:text="Total Scans"/>
 
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/preview_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/personalPlacementRegion"
-        app:layout_constraintTop_toBottomOf="@id/topPanel"
-        app:layout_constraintVertical_bias="0.0">
-
-    </ListView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/personalPlacementRegion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/navbar_menu"
-        android:background="@color/grey">
+        android:background="@color/teal_700"
+        app:layout_constraintTop_toBottomOf="@id/topPanel">
 
         <TextView
             android:id="@+id/tvPRHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/fredoka_one"
             android:text="Personal Ranking"
+            android:textColor="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </TextView>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tvMyRank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/fredoka_one"
             android:text="###"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
             android:textSize="34sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPRHeader" />
 
+        <TextView
+            android:id="@+id/tvPercHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/fredoka_one"
+            android:text="Percentile"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMyRank" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvPRHeader"
+            app:layout_constraintHorizontal_bias="0.573"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/trophy" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvPRHeader"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/trophy" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ListView
+        android:id="@+id/preview_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/navbar_menu"
+        app:layout_constraintTop_toBottomOf="@+id/personalPlacementRegion"
+        app:layout_constraintVertical_bias="0.0"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"
