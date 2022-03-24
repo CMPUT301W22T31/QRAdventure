@@ -619,20 +619,18 @@ public class QueryHandler {
     /**
      * Queries for the top ranked players by a certain field (filter).
      * Callback returns an arraylist of PlayerPreview objects.
+     * @param fieldFilter - field over which to rank players
+     * @param fetchCount - number of ranks to fetch (top 3/5/10/25, etc)
      * @param callback - callback to return previewArray when query complete.
      */
-    public void getTopRanks(String fieldFilter, Callback callback) {
+    public void getTopRanks(String fieldFilter, int fetchCount, Callback callback) {
 
         ArrayList<Object> previewArray = new ArrayList<Object>();
-
-        // Number of results to return; adjustable!
-        // TODO: Fix trophy bug when list is too long (scrolling)
-        int numReturned = 12;
 
         // query over accounts, returns top 5 documents by fieldFilter
         db.collection("AccountDB")
                 .orderBy(fieldFilter, Query.Direction.DESCENDING)
-                .limit(numReturned)
+                .limit(fetchCount)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

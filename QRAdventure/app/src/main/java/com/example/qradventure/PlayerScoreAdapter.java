@@ -40,16 +40,14 @@ public class PlayerScoreAdapter extends ArrayAdapter<PlayerPreview> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
+        PlayerPreview preview = players.get(position);
 
 
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.player_list_entry, parent, false);
         }
 
-        PlayerPreview preview = players.get(position);
-
-
-        // set special attributes for top 3 ranked players
+        // set special attributes for top 3 ranked players (trophies!)
         // TODO: change border colors too?
         int rank = preview.getRank();
         ImageView trophy = view.findViewById(R.id.ivTrophy);
@@ -71,9 +69,12 @@ public class PlayerScoreAdapter extends ArrayAdapter<PlayerPreview> {
         // get and set the textviews
         TextView tvUsername = view.findViewById(R.id.other_player_name);
         TextView tvTotalScore = view.findViewById(R.id.other_player_score);
+        TextView tvRank = view.findViewById(R.id.tvRank);
 
         tvUsername.setText(preview.getUsername());
-        tvTotalScore.setText(preview.getScore().toString());
+        tvTotalScore.setText(preview.getScore());
+        String stringRank = ""+preview.getRank();
+        tvRank.setText(stringRank);
 
         return view;
     }

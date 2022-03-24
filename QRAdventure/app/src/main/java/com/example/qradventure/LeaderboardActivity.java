@@ -4,15 +4,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -30,11 +33,14 @@ public class LeaderboardActivity extends AppCompatActivity {
     ArrayList<PlayerPreview> previewArray;
     ArrayAdapter<PlayerPreview> adapter;
     ListView playersListView;
+    int fetchCount;
     int currentFilter;
+    int colorToggleOn = Color.argb(120,255,255,255);
+    int colorToggleOff = Color.argb(0,255,255,255);
     String TAG = "Leaderboard_TAG";
 
     /**
-     * Enables navbar and listview functionality
+     * Enables navbar, listview, and spinner functionality
      * sets default leaderboard filter: High Score
      * @param savedInstanceState - (unused)
      */
@@ -43,13 +49,13 @@ public class LeaderboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
-        // Initialize & Link adapter
+        // ==== Initialize & Link adapter ====
         previewArray = new ArrayList<PlayerPreview>();
         playersListView = findViewById(R.id.preview_list);
         adapter = new PlayerScoreAdapter(this, previewArray);
         playersListView.setAdapter(adapter);
 
-        // Enable listview on click listener
+        // ==== Enable listview on click listener ====
         playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -58,11 +64,49 @@ public class LeaderboardActivity extends AppCompatActivity {
             }
         });
 
-        // set default filter: High Score
+        // ==== Enable Spinner ====
+        String[] spinnerChoices = new String[]{"Top 3", "Top 5", "top 10", "top 25"};
+        Spinner spinner = (Spinner) findViewById(R.id.sizeSpinner);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>
+                (this, R.layout.support_simple_spinner_dropdown_item, spinnerChoices);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setSelection(2); // default choice: Top 10!
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                switch(position) {
+                    case 0:
+                        // "Top 3" Selected
+                        fetchCount = 3;
+                        break;
+                    case 1:
+                        // "Top 5" selected
+                        fetchCount = 5;
+                        break;
+                    case 2:
+                        // "Top 10" selected
+                        fetchCount = 10;
+                        break;
+                    case 3:
+                        // "Top 25 selected"
+                        fetchCount = 25;
+                    default:
+                        // default top 10
+                        fetchCount = 10;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // do nothing
+            }
+        });
+
+        // ==== set default filter: top 10 from High Score ====
+        fetchCount = 10;
         currentFilter = 0; // 0 is no filter. Need 0 on startup.
         displayHighScores(findViewById(R.id.buttonFilter1));
 
-        // enable navbar functionality
+        // Enable navbar functionality
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
@@ -99,13 +143,31 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     /**
+     * simple method that "untoggles" all buttons (changes background)
+     */
+    public void untoggleButtonViews() {
+        View v1 = findViewById(R.id.buttonFilter1);
+        View v2 = findViewById(R.id.buttonFilter2);
+        View v3 = findViewById(R.id.buttonFilter3);
+
+        v1.setBackgroundColor(colorToggleOff);
+        v2.setBackgroundColor(colorToggleOff);
+        v3.setBackgroundColor(colorToggleOff);
+    }
+
+    /**
      * *Controller Method*
      * Validates filter selection; Calls query to display top players by TotalScore
      * @param v: button that called this method
      */
     public void displayHighScores(View v) {
         // This is filter 1. do nothing if already on this filter.
-        if (currentFilter == 1) { return; }
+        if (currentFilter == 1 && previewArray.size() == fetchCount) { return; }
+
+        // deselect all buttons, then toggle this button on
+        untoggleButtonViews();
+        v.setBackgroundColor(colorToggleOn);
+
         currentFilter = 1;
         String filter = "TotalScore";
 
@@ -122,7 +184,12 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void displayBestQR(View v) {
         // This is filter 1. do nothing if already on this filter.
-        if (currentFilter == 2) { return; }
+        if (currentFilter == 2 && previewArray.size() == fetchCount) { return; }
+
+        // deselect all buttons, then toggle this button on
+        untoggleButtonViews();
+        v.setBackgroundColor(colorToggleOn);
+
         currentFilter = 2;
         String filter = "bestQR";
 
@@ -139,7 +206,12 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void displayMostScanned(View v) {
         // This is filter 1. do nothing if already on this filter.
-        if (currentFilter == 3) { return; }
+        if (currentFilter == 3 && previewArray.size() == fetchCount) { return; }
+
+        // deselect all buttons, then toggle this button on
+        untoggleButtonViews();
+        v.setBackgroundColor(colorToggleOn);
+
         currentFilter = 3;
         String filter = "scanCount";
 
@@ -156,7 +228,7 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void queryTopRanks(String filter) {
         QueryHandler qh = new QueryHandler();
-        qh.getTopRanks(filter, new Callback() {
+        qh.getTopRanks(filter, fetchCount, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
                 // Use the array query callback provided

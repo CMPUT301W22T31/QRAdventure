@@ -16,34 +16,47 @@
         android:background="@color/teal_700"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFilter1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00FFFFFF"
-            android:backgroundTint="#00FFFFFF"
+            android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/fredoka_one"
             android:onClick="displayHighScores"
-            android:text="High Scores" />
+            android:text="High Scores"
+            android:textColor="#FFFFFF" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFilter2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="#00FFFFFF"
+            android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/fredoka_one"
             android:onClick="displayBestQR"
-            android:text="Best QR"/>
+            android:text="Best QR"
+            android:textColor="#FFFFFF" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFilter3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="#00FFFFFF"
+            android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/fredoka_one"
             android:onClick="displayMostScanned"
-            android:text="Total Scans"/>
+            android:text="Total Scans"
+            android:textColor="#FFFFFF" />
+
+        <Spinner
+            android:id="@+id/sizeSpinner"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:contextClickable="false" />
 
     </LinearLayout>
 
@@ -113,6 +126,7 @@
             app:layout_constraintStart_toEndOf="@+id/tvPRHeader"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/trophy" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

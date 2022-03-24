@@ -15,6 +15,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/tvRank"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/fredoka_one"
+                android:gravity="center"
+                android:text="##"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
             <ImageView
                 android:id="@+id/ivTrophy"
                 android:layout_width="40dp"
@@ -44,6 +55,7 @@
                 android:paddingEnd="20dp"
                 android:text="Score"
                 android:textSize="24sp" />
+
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
