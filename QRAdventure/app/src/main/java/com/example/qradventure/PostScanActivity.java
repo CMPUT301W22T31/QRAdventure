@@ -201,6 +201,7 @@ public class PostScanActivity extends AppCompatActivity {
 
                 String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+                // add the record to the database
                 addRecord.addRecord(androidDeviceID, qr, myAccount, recordID);
 
             }

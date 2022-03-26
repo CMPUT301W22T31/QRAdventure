@@ -3,6 +3,7 @@ package com.example.qradventure;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,9 @@ import com.google.zxing.integration.android.IntentResult;
  */
 public class MapActivity extends AppCompatActivity {
 
+
+
+
     /**
      * Sets layout and enables navbar
      * @param savedInstanceState - unused
@@ -26,6 +30,9 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+
+
 
         // enable navbar functionality
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);

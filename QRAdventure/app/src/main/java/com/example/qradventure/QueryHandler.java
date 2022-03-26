@@ -1,9 +1,5 @@
 package com.example.qradventure;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Context;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -493,6 +490,10 @@ public class QueryHandler {
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
 
+                        ArrayList<Double> location = myAccount.getLocation();
+                        recordData.put("Longitude", location.get(0));
+                        recordData.put("Latitude", location.get(1));
+
                         RecordDB.document(recordID).set(recordData);
                         RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
@@ -619,6 +620,47 @@ public class QueryHandler {
 
 
 
+
+    }
+
+
+    public void getNearbyQRs(ArrayList<Double> location, Callback callback){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("RecordDB").get()
+        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<DistanceQRPair> nearRecords = new ArrayList<DistanceQRPair>();
+                ArrayList<Object> args = new ArrayList<Object>();
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot recordDoc : task.getResult()) {
+
+
+                        if ((Double)recordDoc.get("Latitude") != null){// Not all our records have location right now
+                            Double latDiff = location.get(1) - (Double)recordDoc.get("Latitude");
+                            Double longDiff = location.get(0) - (Double)recordDoc.get("Longitude");
+                            String hash = (String)recordDoc.get("QR");
+
+                            Double distance = Math.abs( Math.sqrt( Math.pow(latDiff, 2) + Math.pow(longDiff, 2)));
+
+
+                            QR qr = new QR(hash);
+                            nearRecords.add(new DistanceQRPair(qr, distance));
+
+                        }
+                    }
+
+                    Collections.sort(nearRecords);
+                    args.add(nearRecords);
+                    callback.callback(args);
+
+                }
+
+
+
+            }
+        });
 
     }
 

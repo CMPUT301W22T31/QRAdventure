@@ -139,7 +139,7 @@ public class Account {
      * Add a Record to the Account and an ArrayList of records
      * @param record
      * @return true if addition was successful
-     *      false if the Account already contained the record
+     *      false if the Account already conta                        test = ined the record
      */
     public Boolean addRecord(Record record){
 

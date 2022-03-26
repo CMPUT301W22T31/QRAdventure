@@ -14,6 +14,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -33,6 +35,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,8 +44,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+    Button nearbyQRButton;
     Account account;
     FusedLocationProviderClient fusedLocationProviderClient;
+    ArrayList<DistanceQRPair> nearQRs = new ArrayList<DistanceQRPair>();
 
 
     @Override
@@ -51,6 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -62,6 +69,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         //getLocation();
+
+        nearbyQRButton = findViewById(R.id.near_qr_button);
+
+        nearbyQRButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QueryHandler query = new QueryHandler();
+
+                query.getNearbyQRs(account.getLocation(), new Callback() {
+                    @Override
+                    public void callback(ArrayList<Object> args) {
+
+
+                    }
+                });
+
+            }
+        });
+
+
 
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);
         navbar = findViewById(R.id.navbar_menu);

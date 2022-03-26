@@ -91,6 +91,9 @@ public class AccountActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         // grab location of user before map activity starts
                         try {
+
+                            MapGrabber mapGrabber = new MapGrabber(fusedLocationProviderClient);
+                            mapGrabber.getLocation(this);
                             Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
                             startActivity(intent5);
                         }
