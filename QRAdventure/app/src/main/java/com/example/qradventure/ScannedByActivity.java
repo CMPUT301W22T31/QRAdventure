@@ -20,10 +20,9 @@ import java.util.ArrayList;
  * Activity that displays a list of all the players that have scanned a particular QR code.
  */
 public class ScannedByActivity extends AppCompatActivity {
-    PlayerPreview previewInfo;
-    ArrayList<PlayerPreview> previewArray;
-    ArrayAdapter<PlayerPreview> adapter;
-    ListView playersListView;
+    ListView playerListView;
+    ArrayList<String> playerNames;
+    ArrayAdapter<String> usernameAdapter;
 
     /**
      * Sets display views
@@ -39,23 +38,21 @@ public class ScannedByActivity extends AppCompatActivity {
         ArrayList<String> players = (ArrayList<String>)getIntent().getSerializableExtra("NAMES");
 
         // add data to an array
-        // TODO: QueryH to get player cumulative scores. Skipped for now.
-        previewArray = new ArrayList<PlayerPreview>();
+        playerNames = new ArrayList<>();
         for (int i = 0; i < players.size(); i++){
-            previewInfo = new PlayerPreview(players.get(i), "");
-            previewArray.add(previewInfo);
+            playerNames.add(players.get(i));
         }
 
-        // Initialize & Link adapter
-        playersListView = findViewById(R.id.preview_list);
-        adapter = new PlayerScoreAdapter(this, previewArray);
-        playersListView.setAdapter(adapter);
+        // Initialize data, listview, adapter
+        playerListView = findViewById(R.id.username_list);
+        usernameAdapter = new ArrayAdapter<>(this, R.layout.username_list, playerNames);
+        playerListView.setAdapter(usernameAdapter);
 
         // Enable listview on click listener
-        playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String name = previewArray.get(position).getUsername();
+                String name = playerNames.get(position);
                 goToProfile(name);
             }
         });

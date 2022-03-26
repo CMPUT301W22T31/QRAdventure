@@ -9,6 +9,7 @@ package com.example.qradventure;
 public class PlayerPreview {
     private String username;
     private String totalScore;
+    private int rank;
 
     /**
      * Constructor
@@ -17,9 +18,10 @@ public class PlayerPreview {
      * @param score
      *      total score of the player
      */
-    public PlayerPreview(String name, String score) {
+    public PlayerPreview(String name, String score, int rank) {
         this.username = name;
         this.totalScore = score;
+        this.rank = rank;
     }
 
     public String getScore() {
@@ -28,5 +30,13 @@ public class PlayerPreview {
 
     public String getUsername() {
         return this.username;
+    }
+
+    public int getRank() {
+        return this.rank;
+    }
+
+    public void setRank(int newRank) {
+        this.rank = newRank;
     }
 }

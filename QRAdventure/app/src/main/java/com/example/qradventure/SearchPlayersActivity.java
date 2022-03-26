@@ -124,6 +124,8 @@ public class SearchPlayersActivity extends AppCompatActivity {
                     else {
                         ActivityCompat.requestPermissions(SearchPlayersActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                     }
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(intent5);
                     break;
             }
             return false;

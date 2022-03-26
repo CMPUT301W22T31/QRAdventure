@@ -50,6 +50,7 @@
         <entry key="app/src/main/res/layout/activity_add_geolocation.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/layout/activity_comments.xml" value="0.21" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.13333333333333333" />
         <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.15520833333333334" />

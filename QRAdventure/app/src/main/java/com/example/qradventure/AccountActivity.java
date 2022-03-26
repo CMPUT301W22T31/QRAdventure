@@ -57,7 +57,7 @@ public class AccountActivity extends AppCompatActivity {
 
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
-        Log.d("logs", "Current location: " + account.getLocation().toString());
+        //Log.d("logs", "Current location: " + account.getLocation().toString());
 
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);

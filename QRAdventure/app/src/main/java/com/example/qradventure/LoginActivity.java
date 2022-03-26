@@ -68,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("StatusQR", StatusQR);
                 data.put("TotalScore", 0);
                 data.put("device_id", androidDeviceID);
+                data.put("bestQR", 0);
+                data.put("scanCount", 0);
 
                 if (!username.matches("")) {
 

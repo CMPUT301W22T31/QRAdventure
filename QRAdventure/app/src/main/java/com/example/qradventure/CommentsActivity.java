@@ -142,14 +142,6 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
 
-        // ====== back button functionality ======
-        FloatingActionButton backButton = findViewById(R.id.button_back);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
@@ -177,7 +169,7 @@ public class CommentsActivity extends AppCompatActivity {
                     tempIntent.initiateScan();
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
                     startActivity(intent5);
                     break;
                 case R.id.my_account:

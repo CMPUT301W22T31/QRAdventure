@@ -68,7 +68,7 @@ public class PostScanActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        setContentView(R.layout.activity_post_scan);
+        setContentView(R.layout.activity_post_scan2);
         setTitle("Post Scan Activity");
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
@@ -216,6 +216,7 @@ public class PostScanActivity extends AppCompatActivity {
             // Huey - I changed the class to be account activity rather than main activity.
             //        Switching to main activity resets the account object, including location. I need location to be the same
             //        during the entire run of the program
+
             Intent intent = new Intent(this, AccountActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

@@ -52,7 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-    Button nearbyQRButton;
     Account account;
     FusedLocationProviderClient fusedLocationProviderClient;
     ArrayList<DistanceQRPair> nearQRs = new ArrayList<DistanceQRPair>();
@@ -78,42 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         //getLocation();
 
-        nearbyQRButton = findViewById(R.id.near_qr_button);
 
-
-        // displaying nearby QR's logic
-        nearbyQRButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                QueryHandler query = new QueryHandler();
-
-                try {
-                    query.getNearbyQRs(account.getLocation(), new Callback() {
-                        @Override
-                        public void callback(ArrayList<Object> args) {
-                            if (args.size() > 0) {
-                                for (Object item : args
-                                ) {
-                                    ArrayList<HashMap<String,Double>> locationVals =  (ArrayList<HashMap<String,Double>>) item;
-                                    for (HashMap<String, Double> pair: locationVals
-                                         ) {
-                                        Log.d("l", "latitude "+ pair.get("Longitude"));
-                                        Log.d("l", "longitude "+ pair.get("Latitude"));
-
-                                    }
-                                }
-                            }
-
-                        }
-                    });
-                }
-                catch (Exception e) {
-                    Log.e("logs",  e.toString());
-                }
-
-
-            }
-        });
 
 
 
