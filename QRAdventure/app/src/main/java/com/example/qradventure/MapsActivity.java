@@ -72,6 +72,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         nearbyQRButton = findViewById(R.id.near_qr_button);
 
+
+        // displaying nearby QR's logic
         nearbyQRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +82,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 query.getNearbyQRs(account.getLocation(), new Callback() {
                     @Override
                     public void callback(ArrayList<Object> args) {
-
+                        if (args.size() > 0) {
+                            for (Object item : args
+                            ) {
+                                String detail = (String) item;
+                                Log.d("logs", detail);
+                            }
+                        }
 
                     }
                 });
