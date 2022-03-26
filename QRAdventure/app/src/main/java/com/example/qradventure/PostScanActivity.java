@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -97,6 +99,11 @@ public class PostScanActivity extends AppCompatActivity {
                             userGeo.add(data.getDoubleExtra("longitude",0.00));
                             userGeo.add(data.getDoubleExtra("latitude",0.00));
                             qr.setGeolocation(userGeo);
+
+                            // Add geolocation hash
+                            String geohash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(qr.getGeolocation().get(1),  qr.getGeolocation().get(0)));
+                            Log.d("hi", geohash);
+                            qr.setGeoHash(geohash);
                         }
                     }
                 });
@@ -185,8 +192,8 @@ public class PostScanActivity extends AppCompatActivity {
                                 }
                             });
 
-                    // Add details of geolocation
                     userLocation.put("Username", myAccount.getUsername());
+                    // userLocation.put("GeoHash", hash);
                     userLocation.put("Longitude", qr.getGeolocation().get(0)); // first index is longitude
                     userLocation.put("Latitude", qr.getGeolocation().get(1));  // second index is latitude
                     userLocation.put("Index", locationCount);
@@ -194,8 +201,6 @@ public class PostScanActivity extends AppCompatActivity {
                 }
 
                 docRef.collection("Scanned By").document(myAccount.getUsername()).set(userData);
-
-                CollectionReference RecordDB = db.collection("RecordDB");
 
                 QueryHandler addRecord = new QueryHandler();
 

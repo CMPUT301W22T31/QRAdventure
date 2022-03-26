@@ -92,7 +92,7 @@ public class AddGeolocationActivity extends FragmentActivity implements OnMapRea
         mMap.addMarker(new MarkerOptions().position(coords)
                 .title(account.getUsername())
                 .draggable(true))
-                .setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.qr_geo));
+                .setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
 
         mMap.setOnMarkerDragListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 15f));

@@ -19,6 +19,7 @@ public class QR {
     private ArrayList<Account> scannedAccounts;
     private ArrayList<Double> geolocation; // first index is longitude, second is latitude
     private ArrayList<Comment> comments;
+    private String geohash;
 
     /**
      * More detailed constructor
@@ -60,6 +61,7 @@ public class QR {
         QR qr = (QR) o;
         return Objects.equals(hash, qr.hash);
     }
+
 
     @Override
     public int hashCode() {
@@ -116,6 +118,14 @@ public class QR {
     }
     public void setGeolocation(ArrayList<Double>geolocation) {
         this.geolocation = geolocation;
+    }
+
+    public void setGeoHash(String geohash) {
+        this.geohash = geohash;
+    }
+
+    public String getGeoHash() {
+        return geohash;
     }
 
     public ArrayList<Double> getGeolocation() {

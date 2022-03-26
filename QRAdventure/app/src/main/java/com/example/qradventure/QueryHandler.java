@@ -7,22 +7,29 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQueryBounds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -491,6 +498,7 @@ public class QueryHandler {
                         recordData.put("UserScore", qr.getScore());
 
                         // put longitude and latitude of qr
+                        recordData.put("GeoHash",qr.getGeoHash());
                         recordData.put("Longitude", qr.getGeolocation().get(0));
                         recordData.put("Latitude", qr.getGeolocation().get(1));
 
@@ -624,52 +632,71 @@ public class QueryHandler {
     }
 
 
+
     public void getNearbyQRs(ArrayList<Double> location, Callback callback){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final double range = 10;
 
-        db.collection("RecordDB").get()
-        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<DistanceQRPair> nearRecords = new ArrayList<DistanceQRPair>();
-                ArrayList<HashMap<String,Double>> locationVals = new ArrayList<HashMap<String,Double>>();
-                ArrayList<Object> args = new ArrayList<Object>();
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot recordDoc : task.getResult()) {
+        // Get the account from the singleton
+        Account account = CurrentAccount.getAccount();
 
+        // Find QR's within 10km of user's location
+        // References: https://firebase.google.com/docs/firestore/solutions/geoqueries#java_2
 
-                        if ((Double)recordDoc.get("Latitude") != null){// Not all our records have location right now
-                            Double latDiff = location.get(1) - (Double)recordDoc.get("Latitude");
-                            Double longDiff = location.get(0) - (Double)recordDoc.get("Longitude");
-//                            Log.d("l", "latitude "+ recordDoc.get("Latitude"));
-//                            Log.d("l", "longitude "+ recordDoc.get("Longitude"));
-                            String hash = (String)recordDoc.get("QR");
+        final GeoLocation usersGeolocation = new GeoLocation(account.getLocation().get(1), account.getLocation().get(0));
+        final double radiusInM = 10 * 1000;
 
-                            Double distance = Math.abs( Math.sqrt( Math.pow(latDiff, 2) + Math.pow(longDiff, 2)));
+        // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+        // a separate query for each pair. There can be up to 9 pairs of bounds
+        // depending on overlap, but in most cases there are 4.
+        List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(usersGeolocation, radiusInM);
+        final List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (GeoQueryBounds b : bounds) {
+            Query q = db.collection("RecordDB")
+                    .orderBy("GeoHash")
+                    .startAt(b.startHash)
+                    .endAt(b.endHash);
 
+            tasks.add(q.get());
+        }
+        // Collect all the query results together into a single list
+        Tasks.whenAllComplete(tasks)
+                .addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Task<?>>> t) {
+                        ArrayList<HashMap<String,Double>> locationVals = new ArrayList<HashMap<String,Double>>();
+                        ArrayList<Object> args = new ArrayList<Object>();
 
-                            QR qr = new QR(hash);
-                            HashMap<String,Double> nearbyQRlocation = new HashMap<String,Double>();
+                        for (Task<QuerySnapshot> task : tasks) {
+                            QuerySnapshot snap = task.getResult();
+                            for (DocumentSnapshot doc : snap.getDocuments()) {
+                                double lat = doc.getDouble("Latitude");
+                                double lng = doc.getDouble("Longitude");
 
-                            nearbyQRlocation.put("Latitude", (Double)recordDoc.get("Latitude"));
-                            nearbyQRlocation.put("Longitude", (Double)recordDoc.get("Longitude"));
-                            locationVals.add(nearbyQRlocation);
-                            //nearRecords.add(new DistanceQRPair(qr, distance));
+                                // We have to filter out a few false positives due to GeoHash
+                                // accuracy, but most will match
+                                GeoLocation docLocation = new GeoLocation(lat, lng);
+                                double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, usersGeolocation);
+                                Log.d("hi", "nearby distance: " +distanceInM);
+                                if (distanceInM <= radiusInM) {
+                                    HashMap<String,Double> nearbyQRlocation = new HashMap<String,Double>();
+                                    nearbyQRlocation.put("Latitude", lat);
+                                    nearbyQRlocation.put("Longitude", lng);
+                                    locationVals.add(nearbyQRlocation);
+                                }
+                            }
+                        }
+                        for ( HashMap<String,Double> loc: locationVals
+                             ) {
+                            Log.d("hi","nearby lat: "+ loc.get("Latitude").toString());
+                            Log.d("hi", "nearby long: " + loc.get("Longitude").toString());
+
 
                         }
+                        args.add(locationVals);
+                        callback.callback(args);
                     }
-
-                    //Collections.sort(nearRecords);
-                    args.add(locationVals);
-                    callback.callback(args);
-
-                }
-
-
-
-            }
-        });
-
+                });
     }
 
     /**
