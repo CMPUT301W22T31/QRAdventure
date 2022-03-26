@@ -3,12 +3,17 @@ package com.example.qradventure;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,6 +29,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.qradventure.databinding.ActivityMapsBinding;
@@ -168,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng coords = new LatLng(account.getLocation().get(1), account.getLocation().get(0));
-        mMap.addMarker(new MarkerOptions().position(coords).title(account.getUsername()));
+        mMap.addMarker(new MarkerOptions().position(coords).title(account.getUsername())).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_user_location));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(coords));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords,15f));
 
@@ -185,7 +192,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             for (HashMap<String, Double> pair: locationVals
                             ) {
                                 LatLng loc = new LatLng((Double) pair.get("Latitude"),(Double) pair.get("Longitude"));
-                                mMap.addMarker(new MarkerOptions().position(loc));
+                                mMap.addMarker(new MarkerOptions().position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
                                 Log.d("hi", "latitude "+ pair.get("Longitude"));
                                 Log.d("hi", "longitude "+ pair.get("Latitude"));
 
@@ -223,4 +230,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    // This is for setting up the custom icon for the marker
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0,0,vectorDrawable.getIntrinsicWidth()
+                ,vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
 }

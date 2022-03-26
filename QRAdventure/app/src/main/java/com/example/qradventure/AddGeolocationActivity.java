@@ -57,8 +57,8 @@ public class AddGeolocationActivity extends FragmentActivity implements OnMapRea
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra("longitude", "" + longitude);
-                intent.putExtra("latitude", "" + latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("latitude", latitude);
                 setResult(RESULT_OK,intent);
                 Toast.makeText(AddGeolocationActivity.this, "Recorded geolocation!", Toast.LENGTH_SHORT).show();
                 finish();
