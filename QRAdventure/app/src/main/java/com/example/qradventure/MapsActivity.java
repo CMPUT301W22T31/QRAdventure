@@ -37,6 +37,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,19 +80,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View view) {
                 QueryHandler query = new QueryHandler();
 
-                query.getNearbyQRs(account.getLocation(), new Callback() {
-                    @Override
-                    public void callback(ArrayList<Object> args) {
-                        if (args.size() > 0) {
-                            for (Object item : args
-                            ) {
-                                String detail = (String) item;
-                                Log.d("logs", detail);
-                            }
-                        }
+                try {
+                    query.getNearbyQRs(account.getLocation(), new Callback() {
+                        @Override
+                        public void callback(ArrayList<Object> args) {
+                            if (args.size() > 0) {
+                                for (Object item : args
+                                ) {
+                                    ArrayList<HashMap<String,Double>> locationVals =  (ArrayList<HashMap<String,Double>>) item;
+                                    for (HashMap<String, Double> pair: locationVals
+                                         ) {
+                                        Log.d("l", "latitude "+ pair.get("Longitude"));
+                                        Log.d("l", "longitude "+ pair.get("Latitude"));
 
-                    }
-                });
+                                    }
+                                }
+                            }
+
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    Log.e("logs",  e.toString());
+                }
+
 
             }
         });
@@ -151,8 +163,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.d("logs", account.getLocation().get(0).toString());
-        Log.d("logs", account.getLocation().get(1).toString());
+        Log.d("hi", account.getLocation().get(0).toString());
+        Log.d("hi", account.getLocation().get(1).toString());
 
         // Add a marker in Sydney and move the camera
         LatLng coords = new LatLng(account.getLocation().get(1), account.getLocation().get(0));
@@ -160,7 +172,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(coords));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords,15f));
 
+        QueryHandler query = new QueryHandler();
+
+        try {
+            query.getNearbyQRs(account.getLocation(), new Callback() {
+                @Override
+                public void callback(ArrayList<Object> args) {
+                    if (args.size() > 0) {
+                        for (Object item : args
+                        ) {
+                            ArrayList<HashMap<String,Double>> locationVals =  (ArrayList<HashMap<String,Double>>) item;
+                            for (HashMap<String, Double> pair: locationVals
+                            ) {
+                                LatLng loc = new LatLng((Double) pair.get("Latitude"),(Double) pair.get("Longitude"));
+                                mMap.addMarker(new MarkerOptions().position(loc));
+                                Log.d("hi", "latitude "+ pair.get("Longitude"));
+                                Log.d("hi", "longitude "+ pair.get("Latitude"));
+
+                            }
+                        }
+                    }
+
+                }
+            });
+        }
+        catch (Exception e) {
+            Log.e("logs",  e.toString());
+        }
+
+
     }
+
     /**
      * Activity is called when the camera scans a QR code. Processes the result and redirects to
      * PostScanActivity

@@ -91,11 +91,11 @@ public class PostScanActivity extends AppCompatActivity {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
                             Intent data = result.getData();
-                            Log.d("logs", "long: " + data.getStringExtra("longitude"));
-                            Log.d("logs", "lat: " + data.getStringExtra("latitude"));
-                            ArrayList<String> userGeo = new ArrayList<String>();
-                            userGeo.add(data.getStringExtra("longitude"));
-                            userGeo.add(data.getStringExtra("latitude"));
+                            Log.d("hi", "long: " + data.getStringExtra("longitude"));
+                            Log.d("hi", "lat: " + data.getStringExtra("latitude"));
+                            ArrayList<Double> userGeo = new ArrayList<Double>();
+                            userGeo.add(data.getDoubleExtra("longitude",0.00));
+                            userGeo.add(data.getDoubleExtra("latitude",0.00));
                             qr.setGeolocation(userGeo);
                         }
                     }

@@ -17,7 +17,7 @@ public class QR {
     private final String hash;
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
-    private ArrayList<String> geolocation; // first index is longitude, second is latitude
+    private ArrayList<Double> geolocation; // first index is longitude, second is latitude
     private ArrayList<Comment> comments;
 
     /**
@@ -27,7 +27,7 @@ public class QR {
      * @param scannedAccounts all accounts which have scanned this QR code
      * @param geolocation unused for now
      */
-    public QR(String hash, int score, ArrayList<Account> scannedAccounts, ArrayList<String> geolocation) {
+    public QR(String hash, int score, ArrayList<Account> scannedAccounts, ArrayList<Double> geolocation) {
         this.hash = hash;
         this.score = score;
         this.scannedAccounts = scannedAccounts;
@@ -43,7 +43,7 @@ public class QR {
         hash = new String(Hex.encodeHex(DigestUtils.md5(QR)));
         calculateScore(hash);
         scannedAccounts = new ArrayList<Account>();
-        geolocation = new ArrayList<String>();
+        geolocation = new ArrayList<Double>();
     }
 
     /**
@@ -114,11 +114,11 @@ public class QR {
         score = QRScore;
         return score;
     }
-    public void setGeolocation(ArrayList<String>geolocation) {
+    public void setGeolocation(ArrayList<Double>geolocation) {
         this.geolocation = geolocation;
     }
 
-    public ArrayList<String> getGeolocation() {
+    public ArrayList<Double> getGeolocation() {
         return geolocation;
     }
 

@@ -25,4 +25,8 @@ public class DistanceQRPair implements Comparable<DistanceQRPair> {
         }
 
     }
+
+    public double getDistance() {
+        return distance;
+    }
 }

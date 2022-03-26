@@ -490,9 +490,9 @@ public class QueryHandler {
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
 
-                        ArrayList<Double> location = myAccount.getLocation();
-                        recordData.put("Longitude", location.get(0));
-                        recordData.put("Latitude", location.get(1));
+                        // put longitude and latitude of qr
+                        recordData.put("Longitude", qr.getGeolocation().get(0));
+                        recordData.put("Latitude", qr.getGeolocation().get(1));
 
                         RecordDB.document(recordID).set(recordData);
                         RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -632,6 +632,7 @@ public class QueryHandler {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 ArrayList<DistanceQRPair> nearRecords = new ArrayList<DistanceQRPair>();
+                ArrayList<HashMap<String,Double>> locationVals = new ArrayList<HashMap<String,Double>>();
                 ArrayList<Object> args = new ArrayList<Object>();
                 if (task.isSuccessful()){
                     for (QueryDocumentSnapshot recordDoc : task.getResult()) {
@@ -640,19 +641,26 @@ public class QueryHandler {
                         if ((Double)recordDoc.get("Latitude") != null){// Not all our records have location right now
                             Double latDiff = location.get(1) - (Double)recordDoc.get("Latitude");
                             Double longDiff = location.get(0) - (Double)recordDoc.get("Longitude");
+//                            Log.d("l", "latitude "+ recordDoc.get("Latitude"));
+//                            Log.d("l", "longitude "+ recordDoc.get("Longitude"));
                             String hash = (String)recordDoc.get("QR");
 
                             Double distance = Math.abs( Math.sqrt( Math.pow(latDiff, 2) + Math.pow(longDiff, 2)));
 
 
                             QR qr = new QR(hash);
-                            nearRecords.add(new DistanceQRPair(qr, distance));
+                            HashMap<String,Double> nearbyQRlocation = new HashMap<String,Double>();
+
+                            nearbyQRlocation.put("Latitude", (Double)recordDoc.get("Latitude"));
+                            nearbyQRlocation.put("Longitude", (Double)recordDoc.get("Longitude"));
+                            locationVals.add(nearbyQRlocation);
+                            //nearRecords.add(new DistanceQRPair(qr, distance));
 
                         }
                     }
 
-                    Collections.sort(nearRecords);
-                    args.add(nearRecords);
+                    //Collections.sort(nearRecords);
+                    args.add(locationVals);
                     callback.callback(args);
 
                 }
