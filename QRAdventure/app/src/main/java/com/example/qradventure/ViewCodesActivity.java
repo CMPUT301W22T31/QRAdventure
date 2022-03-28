@@ -79,14 +79,6 @@ public class ViewCodesActivity extends AppCompatActivity {
         // query DB to get records
         loadRecords();
 
-        // ====== back button logic ======
-        FloatingActionButton backButton = findViewById(R.id.button_back_to_Account);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         // ====== NAVBAR ======
         navbar = findViewById(R.id.navbar_menu);

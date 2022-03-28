@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -44,7 +45,7 @@ public class QueryHandler {
     String TAG = "QueryHandler";
 
     public QueryHandler(){
-        FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     /**
@@ -57,8 +58,6 @@ public class QueryHandler {
      *      Callback function used after the Query has completed
      */
     public void getLoginAccount(String androidDeviceID, Callback callback){
-
-        db = FirebaseFirestore.getInstance();
 
         db.collection("AccountDB")
                 .whereEqualTo("device_id", androidDeviceID)
@@ -195,8 +194,6 @@ public class QueryHandler {
      */
     public void checkNameTaken(HashMap<String, Object> data, String username, Callback callback){
 
-        db = FirebaseFirestore.getInstance();
-
         DocumentReference docRef = db.collection("AccountDB").document(username);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -240,8 +237,6 @@ public class QueryHandler {
      */
     public void getOthersScanned(String qrHash, QueryCallback myCallback){
 
-        db = FirebaseFirestore.getInstance();
-
         Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qrHash)
         .get()
         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -283,8 +278,6 @@ public class QueryHandler {
      */
     public void playerSearch(String username, Callback callback) {
 
-
-        db = FirebaseFirestore.getInstance();
         db.collection("AccountDB")
                 // query where document name starts with username
                 .whereGreaterThanOrEqualTo("__name__", username)
@@ -333,8 +326,6 @@ public class QueryHandler {
      */
     public void deleteRecord(Account myAccount, Record toDelete){
 
-
-        db = FirebaseFirestore.getInstance();
         String QRRecord = myAccount.getUsername() + "-" + toDelete.getQRHash();
 
         HashMap<String, Object> newScore = new HashMap<String, Object>();
@@ -352,6 +343,10 @@ public class QueryHandler {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("logs", "DocumentSnapshot successfully deleted!");
+
+                        // update the account's bestQR & scanCount fields
+                        updateBestQR();
+                        updateScanCount();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -405,8 +400,6 @@ public class QueryHandler {
      */
     public void getComments(String hash, Callback callback){
 
-        db = FirebaseFirestore.getInstance();
-
         DocumentReference QRRef = db.collection("QRDB").document(hash);
 
         QRRef.collection("Comments")
@@ -442,7 +435,6 @@ public class QueryHandler {
      *      Callback function for the calling activity
      */
     public void addQR(QR qr, Callback callback) {
-        db = FirebaseFirestore.getInstance();
 
         DocumentReference docRef = db.collection("QRDB").document(qr.getHash());
 
@@ -509,9 +501,11 @@ public class QueryHandler {
      * @param toAdd
      *      The record we are adding
      */
+
     public void addRecord(String androidDeviceID, QR qr, Account myAccount, Record toAdd){
         db = FirebaseFirestore.getInstance();
         String recordID = toAdd.getID();
+
         CollectionReference RecordDB = db.collection("RecordDB");
 
 
@@ -551,6 +545,10 @@ public class QueryHandler {
                             }
                         });
 
+                        // update the account's bestQR & scanCount fields
+                        updateBestQR();
+                        updateScanCount();
+
                         //====== Add Record to user ======//
                         CollectionReference AccountDB = db.collection("AccountDB");
                         AccountDB.document(myAccount.getUsername())
@@ -586,7 +584,6 @@ public class QueryHandler {
      */
     public void getProfile(String username, Callback callback){
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("AccountDB").document(username)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -629,11 +626,8 @@ public class QueryHandler {
      *      Callback function for the main thread
      */
     public void loadRecords(String username, Callback callback){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Account account = new Account(username, "", "", "", "");
-
-
 
         db.collection("AccountDB").document(username).collection("My QR Records")
                 .get()
@@ -682,11 +676,166 @@ public class QueryHandler {
     }
 
     /**
-     * Used for account login
+     * Queries for the top ranked players by a certain field (filter).
+     * Callback returns an arraylist of PlayerPreview objects.
+     * @param fieldFilter - field over which to rank players
+     * @param fetchCount - number of ranks to fetch (top 3/5/10/25, etc)
+     * @param callback - callback to return previewArray when query complete.
      */
-    public void LoginQuery(String androidDeviceID) {
-        db = FirebaseFirestore.getInstance();
+    public void getTopRanks(String fieldFilter, int fetchCount, Callback callback) {
+
+        ArrayList<Object> previewArray = new ArrayList<Object>();
+
+        // query over accounts, returns top 5 documents by fieldFilter
+        db.collection("AccountDB")
+                .orderBy(fieldFilter, Query.Direction.DESCENDING)
+                .limit(fetchCount)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int rank = 0;
+                            for (QueryDocumentSnapshot accDocRef : task.getResult()) {
+                                rank = rank + 1;
+                                // get relevant preview data
+                                String username = accDocRef.getId();
+                                String score = "" + accDocRef.get(fieldFilter).toString();
+
+                                // create preview and add to array
+                                PlayerPreview newPreview = new PlayerPreview(username, score, rank);
+                                previewArray.add(newPreview);
+                            }
+                            // outside for loop, callback the array
+                            callback.callback(previewArray);
+
+                        } else {
+                            Log.d(TAG, "getTopRanks unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
     }
 
+    /**
+     * Performs simple query that returns the number of players whose
+     * score is lower than the given score (over given fieldFilter)
+     * Note: Can alter query to be inclusive/exclusive of given score. Opt for inclusive.
+     * @param fieldFilter - field over which to rank players
+     * @param callback - callback to return count to
+     */
+    public void countLowerScores(String fieldFilter, int score, Callback callback) {
+
+        db.collection("AccountDB")
+                .whereLessThanOrEqualTo(fieldFilter, score)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // create the array of 1 element; callback
+                            ArrayList<Object> countArray = new ArrayList<Object>();
+                            countArray.add(task.getResult().size());
+                            callback.callback(countArray);
+                        } else {
+                            Log.d(TAG, "countLowerScores unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    /**
+     * Performs simple query that returns the total number of Accounts
+     * @param callback - callback to return count to
+     */
+    public void countTotalPlayers(Callback callback) {
+
+        db.collection("AccountDB")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // create the array of 1 element; callback
+                            ArrayList<Object> countArray = new ArrayList<Object>();
+                            countArray.add(task.getResult().size());
+                            callback.callback(countArray);
+                        } else {
+                            Log.d(TAG, "countTotalPlayers unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Updates the "bestQR" field in the database for the CurrentAccount.
+     * Should be called whenever records are added or deleted.
+     */
+    public void updateBestQR() {
+        // need a reference to the account document
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(CurrentAccount.getAccount().getUsername());
+
+        // query for highest scoring record; update account's bestQR field
+        accDocRef.collection("My QR Records")
+                .orderBy("UserScore", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            HashMap<String, Object> updateData = new HashMap<String, Object>();
+                            if (task.getResult().size() == 0) {
+                                // Special case: User has no records!
+                                updateData.put("bestQR", 0);
+                                accDocRef.update(updateData);
+                            }
+                            for (QueryDocumentSnapshot recordDocRef : task.getResult()) {
+                                if (recordDocRef.get("UserScore") != null) {
+                                    // update account's bestQR field
+                                    long bestQR = (long) recordDocRef.get("UserScore");
+                                    updateData.put("bestQR", bestQR);
+                                    accDocRef.update(updateData);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "updateBestQR unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Updates the "scanCount" field in the database for the CurrentAccount.
+     * Should be called whenever records are added or deleted.
+     */
+    public void updateScanCount() {
+        // need a reference to the account document
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(CurrentAccount.getAccount().getUsername());
+
+        // query for highest scoring record; update account's bestQR field
+        accDocRef.collection("My QR Records")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            // get count (result size; num of records!)
+                            int count = task.getResult().size();
+
+                            // update field
+                            HashMap<String, Object> updateData = new HashMap<String, Object>();
+                            updateData.put("scanCount", count);
+                            accDocRef.update(updateData);
+
+                        } else {
+                            Log.d(TAG, "updateScanCount unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+    }
 
 }

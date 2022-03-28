@@ -55,14 +55,6 @@ public class QRPageActivity extends AppCompatActivity {
             QRTitle.setText("PLACEHOLDER");
         }
 
-        // ====== back button logic ======
-        FloatingActionButton backButton = findViewById(R.id.button_back_to_MyCodes);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         // enable navbar functionality
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);

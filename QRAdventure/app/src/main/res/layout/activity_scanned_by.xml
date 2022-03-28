@@ -9,7 +9,7 @@
     android:background="@color/black">
 
     <ListView
-        android:id="@+id/preview_list"
+        android:id="@+id/username_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -37,6 +37,7 @@
             android:id="@+id/QR_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/fredoka_one"
             android:text="Unnamed QR"
             android:textColor="@color/black"
             android:textSize="20dp"
@@ -47,24 +48,25 @@
             android:gravity="center"
             android:orientation="horizontal"
             >
-        <TextView
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/QR_pts"
-            android:text = "0"
-            android:textSize="20dp"
-            />
 
-                <TextView
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/pts_text"
-                    android:gravity=""
-                    android:text = "pts"
-                    android:textSize="15dp"
-                    />
+            <TextView
+                android:id="@+id/QR_pts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fredoka_one"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/pts_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fredoka_one"
+                android:gravity=""
+                android:text="pts"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
 
          </LinearLayout>
     </LinearLayout>

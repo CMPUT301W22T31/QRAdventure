@@ -69,4 +69,5 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Android API 28 Platform" project-jdk-type="Android SDK" />
 </project>
