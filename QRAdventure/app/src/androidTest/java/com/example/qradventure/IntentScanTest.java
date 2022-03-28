@@ -102,8 +102,9 @@ public class IntentScanTest {
 
         // close dialogue and click add
         // TODO: revise if PostScanActivity changes
-        solo.clickOnText("QR code scanned");
-        solo.clickOnText("ADD");
+        View add = solo.getView(R.id.button);
+
+        solo.clickOnView(add);
 
         // assert navigation to AccountActivity worked
         solo.assertCurrentActivity
@@ -124,6 +125,24 @@ public class IntentScanTest {
 
         assertTrue(solo.waitForText("This is a comment", 1, 2000));
 
+    }
+
+    @Test
+    public void testLeaderBoard() throws Exception{
+
+
+        solo.waitForActivity("AccountActivity", 5000);
+        solo.clickOnView(solo.getView(R.id.leaderboards));
+        solo.clickInList(3);
+        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
+        solo.goBack();
+        solo.clickOnText("Best QR");
+        solo.clickInList(3);
+        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
+        solo.goBack();
+        solo.clickOnText("Total Scans");
+        solo.clickInList(3);
+        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
 
     }
 
