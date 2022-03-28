@@ -69,7 +69,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
         qr = new QR(QRContent);
 
-        photoButton = findViewById(R.id.buttonRecordPhoto);
 
 
         cameraLaunch = registerForActivityResult(
@@ -96,20 +95,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                 });
 
 
-                photoButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                        if (intent.resolveActivity(getPackageManager()) != null){
-                            cameraLaunch.launch(intent);
-                        }
-                        else{
-                            Toast.makeText(PostScanActivity.this, "Somthing went wrong", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
 
 
     }
@@ -234,8 +219,15 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
      * @param view: unused
      */
     public void goToPhoto(View view) {
-        Intent intent = new Intent(this, PhotoActivity.class);
-        startActivity(intent);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (intent.resolveActivity(getPackageManager()) != null){
+            cameraLaunch.launch(intent);
+        }
+        else{
+            Toast.makeText(PostScanActivity.this, "Somthing went wrong", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

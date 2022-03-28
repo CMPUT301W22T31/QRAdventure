@@ -53,6 +53,7 @@
         <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/activity_nearby_qr.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/activity_post_scan2.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.33" />
         <entry key="app/src/main/res/layout/camera.xml" value="0.5" />
@@ -69,5 +70,4 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Android API 28 Platform" project-jdk-type="Android SDK" />
 </project>
