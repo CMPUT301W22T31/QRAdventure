@@ -11,7 +11,7 @@ public class scanner {
         tempIntent.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         tempIntent.setCameraId(0);
         tempIntent.setOrientationLocked(false);
-        tempIntent.setPrompt("Scanning");
+        tempIntent.setPrompt("");
         tempIntent.setBeepEnabled(true);
         tempIntent.setBarcodeImageEnabled(true);
         tempIntent.initiateScan();

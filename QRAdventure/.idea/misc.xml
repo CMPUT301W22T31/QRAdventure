@@ -42,16 +42,22 @@
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_search_players.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_status_qractivity.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_view_codes.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/drawable/qr_geo.xml" value="0.1435" />
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_add_geolocation.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/layout/activity_comments.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.75" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_map.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/activity_nearby_qr.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.33" />
         <entry key="app/src/main/res/layout/camera.xml" value="0.5" />
         <entry key="app/src/main/res/layout/content_comment.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layout/image_confirm_fragment.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_my_codes.xml" value="0.33" />
         <entry key="app/src/main/res/layout/player_list_entry.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/menu/navbar_menu.xml" value="0.25462962962962965" />
       </map>

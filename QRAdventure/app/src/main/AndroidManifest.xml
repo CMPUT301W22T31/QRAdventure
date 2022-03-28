@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.qradventure">
+    package="com.example.qradventure"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.camera"
                   android:required="true"/>
@@ -31,6 +32,7 @@
         <activity
             android:name=".LeaderboardActivity"
             android:exported="false" />
+
         <activity
             android:name=".QRPageActivity"
             android:exported="false" />
@@ -56,9 +58,6 @@
             android:name=".PostScanActivity"
             android:exported="false" />
         <activity
-            android:name=".ScanActivity"
-            android:exported="false" />
-        <activity
             android:name=".MyCodesActivity"
             android:exported="false" />
         <activity
@@ -73,9 +72,13 @@
         <activity
             android:name=".EditInfoActivity"
             android:exported="false" />
+
         <activity
             android:name=".AccountActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:replace="android:screenOrientation"
+            android:stateNotNeeded="true"/>
         <activity
             android:name=".MapActivity"
             android:exported="false" />
