@@ -100,6 +100,15 @@ public class IntentScanTest {
         // assert we made it to PostScanActivity
         solo.assertCurrentActivity("Failed to reach PostScanActivity!", PostScanActivity.class);
 
+        View scannedBy = solo.getView(R.id.see_people);
+
+        solo.clickOnView(scannedBy);
+
+
+        solo.assertCurrentActivity("Failed to reach ScannedByActivity!", ScannedByActivity.class);
+
+        solo.goBack();
+
         // close dialogue and click add
         // TODO: revise if PostScanActivity changes
         View add = solo.getView(R.id.button);
