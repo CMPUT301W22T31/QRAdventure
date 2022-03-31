@@ -136,7 +136,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/navbar_menu"
         app:layout_constraintTop_toBottomOf="@+id/personalPlacementRegion"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0"
+        android:dividerHeight="2.5sp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"
