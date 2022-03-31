@@ -46,7 +46,7 @@ import java.util.HashMap;
  * Activity that comes immediately after scanning a QR code.
  * Allows the player to manage and interact with the code they have just scanned.
  */
-public class PostScanActivity extends AppCompatActivity implements  ImageFragment.imageListener {
+public class PostScanActivity extends AppCompatActivity {
     private QR qr;
     private String recordID;
     private Button photoButton;
@@ -63,7 +63,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_scan2);
         setTitle("Post Scan Activity");
-
+        keepImage = false;
         // unfold intent, create QR object.
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
@@ -78,9 +78,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                         if (result.getResultCode() == RESULT_OK && result.getData() != null){
                             Bundle bundle = result.getData().getExtras();
 
-                            ImageFragment showPicture = new ImageFragment();
-                            showPicture.setArguments(bundle);
-                            showPicture.show(getSupportFragmentManager(), "CONFIRM_IMAGE");
+                            keepImage = true;
 
                             image = (Bitmap)bundle.get("data");
 
@@ -191,10 +189,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
     }
 
 
-    @Override
-    public void keepImage(Boolean res) {
-        keepImage = res;
-    }
 
     /**
      * Aborts the scan; does not add to account. Called when respective button is clicked.

@@ -124,10 +124,15 @@ public class IntentScanTest {
         solo.assertCurrentActivity("My Codes failed!", MyCodesActivity.class);
         solo.clickOnText("pts");
         solo.assertCurrentActivity("QR Page Failed!", QRPageActivity.class);
+
+
+
         solo.clickOnText("View Comments");
         solo.assertCurrentActivity("View Comments failed!", CommentsActivity.class);
 
         solo.enterText( (EditText)solo.getView(R.id.editText_comment), "This is a comment" );
+
+
 
 
         solo.clickOnText("Add");
