@@ -289,14 +289,15 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void formatMyPercentile(int percentile) {
         String percString = "";
-        int tens = percentile % 10;
+        int ones = percentile % 10;
+        int tens = percentile / 10;
 
         // generate suffix exhaustively; 0th - 100th inclusive
-        if (tens == 1) {
+        if (ones == 1 && tens != 1) {
             percString = percentile + "st";
-        } else if(tens == 2) {
+        } else if(ones == 2 && tens != 1) {
             percString = percentile + "nd";
-        } else if(tens == 3) {
+        } else if(ones == 3 && tens != 1) {
             percString = percentile + "rd";
         } else {
             percString = percentile + "th";

@@ -305,14 +305,9 @@ public class QueryHandler {
                                 callback.callback(args);
                             }
                         } else {
-                            // Query failed. Temporarily: display a toast
-//                            Context context = getApplicationContext();
-//                            CharSequence text = "Error: Query Failed!";
-//                            int duration = Toast.LENGTH_SHORT;
-//                            Toast toast = Toast.makeText(context, text, duration);
-//                            toast.show();
+                            // Query failed
+                            Log.d(TAG, "playerSearch Unsuccessful!");
                         }
-                        // update listview adapter
 
                     }
                 });
@@ -474,13 +469,8 @@ public class QueryHandler {
                     }
 
                 } else {
-                    // document query was not successful
-//                    Context context = getApplicationContext();
-//                    CharSequence text = "ERROR: query failed!";
-//                    int duration = Toast.LENGTH_LONG;
-//                    Toast toast = Toast.makeText(context, text, duration);
-//                    toast.show();
-//                    Log.d(TAG, "get failed with ", task.getException());
+                    // Query failed
+                    Log.d(TAG, "playerSearch Unsuccessful!");
                 }
             }
 

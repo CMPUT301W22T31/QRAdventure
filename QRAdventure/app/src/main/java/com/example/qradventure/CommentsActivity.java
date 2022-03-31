@@ -94,7 +94,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         // ====== Event listener (+ live updates!) ======
         docRefQR.collection("Comments")
-                .orderBy("Position")
+                .orderBy("Position", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,

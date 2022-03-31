@@ -118,8 +118,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         // set textview text
         tvUsername.setText(name);
-        tvPhone.setText(email);
-        tvEmail.setText(phone);
+        tvPhone.setText(phone);
+        tvEmail.setText(email);
         tvTotalScore.setText(score);
     }
 
