@@ -709,6 +709,7 @@ public class QueryHandler {
                     @Override
                     public void onComplete(@NonNull Task<List<Task<?>>> t) {
                         ArrayList<HashMap<String,Double>> locationVals = new ArrayList<HashMap<String,Double>>();
+                        ArrayList<Double> qrDistances = new ArrayList<Double>();
                         ArrayList<Object> args = new ArrayList<Object>();
 
                         for (Task<QuerySnapshot> task : tasks) {
@@ -723,6 +724,7 @@ public class QueryHandler {
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, usersGeolocation);
                                 Log.d("hi", "nearby distance: " +distanceInM);
                                 if (distanceInM <= radiusInM) {
+                                    qrDistances.add(distanceInM);
                                     HashMap<String,Double> nearbyQRlocation = new HashMap<String,Double>();
                                     nearbyQRlocation.put("Latitude", lat);
                                     nearbyQRlocation.put("Longitude", lng);
@@ -730,14 +732,9 @@ public class QueryHandler {
                                 }
                             }
                         }
-                        for ( HashMap<String,Double> loc: locationVals
-                             ) {
-                            Log.d("hi","nearby lat: "+ loc.get("Latitude").toString());
-                            Log.d("hi", "nearby long: " + loc.get("Longitude").toString());
 
-
-                        }
                         args.add(locationVals);
+                        args.add(qrDistances);
                         callback.callback(args);
                     }
                 });

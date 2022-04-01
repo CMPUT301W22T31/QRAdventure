@@ -8,20 +8,26 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -51,12 +57,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
-
+    Dialog nearByQRDialogue;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     Account account;
+    ListView qrDistanceListView;
     FusedLocationProviderClient fusedLocationProviderClient;
     ArrayList<DistanceQRPair> nearQRs = new ArrayList<DistanceQRPair>();
+    ArrayList<String> nearByQRs = new ArrayList<String>();
 
 
     @Override
@@ -78,9 +86,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         //getLocation();
-
-
-
 
 
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);
@@ -155,20 +160,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public void callback(ArrayList<Object> args) {
                     if (args.size() > 0) {
-                        for (Object item : args
-                        ) {
-                            ArrayList<HashMap<String,Double>> locationVals =  (ArrayList<HashMap<String,Double>>) item;
-                            for (HashMap<String, Double> pair: locationVals
-                            ) {
-                                LatLng loc = new LatLng((Double) pair.get("Latitude"),(Double) pair.get("Longitude"));
-                                mMap.addMarker(new MarkerOptions().position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
-                                Log.d("hi", "latitude "+ pair.get("Longitude"));
-                                Log.d("hi", "longitude "+ pair.get("Latitude"));
 
+                        ArrayList<HashMap<String,Double>> locationVals =  (ArrayList<HashMap<String,Double>>) args.get(0);
+                        for (HashMap<String, Double> pair: locationVals
+                        ) {
+                            LatLng loc = new LatLng((Double) pair.get("Latitude"),(Double) pair.get("Longitude"));
+                            mMap.addMarker(new MarkerOptions().position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
+                            Log.d("hi", "latitude "+ pair.get("Longitude"));
+                            Log.d("hi", "longitude "+ pair.get("Latitude"));
+
+                        }
+                        ArrayList<Double> qrDistances = (ArrayList<Double>) args.get(1);
+                        for (Double value: qrDistances
+                        )
+                        {
+                            if (value >= 1000) {
+                            nearByQRs.add(Math.round(value/1000) + "km");
+                            }
+                            else {
+                                nearByQRs.add(Math.round(value) + "m");
                             }
                         }
                     }
-
                 }
             });
         }
@@ -178,6 +191,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
+
+    public void nearByQRList(){
+        nearByQRDialogue.setContentView(R.layout.nearby_qr_list_dialogue);
+        nearByQRDialogue.show();
+    }
+
+
 
     /**
      * Activity is called when the camera scans a QR code. Processes the result and redirects to
@@ -210,5 +231,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         vectorDrawable.draw(canvas);
 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    public void nearByQRList(View view) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.nearby_qr_list_dialogue ,null);
+        alertDialogBuilder.setView(dialogView);
+
+        qrDistanceListView = dialogView.findViewById(R.id.qr_distance_list);
+        QRDistanceInfoAdapter adapter = new QRDistanceInfoAdapter(this, nearByQRs);
+        qrDistanceListView.setAdapter(adapter);
+        nearByQRDialogue = alertDialogBuilder.create();
+        nearByQRDialogue.show();
     }
 }

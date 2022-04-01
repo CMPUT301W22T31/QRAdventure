@@ -20,7 +20,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,8 +34,19 @@
 
         </ImageView>
 
-    </androidx.cardview.widget.CardView>
+        <Button
+            android:onClick="nearByQRList"
+            android:layout_gravity="right"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="7dp"
+            android:layout_width="118.8dp"
+            android:layout_height="26.4dp"
+            android:background="@drawable/more_info_design"
+            >
 
+        </Button>
+
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"
