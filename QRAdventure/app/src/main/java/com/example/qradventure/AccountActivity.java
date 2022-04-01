@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -52,15 +53,7 @@ public class AccountActivity extends AppCompatActivity {
                     break;
                 case R.id.scan:
 
-                    // Use IntentIntegrator to activate camera
-                    IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
-                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                    tempIntent.setCameraId(0);
-                    tempIntent.setOrientationLocked(false);
-                    tempIntent.setPrompt("Scanning");
-                    tempIntent.setBeepEnabled(true);
-                    tempIntent.setBarcodeImageEnabled(true);
-                    tempIntent.initiateScan();
+                    scanner.scan(AccountActivity.this);
 
                     break;
                 case R.id.map:
@@ -214,11 +207,18 @@ public class AccountActivity extends AppCompatActivity {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             // get the QR contents, and send it to next activity
             String content = result.getContents();
-            if(content != null) {
+
+            if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
                 Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
                 intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
                 startActivity(intent);
-        }
+
+            }else{
+                String text = "You have already scanned that QR";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                toast.show();
+            }
     }
 }
 

@@ -83,14 +83,7 @@ public class SearchPlayersActivity extends AppCompatActivity {
                     break;
                 case R.id.scan:
                     // Use IntentIntegrator to activate camera
-                    IntentIntegrator tempIntent = new IntentIntegrator(SearchPlayersActivity.this);
-                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                    tempIntent.setCameraId(0);
-                    tempIntent.setOrientationLocked(false);
-                    tempIntent.setPrompt("Scanning");
-                    tempIntent.setBeepEnabled(true);
-                    tempIntent.setBarcodeImageEnabled(true);
-                    tempIntent.initiateScan();
+                    scanner.scan(SearchPlayersActivity.this);
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
@@ -179,12 +172,19 @@ public class SearchPlayersActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        Account account = CurrentAccount.getAccount();
 
-            String content = result.getContents();
-            if(content != null) {
-                Intent intent = new Intent(SearchPlayersActivity.this, PostScanActivity.class);
-                intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
-                startActivity(intent);
-            }
+        if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
+            Intent intent = new Intent(SearchPlayersActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+
+        }else{
+            String text = "You have already scanned that QR";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
         }
+    }
 }

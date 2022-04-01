@@ -1,5 +1,7 @@
 package com.example.qradventure;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -13,6 +15,7 @@ public class Record {
     private QR theQR;
     private ArrayList<String> comments;  // TODO: QR should hold comments, not the record.
     private String recordID; //-> For Firebase document ID
+    private Bitmap image;
 
     /**
      * Constructor
@@ -42,6 +45,17 @@ public class Record {
         Record record = (Record) o;
         return Objects.equals(user, record.user) && Objects.equals(theQR, record.theQR);
     }
+
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public Bitmap getImage(){
+        return this.image;
+    }
+
+
 
     /**
      * Gets the hash code of the user
