@@ -1,7 +1,5 @@
 package com.example.qradventure;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -11,14 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.util.Pair;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -29,16 +25,10 @@ import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -226,6 +216,7 @@ public class PostScanActivity extends AppCompatActivity {
             Log.d("logs", qr.getGeolocation().toString());
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -285,8 +276,8 @@ public class PostScanActivity extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             Log.d("logs", "Grabbing location ");
             Log.d("logs", "Location before: " + account.getLocation().toString() );
-            MapGrabber mapGrabber = new MapGrabber(fusedLocationProviderClient);
-            mapGrabber.getLocation(this);
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
             Intent intent = new Intent(this, AddGeolocationActivity.class);
             getGeo.launch(intent);
             Log.d("logs", "Location after: " + account.getLocation().toString() );

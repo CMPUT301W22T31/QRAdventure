@@ -18,17 +18,41 @@
         tools:context=".MapsActivity"
         />
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_group_98">
+
+        </ImageView>
+
+    </androidx.cardview.widget.CardView>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginBottom="4dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navbar_menu" />
+
+
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

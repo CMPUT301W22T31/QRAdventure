@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -32,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.qradventure.databinding.ActivityMapsBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -131,8 +133,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    // styling google maps, by google:
+    // https://developers.google.com/maps/documentation/android-sdk/styling#raw-resource
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         Log.d("hi", account.getLocation().get(0).toString());
         Log.d("hi", account.getLocation().get(1).toString());

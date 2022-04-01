@@ -6,31 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 
 /**
@@ -92,15 +81,14 @@ public class AccountActivity extends AppCompatActivity {
                         // grab location of user before map activity starts
                         try {
 
-                            MapGrabber mapGrabber = new MapGrabber(fusedLocationProviderClient);
-                            mapGrabber.getLocation(this);
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
                             Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
                             startActivity(intent5);
                         }
                         catch (Exception e){
                             Log.d("logs", e.toString());
                         }
-
                     }
                     else {
                             ActivityCompat.requestPermissions(AccountActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
@@ -114,6 +102,9 @@ public class AccountActivity extends AppCompatActivity {
         });
 
     }
+    /**
+     * Grabs location of user before entering maps activity
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         for (int grantResult : grantResults) {
@@ -125,13 +116,12 @@ public class AccountActivity extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             Log.d("logs", "Grabbing location ");
             Log.d("logs", "Location before: " + account.getLocation().toString() );
-            MapGrabber mapGrabber = new MapGrabber(fusedLocationProviderClient);
-            mapGrabber.getLocation(this);
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
             Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent5);
             Log.d("logs", "Location after: " + account.getLocation().toString() );
         }
-
     }
     /**
      * On resume, display all the textviews.

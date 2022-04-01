@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MapGrabber {
+public class LocationGrabber {
     Account account;
     FusedLocationProviderClient fusedLocationProviderClient;
 
-    public MapGrabber(FusedLocationProviderClient  fusedLocationProviderClient) {
+    public LocationGrabber(FusedLocationProviderClient  fusedLocationProviderClient) {
         this.fusedLocationProviderClient = fusedLocationProviderClient;
         account = CurrentAccount.getAccount();
     }

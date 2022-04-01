@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +19,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,6 +49,8 @@ public class MyCodesActivity extends AppCompatActivity {
     GridView qrList;
     FirebaseFirestore db;
     BottomNavigationView navbar;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Account myAccount;
 
     /**
      * Sets button on click listeners
@@ -58,13 +65,16 @@ public class MyCodesActivity extends AppCompatActivity {
 
         // get db, account references
         db = FirebaseFirestore.getInstance();
-        Account myAccount = CurrentAccount.getAccount();
+        myAccount = CurrentAccount.getAccount();
         ArrayList<Record> accountRecords = myAccount.getMyRecords();
 
         // initialize adapter
         qrList = findViewById(R.id.qr_list);
         QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);
         qrList.setAdapter(qrListAdapter);
+
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // ====== on click listener : intent to activity ======
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -156,12 +166,48 @@ public class MyCodesActivity extends AppCompatActivity {
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(MyCodesActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                        ActivityCompat.requestPermissions(MyCodesActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
                     break;
             }
             return false;
         });
+    }
+    /**
+     * Grabs location of user before entering maps activity
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + myAccount.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + myAccount.getLocation().toString() );
+        }
     }
 
 
