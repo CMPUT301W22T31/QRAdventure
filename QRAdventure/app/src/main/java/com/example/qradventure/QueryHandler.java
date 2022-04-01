@@ -523,9 +523,12 @@ public class QueryHandler {
                         recordData.put("UserScore", qr.getScore());
 
                         // put longitude and latitude of qr
-                        recordData.put("GeoHash",qr.getGeoHash());
-                        recordData.put("Longitude", qr.getGeolocation().get(0));
-                        recordData.put("Latitude", qr.getGeolocation().get(1));
+                        if (qr.getGeolocation().size() != 0){
+                            recordData.put("GeoHash",qr.getGeoHash());
+                            recordData.put("Longitude", qr.getGeolocation().get(0));
+                            recordData.put("Latitude", qr.getGeolocation().get(1));
+                        }
+
 
                         if (toAdd.getImage() != null){
                             Bitmap image = toAdd.getImage();
