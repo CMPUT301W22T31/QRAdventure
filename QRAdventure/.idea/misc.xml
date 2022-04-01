@@ -2,6 +2,15 @@
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
+<<<<<<< HEAD
+      <map>
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/fragment_maps_title_header.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+=======
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
@@ -10,4 +19,5 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
+>>>>>>> staging
 </project>

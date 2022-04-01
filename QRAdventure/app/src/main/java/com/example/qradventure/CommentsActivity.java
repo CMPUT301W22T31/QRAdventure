@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
@@ -36,12 +41,14 @@ import java.util.HashMap;
  * Activity where anyone can view or add comments attached to a particular QR code.
  */
 public class CommentsActivity extends AppCompatActivity {
+    Account account;
     int commentCount = 0;
     ListView commentListView;
     ArrayAdapter<Comment> commentAdapter;
     ArrayList<Comment> commentArrayList = new ArrayList<Comment>();
     TextView commentTitle;
     BottomNavigationView navbar;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     /**
      * Initialize onClick and onEvent listeners
@@ -76,20 +83,8 @@ public class CommentsActivity extends AppCompatActivity {
         commentTitle.setText(commentTitleText);
 
         EditText enteredComment = findViewById(R.id.editText_comment);
-
-//        QueryHandler query = new QueryHandler();
-//
-//        query.getComments(hash, new Callback() {
-//            @Override
-//            public void callback(ArrayList<Object> args) {
-//
-//                for (Object o: args){
-//                    commentArrayList.add( (Comment)o);
-//                    commentCount++;
-//                }
-//                commentAdapter.notifyDataSetChanged();
-//            }
-//        });
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
 
         // ====== Event listener (+ live updates!) ======
@@ -170,8 +165,23 @@ public class CommentsActivity extends AppCompatActivity {
                     tempIntent.initiateScan();
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(CommentsActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                        ActivityCompat.requestPermissions(CommentsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
@@ -181,10 +191,27 @@ public class CommentsActivity extends AppCompatActivity {
             return false;
         });
     }
-
-
-
-
+    /**
+     * Grabs location of user before entering maps activity
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
+    }
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
      * @param requestCode

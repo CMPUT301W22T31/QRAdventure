@@ -3,14 +3,19 @@ package com.example.qradventure;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,6 +34,9 @@ import java.util.ArrayList;
 public class ProfileActivity extends AppCompatActivity {
     private String username;
     BottomNavigationView navbar;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Account account;
+
 
     /**
      * Gets and displays fields of a player's profile
@@ -43,6 +51,10 @@ public class ProfileActivity extends AppCompatActivity {
         // unpack intent to get account username
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
+        Account account = CurrentAccount.getAccount();
+
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // ====== Enable navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
@@ -68,8 +80,23 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(ProfileActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                        ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
                     break;
             }
             return false;
@@ -122,6 +149,28 @@ public class ProfileActivity extends AppCompatActivity {
         tvEmail.setText(email);
         tvTotalScore.setText(score);
     }
+    /**
+     * Grabs location of user before entering maps activity
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
+    }
+
 
 
     /**

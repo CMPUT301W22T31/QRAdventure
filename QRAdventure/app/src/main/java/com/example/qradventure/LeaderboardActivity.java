@@ -1,9 +1,13 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +35,7 @@ import java.util.ArrayList;
  * Activity that displays a global leaderboard.
  */
 public class LeaderboardActivity extends AppCompatActivity {
+    Account account;
     BottomNavigationView navbar;
     PlayerPreview previewInfo;
     ArrayList<PlayerPreview> previewArray;
@@ -39,6 +46,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     int colorToggleOn = Color.argb(120,255,255,255);
     int colorToggleOff = Color.argb(0,255,255,255);
     String TAG = "Leaderboard_TAG";
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     /**
      * Enables navbar, listview, and spinner functionality
@@ -49,6 +57,12 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Get the account from the singleton
+        account = CurrentAccount.getAccount();
 
         // ==== Initialize & Link adapter ====
         previewArray = new ArrayList<PlayerPreview>();
@@ -64,6 +78,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 goToProfile(name);
             }
         });
+
 
         // ==== Enable Spinner ====
         String[] spinnerChoices = new String[]{"Top 3", "Top 5", "top 10", "top 25"};
@@ -137,8 +152,23 @@ public class LeaderboardActivity extends AppCompatActivity {
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(LeaderboardActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                        ActivityCompat.requestPermissions(LeaderboardActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
                     break;
             }
             return false;
@@ -318,6 +348,28 @@ public class LeaderboardActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         startActivity(intent);
+    }
+
+    /**
+     * Grabs location of user before entering maps activity
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
     }
 
     /**

@@ -3,33 +3,30 @@ package com.example.qradventure;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**
@@ -40,7 +37,9 @@ public class SearchPlayersActivity extends AppCompatActivity {
     ArrayList<String> playerNames;
     ArrayAdapter<String> usernameAdapter;
     FirebaseFirestore db;
+    Account account;
     BottomNavigationView navbar;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     /**
      * Sets up UI elements
@@ -51,11 +50,20 @@ public class SearchPlayersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_players);
 
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Get the account from the singleton
+        account = CurrentAccount.getAccount();
+
         // Initialize data, listview, adapter
         playerListView = findViewById(R.id.username_list);
         playerNames = new ArrayList<>();
         usernameAdapter = new ArrayAdapter<>(this, R.layout.username_list, playerNames);
         playerListView.setAdapter(usernameAdapter);
+
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // set up on click listener
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,12 +98,48 @@ public class SearchPlayersActivity extends AppCompatActivity {
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(SearchPlayersActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                    }
+                        ActivityCompat.requestPermissions(SearchPlayersActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                     break;
             }
             return false;
         });
+    }
+
+    // Handles events on user's permissions on location.
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
+
     }
 
     /**
@@ -160,6 +204,7 @@ public class SearchPlayersActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
