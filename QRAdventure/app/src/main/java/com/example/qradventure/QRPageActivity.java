@@ -8,10 +8,13 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,8 +33,10 @@ import java.util.ArrayList;
 public class QRPageActivity extends AppCompatActivity {
     String hash;
     String title;
+    Bitmap image;
     TextView QRTitle;
     String recordID;
+    ImageView qrPicture;
     Account currentAccount = CurrentAccount.getAccount();
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -47,11 +52,17 @@ public class QRPageActivity extends AppCompatActivity {
         // set textview for qr name
         // try: temporary to prevent crashes
         QRTitle = findViewById(R.id.qr_title_header);
+        qrPicture = findViewById(R.id.qr_picture);
         try {
             Bundle bundle = getIntent().getExtras(); // get string from previous activity
             title = bundle.getString("QRtitle");
             QRTitle.setText(title);
             hash = bundle.getString("QRHash");
+            image = (Bitmap)bundle.getParcelable("QRPicture");
+
+            if (image != null)
+                qrPicture.setImageBitmap(image);
+
         } catch(Exception e) {
             QRTitle.setText("PLACEHOLDER");
         }
@@ -71,14 +82,7 @@ public class QRPageActivity extends AppCompatActivity {
                     startActivity(intent2);
                     break;
                 case R.id.scan:
-                    IntentIntegrator tempIntent = new IntentIntegrator(QRPageActivity.this);
-                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                    tempIntent.setCameraId(0);
-                    tempIntent.setOrientationLocked(false);
-                    tempIntent.setPrompt("Scanning");
-                    tempIntent.setBeepEnabled(true);
-                    tempIntent.setBarcodeImageEnabled(true);
-                    tempIntent.initiateScan();
+                    scanner.scan(QRPageActivity.this);
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
@@ -177,13 +181,20 @@ public class QRPageActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // get the QR contents, and send it to next activity
         String content = result.getContents();
-        if (content != null) {
+        Account account = CurrentAccount.getAccount();
+
+        if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
             Intent intent = new Intent(QRPageActivity.this, PostScanActivity.class);
             intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
             startActivity(intent);
+
+        }else{
+            String text = "You have already scanned that QR";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
         }
     }
-
 
 
 }

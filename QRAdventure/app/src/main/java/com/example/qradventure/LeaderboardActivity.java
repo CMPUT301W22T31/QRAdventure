@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -318,14 +319,15 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void formatMyPercentile(int percentile) {
         String percString = "";
-        int tens = percentile % 10;
+        int ones = percentile % 10;
+        int tens = percentile / 10;
 
         // generate suffix exhaustively; 0th - 100th inclusive
-        if (tens == 1) {
+        if (ones == 1 && tens != 1) {
             percString = percentile + "st";
-        } else if(tens == 2) {
+        } else if(ones == 2 && tens != 1) {
             percString = percentile + "nd";
-        } else if(tens == 3) {
+        } else if(ones == 3 && tens != 1) {
             percString = percentile + "rd";
         } else {
             percString = percentile + "th";
@@ -381,13 +383,21 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        // get the QR contents, and send it to next activity
 
+        // get the QR contents, and send it to next activity or return
+
+        Account account = CurrentAccount.getAccount();
         String content = result.getContents();
-        if(content != null) {
+
+        if(content != null && !account.containsRecord(new Record(account, new QR(content)))) {
             Intent intent = new Intent(LeaderboardActivity.this, PostScanActivity.class);
             intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
             startActivity(intent);
+        } else {
+            String text = "You have already scanned that QR";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
         }
     }
 
