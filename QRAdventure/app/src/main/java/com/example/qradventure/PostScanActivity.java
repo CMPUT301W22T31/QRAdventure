@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.arch.core.executor.TaskExecutor;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFireUtils;
@@ -58,6 +60,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
     private ActivityResultLauncher cameraLaunch;
     private Boolean keepImage = false;
     private Bitmap image;
+    TextView qrScoreText;
     Account account;
     private int locationCount = 0;
 
@@ -81,6 +84,10 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
         qr = new QR(QRContent);
+
+        // Front end stuff
+        qrScoreText = findViewById(R.id.post_scan_score);
+        qrScoreText.setText(Integer.toString(qr.getScore()));
 
         // For testing purposes, display a dialog of the QR scanned
         new AlertDialog.Builder(PostScanActivity.this).setTitle("Result")

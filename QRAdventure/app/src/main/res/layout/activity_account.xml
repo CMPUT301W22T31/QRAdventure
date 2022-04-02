@@ -145,7 +145,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="72dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
                     android:fontFamily="@font/fredoka_one"
