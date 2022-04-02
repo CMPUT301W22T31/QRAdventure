@@ -155,14 +155,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:foreground="?android:attr/selectableItemBackground"
-            android:background="@drawable/orange_rect"
+            android:background="@drawable/orange_rect2"
             android:clickable="true"
             android:onClick="goToViewCodes"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-
-            android:paddingBottom="20dp">
+>
 
             <TextView
                 android:layout_width="wrap_content"

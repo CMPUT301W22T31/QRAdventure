@@ -258,13 +258,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
-            android:background="@drawable/red_rect"
+            android:background="@drawable/red_rect2"
             android:clickable="true"
             android:onClick="goToMyCodes"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:paddingBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -295,13 +295,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
-            android:background="@drawable/orange_rect"
+            android:background="@drawable/orange_rect2"
             android:clickable="true"
             android:onClick="goToMyStats"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="20dp">
+            android:paddingTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -332,13 +332,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
-            android:background="@drawable/green_rect"
+            android:background="@drawable/green_rect2"
             android:clickable="true"
             android:onClick="goToLoginQR"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:paddingBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -368,13 +368,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
-            android:background="@drawable/blue_rect"
+            android:background="@drawable/blue_rect3"
             android:clickable="true"
             android:onClick="goToStatusQR"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:paddingBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:text="LOGIN CODE">
 
             <TextView
