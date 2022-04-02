@@ -120,6 +120,19 @@
         android:backgroundTint="@drawable/button_bg"
         android:fontFamily="@font/fredoka_one"
         android:text="CREATE NEW ACCOUNT"
+        app:layout_constraintBottom_toBottomOf="@id/buttonLogin2QR"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonLogin2QR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:backgroundTint="@drawable/button_bg"
+        android:fontFamily="@font/fredoka_one"
+        android:text="LOG IN WITH QR "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

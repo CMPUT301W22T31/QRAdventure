@@ -261,6 +261,12 @@ public class AccountActivity extends AppCompatActivity {
                 startActivity(intent);
 
         }
+            else if (content.contains("QRLOGIN-")) {
+                QueryHandler q = new QueryHandler();
+                String deviceID = content.toString().split("-")[1];
+                q.getLoginAccount(deviceID, null);
+            }
+
             else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
                 Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
                 intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);

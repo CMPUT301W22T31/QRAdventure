@@ -39,6 +39,15 @@ public class LoginActivity extends AppCompatActivity {
 
         // ========== Account Registration ==========
         Button createButton = findViewById(R.id.buttonLogin);
+        Button LoginQRButton = findViewById(R.id.buttonLogin2QR);
+
+        LoginQRButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanner.scan(LoginActivity.this);
+            }
+        });
+
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
