@@ -40,9 +40,7 @@ public class StatusQRActivity extends AppCompatActivity {
         String totalScore = Integer.toString(account.getTotalScore());
         String totalScanned = Integer.toString(account.getTotalCodesScanned());
 
-        String statsValues = username + '-' + totalScore + '-' + totalScanned + '-' + highestQR + '-' + lowestQR;
-        Log.d("bet", statsValues);
-
+        String statsValues = "QRSTATS-" + username + '-' + totalScore + '-' + totalScanned + '-' + highestQR + '-' + lowestQR;
         MultiFormatWriter writer = new MultiFormatWriter();
 
         try {

@@ -255,7 +255,13 @@ public class AccountActivity extends AppCompatActivity {
             // get the QR contents, and send it to next activity
             String content = result.getContents();
 
-            if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
+            if (content.contains("QRSTATS-")) {
+                Intent intent = new Intent(AccountActivity.this, ProfileStatsActivity.class);
+                intent.putExtra("QRSTATS", content);
+                startActivity(intent);
+
+        }
+            else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
                 Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
                 intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
                 startActivity(intent);
