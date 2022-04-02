@@ -6,12 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ScannedByActivity"
-    android:background="@color/black">
+    android:background="@drawable/gradient_bg">
+
+
 
     <ListView
         android:id="@+id/username_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
     </ListView>
 
