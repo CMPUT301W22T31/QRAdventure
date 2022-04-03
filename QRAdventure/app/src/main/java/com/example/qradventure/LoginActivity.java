@@ -1,17 +1,22 @@
 package com.example.qradventure;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,5 +138,40 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
 
-}
+        Log.d("meme", "BOOM ");
+        if (content.contains("QRLOGIN-")) {
+            QueryHandler q = new QueryHandler();
+            String deviceID = content.toString().split("-")[1];
+            q.getLoginAccount(deviceID, new Callback() {
+                Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
+                @Override
+                public void callback(ArrayList<Object> args) {
+                    Account account =CurrentAccount.getAccount();
+                    DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
+                    docRef.update("device_id", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return;
+                }
+            });
+        }
+
+
+
+            Log.d("meme", "BOOM ");
+            //Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
+        }
+
+    }
+
+
