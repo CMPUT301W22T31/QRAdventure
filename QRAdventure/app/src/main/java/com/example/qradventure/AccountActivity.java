@@ -1,14 +1,21 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -24,6 +31,7 @@ import java.text.DecimalFormat;
 public class AccountActivity extends AppCompatActivity {
     Account account;
     BottomNavigationView navbar;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     /**
      * Sets layout and Enables navbar
@@ -34,8 +42,13 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
+        //Log.d("logs", "Current location: " + account.getLocation().toString());
+
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
         navbar.setOnItemSelectedListener((item) ->  {
@@ -52,20 +65,27 @@ public class AccountActivity extends AppCompatActivity {
                     break;
                 case R.id.scan:
 
-                    // Use IntentIntegrator to activate camera
-                    IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
-                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                    tempIntent.setCameraId(0);
-                    tempIntent.setOrientationLocked(false);
-                    tempIntent.setPrompt("Scanning");
-                    tempIntent.setBeepEnabled(true);
-                    tempIntent.setBarcodeImageEnabled(true);
-                    tempIntent.initiateScan();
+                    scanner.scan(AccountActivity.this);
 
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(AccountActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                            ActivityCompat.requestPermissions(AccountActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                        }
                     break;
                 case R.id.my_account:
                     // already on this activity. Do nothing.
@@ -75,7 +95,27 @@ public class AccountActivity extends AppCompatActivity {
         });
 
     }
-
+    /**
+     * Grabs location of user before entering maps activity
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
+    }
     /**
      * On resume, display all the textviews.
      * So if text data changes after returning TO this activity, the views are updated.
@@ -213,11 +253,18 @@ public class AccountActivity extends AppCompatActivity {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             // get the QR contents, and send it to next activity
             String content = result.getContents();
-            if(content != null) {
+
+            if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
                 Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
                 intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
                 startActivity(intent);
-        }
+
+            }else{
+                String text = "You have already scanned that QR";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                toast.show();
+            }
     }
 }
 

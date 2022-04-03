@@ -2,6 +2,7 @@ package com.example.qradventure;
 
 import android.util.Log;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -16,8 +17,9 @@ public class QR {
     private final String hash;
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
-    private ArrayList<String> geolocation;
+    private ArrayList<Double> geolocation; // first index is longitude, second is latitude
     private ArrayList<Comment> comments;
+    private String geohash;
 
     /**
      * More detailed constructor
@@ -26,7 +28,7 @@ public class QR {
      * @param scannedAccounts all accounts which have scanned this QR code
      * @param geolocation unused for now
      */
-    public QR(String hash, int score, ArrayList<Account> scannedAccounts, ArrayList<String> geolocation) {
+    public QR(String hash, int score, ArrayList<Account> scannedAccounts, ArrayList<Double> geolocation) {
         this.hash = hash;
         this.score = score;
         this.scannedAccounts = scannedAccounts;
@@ -39,10 +41,10 @@ public class QR {
      *      The String of the QR code
      */
     public QR(String QR){
-        hash = DigestUtils.sha256Hex(QR);
+        hash = new String(Hex.encodeHex(DigestUtils.md5(QR)));
         calculateScore(hash);
         scannedAccounts = new ArrayList<Account>();
-        geolocation = new ArrayList<String>();
+        geolocation = new ArrayList<Double>();
     }
 
     /**
@@ -59,6 +61,7 @@ public class QR {
         QR qr = (QR) o;
         return Objects.equals(hash, qr.hash);
     }
+
 
     @Override
     public int hashCode() {
@@ -113,7 +116,21 @@ public class QR {
         score = QRScore;
         return score;
     }
+    public void setGeolocation(ArrayList<Double>geolocation) {
+        this.geolocation = geolocation;
+    }
 
+    public void setGeoHash(String geohash) {
+        this.geohash = geohash;
+    }
+
+    public String getGeoHash() {
+        return geohash;
+    }
+
+    public ArrayList<Double> getGeolocation() {
+        return geolocation;
+    }
 
     public int getScore() {
         return this.score;

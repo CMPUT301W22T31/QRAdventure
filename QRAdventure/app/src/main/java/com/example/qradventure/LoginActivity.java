@@ -68,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("StatusQR", StatusQR);
                 data.put("TotalScore", 0);
                 data.put("device_id", androidDeviceID);
+                data.put("bestQR", 0);
+                data.put("scanCount", 0);
 
                 if (!username.matches("")) {
 
@@ -81,15 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                             Boolean alreadyCreated = (Boolean)args.get(0);
 
                             if (!alreadyCreated){
-                                Context context = getApplicationContext();
-                                CharSequence text = "Username available! Creating account...";
-                                int duration = Toast.LENGTH_SHORT;
-                                Toast toast = Toast.makeText(context, text, duration);
-                                toast.show();
-
-                                // Set data. Could add success/fail listeners?
-
-
                                 // on success: proceed to app!
                                 signedIn();
                             }else{

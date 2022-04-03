@@ -1,10 +1,14 @@
 package com.example.qradventure;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
@@ -32,6 +39,9 @@ public class ProfileActivity extends AppCompatActivity {
     private String username;
     BottomNavigationView navbar;
     FirebaseFirestore db;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Account account;
+
 
     /**
      * Gets and displays fields of a player's profile
@@ -51,6 +61,10 @@ public class ProfileActivity extends AppCompatActivity {
         // unpack intent to get account username
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
+        Account account = CurrentAccount.getAccount();
+
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // display delete button if owner
         if (intent.getStringExtra("Owner") == "Owner") {
@@ -81,22 +95,30 @@ public class ProfileActivity extends AppCompatActivity {
                     break;
                 case R.id.scan:
                     // Use IntentIntegrator to activate camera
-                    IntentIntegrator tempIntent = new IntentIntegrator(ProfileActivity.this);
-                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                    tempIntent.setCameraId(0);
-                    tempIntent.setOrientationLocked(false);
-                    tempIntent.setPrompt("Scanning");
-                    tempIntent.setBeepEnabled(true);
-                    tempIntent.setBarcodeImageEnabled(true);
-                    tempIntent.initiateScan();
+                    scanner.scan(ProfileActivity.this);
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    Intent intent5 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent5);
+                    if (ActivityCompat.checkSelfPermission(ProfileActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                        ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
                     break;
             }
             return false;
@@ -107,6 +129,8 @@ public class ProfileActivity extends AppCompatActivity {
         query.getProfile(username, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
+
+
                 String email = (String) args.get(0);
                 String phone = (String) args.get(1);
                 Long totalScore = (Long)args.get(2);
@@ -141,10 +165,62 @@ public class ProfileActivity extends AppCompatActivity {
 
         // set textview text
         tvUsername.setText(name);
-        tvPhone.setText(email);
-        tvEmail.setText(phone);
+        tvPhone.setText(phone);
+        tvEmail.setText(email);
         tvTotalScore.setText(score);
     }
+    /**
+     * Grabs location of user before entering maps activity
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
+    }
+
+
+
+    /**
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        Account account = CurrentAccount.getAccount();
+
+        if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
+            Intent intent = new Intent(ProfileActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+
+        }else{
+            String text = "You have already scanned that QR";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
+        }
+    }
+
+
 
     /**
      * Delete this account. Called when delete button is clicked. Owner functionality.

@@ -1,15 +1,23 @@
 package com.example.qradventure;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
@@ -35,6 +44,8 @@ public class ViewCodesActivity extends AppCompatActivity {
     QRListAdapter qrListAdapter;
     BottomNavigationView navbar;
     String LOG = "VCActivity";
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Account account;
 
     /**
      * Initialize Gridview and click listener
@@ -50,6 +61,12 @@ public class ViewCodesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
 
+        // Get the account from the singleton
+        account = CurrentAccount.getAccount();
+
+        // Call FusedLocationProviderClient class to grab location of user
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         // enable GridView
         qrList = findViewById(R.id.qr_list);
         records = new ArrayList<Record>();
@@ -61,8 +78,13 @@ public class ViewCodesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
-                intent.putExtra("QRtitle", records.get(position).getQRHash().substring(0,4));
-                intent.putExtra("QRHash", records.get(position).getQRHash());
+
+                Record clickedRecord = records.get(position);
+
+                intent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                intent.putExtra("QRHash", clickedRecord.getQRHash());
+                Bitmap image = clickedRecord.getImage();
+                intent.putExtra("QRPicture", image);
                 startActivity(intent);
             }
         });
@@ -88,18 +110,25 @@ public class ViewCodesActivity extends AppCompatActivity {
                     break;
                 case R.id.scan:
                     // Use IntentIntegrator to activate camera
-                    IntentIntegrator tempIntent = new IntentIntegrator(ViewCodesActivity.this);
-                    tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                    tempIntent.setCameraId(0);
-                    tempIntent.setOrientationLocked(false);
-                    tempIntent.setPrompt("Scanning");
-                    tempIntent.setBeepEnabled(true);
-                    tempIntent.setBarcodeImageEnabled(true);
-                    tempIntent.initiateScan();
+                    scanner.scan(ViewCodesActivity.this);
                     break;
                 case R.id.map:
-                    Intent intent4 = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(intent4);
+                    if (ActivityCompat.checkSelfPermission(ViewCodesActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // grab location of user before map activity starts
+                        try {
+                            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+                            locationGrabber.getLocation(this);
+                            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(intent5);
+                        }
+                        catch (Exception e){
+                            Log.d("logs", e.toString());
+                        }
+                    }
+                    else {
+                        ActivityCompat.requestPermissions(ViewCodesActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    }
                     break;
                 case R.id.my_account:
                     Intent intent5 = new Intent(getApplicationContext(), AccountActivity.class);
@@ -132,4 +161,54 @@ public class ViewCodesActivity extends AppCompatActivity {
         });
 
     }
+    /**
+<<<<<<< HEAD
+     * Grabs location of user before entering maps activity
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return;
+            }
+        }
+        if (requestCode == 44) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            Log.d("logs", "Grabbing location ");
+            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
+            locationGrabber.getLocation(this);
+            Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(intent5);
+            Log.d("logs", "Location after: " + account.getLocation().toString() );
+        }
+    }
+    /**
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
+        String content = result.getContents();
+        Account account = CurrentAccount.getAccount();
+
+        if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
+            Intent intent = new Intent(ViewCodesActivity.this, PostScanActivity.class);
+            intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
+            startActivity(intent);
+
+        }else{
+            String text = "You have already scanned that QR";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
+        }
+    }
+
+
 }
