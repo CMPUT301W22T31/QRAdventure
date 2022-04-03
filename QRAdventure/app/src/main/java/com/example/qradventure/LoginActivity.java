@@ -1,9 +1,11 @@
 package com.example.qradventure;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -47,11 +49,33 @@ public class LoginActivity extends AppCompatActivity {
         Button LoginQRButton = findViewById(R.id.buttonLogin2QR);
 
         LoginQRButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scanner.scan(LoginActivity.this);
-            }
-        });
+                                             @Override
+                                             public void onClick(View view) {
+
+                                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                                 builder.setMessage("You will be logged out of all other devices")
+                                                         .setTitle("Warning");
+
+                                                 builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                                     @Override
+                                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                                         scanner.scan(LoginActivity.this);
+                                                     }
+                                                 });
+                                                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                             @Override
+                                                             public void onClick(DialogInterface dialogInterface, int i) {
+                                                                 return;
+                                                             }
+                                                         });
+                                                 AlertDialog dialog = builder.create();
+                                                 dialog.show();
+
+                                             }
+                                         });
+
+                                //scanner.scan(LoginActivity.this);
+
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d("meme", "BOOM ");
         if (content.contains("QRLOGIN-")) {
+
             QueryHandler q = new QueryHandler();
             String deviceID = content.toString().split("-")[1];
             q.getLoginAccount(deviceID, new Callback() {
