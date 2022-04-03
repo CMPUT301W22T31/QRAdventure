@@ -828,4 +828,50 @@ public class QueryHandler {
                 });
     }
 
+
+    /**
+     * Simple query to get the common "stats" fields of an account
+     * @param username
+     * @param callback - callback to return array [TotalScore,
+     */
+    public void queryPlayerStats(String username, Callback callback) {
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(username);
+
+        // query to get their stats, return via callback
+        accDocRef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            ArrayList<Object> args = new ArrayList<Object>();
+                            DocumentSnapshot doc = task.getResult();
+
+                            if (doc.exists()) {
+
+                                long totalScore = (long) doc.getData().get("TotalScore");
+                                long scanCount = (long) doc.getData().get("scanCount");
+                                long bestQR = (long) doc.getData().get("bestQR");
+
+                                // order we add them matters
+                                // refer to callback in StatsActivity
+                                args.add(totalScore);
+                                args.add(scanCount);
+                                args.add(bestQR);
+                                callback.callback(args);
+
+                            } else {
+                                // log: document dne
+                                Log.d("logs", "Document does not exist!", task.getException());
+                            }
+                        } else {
+                            // query failed
+                            Log.d("logs", "Query Failed!", task.getException());
+                        }
+                    }
+                });
+    }
+
 }

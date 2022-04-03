@@ -83,7 +83,7 @@
             android:name=".MyCodesActivity"
             android:exported="false" />
         <activity
-            android:name=".MyStatsActivity"
+            android:name=".StatsActivity"
             android:exported="false" />
         <activity
             android:name=".LoginQRActivity"

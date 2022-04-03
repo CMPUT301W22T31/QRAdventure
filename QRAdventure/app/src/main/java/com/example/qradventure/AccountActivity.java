@@ -164,7 +164,8 @@ public class AccountActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void goToMyStats(View view) {
-        Intent intent = new Intent(this, MyStatsActivity.class);
+        Intent intent = new Intent(this, StatsActivity.class);
+        intent.putExtra(getString(R.string.EXTRA_USERNAME), account.getUsername());
         startActivity(intent);
     }
 
