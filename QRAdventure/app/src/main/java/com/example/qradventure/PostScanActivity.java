@@ -99,10 +99,10 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
             @Override
             public void callback(ArrayList<Object> args) {
                 int count = (int) args.get(0);
+                nTimes = findViewById(R.id.n_times);
                 if (count == 1)
                     nTimes.setText("Scanned once.");
                 else {
-                    nTimes = findViewById(R.id.n_times);
                     Log.d("bruh", "CALLBACK ");
                     nTimes.setText("Scanned " + count + " times.");
 

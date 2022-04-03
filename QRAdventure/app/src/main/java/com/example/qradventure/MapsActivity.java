@@ -74,9 +74,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -122,7 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
                     break;
-
             }
             return false;
         });
@@ -161,24 +157,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void callback(ArrayList<Object> args) {
                     if (args.size() > 0) {
 
-                        ArrayList<HashMap<String,Double>> locationVals =  (ArrayList<HashMap<String,Double>>) args.get(0);
-                        for (HashMap<String, Double> pair: locationVals
+                        ArrayList<NearByQR> nearByQRS =  (ArrayList<NearByQR>) args.get(0);
+                        for (NearByQR qr: nearByQRS
                         ) {
-                            LatLng loc = new LatLng((Double) pair.get("Latitude"),(Double) pair.get("Longitude"));
-                            mMap.addMarker(new MarkerOptions().position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
-                            Log.d("hi", "latitude "+ pair.get("Longitude"));
-                            Log.d("hi", "longitude "+ pair.get("Latitude"));
 
-                        }
-                        ArrayList<Double> qrDistances = (ArrayList<Double>) args.get(1);
-                        for (Double value: qrDistances
-                        )
-                        {
-                            if (value >= 1000) {
-                            nearByQRs.add(Math.round(value/1000) + "km");
+                            LatLng loc = new LatLng((Double) qr.getLatitude(),(Double) qr.getLongitude());
+                            if (qr.hasBeenScanned()) {
+                                Log.d("bruh", "in yo ");
+                                mMap.addMarker(new MarkerOptions().title("You've scanned this qr already.").position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_check));
                             }
                             else {
-                                nearByQRs.add(Math.round(value) + "m");
+                                mMap.addMarker(new MarkerOptions().title(qr.getScore().toString() + "pts").position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_qr_location));
+                            }
+
+                            Log.d("hi", "latitude "+  qr.getLatitude());
+                            Log.d("hi", "longitude "+ qr.getLatitude());
+
+                        }
+
+                        for (NearByQR qr: nearByQRS
+                        )
+                        {
+                            if (!qr.hasBeenScanned()) {
+                                if (qr.getDistance() >= 1000) {
+                                    // the format would be something like '10pts,1.2km"
+                                    nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance() / 1000) + "km");
+                                } else {
+                                    nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance()) + "m");
+                                }
                             }
                         }
                     }
