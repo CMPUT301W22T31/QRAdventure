@@ -19,7 +19,8 @@ public class StatsActivity extends AppCompatActivity {
     int totalScore;
     int scanCount;
     int bestQR;
-    String LOG = "Stats Log";
+    int[] ranks = new int [3];
+    String TAG = "April3";
 
     /**
      * Controls calls to get stats and set textviews
@@ -37,14 +38,6 @@ public class StatsActivity extends AppCompatActivity {
 
         // Set basic player stats
         SetPlayerStats();
-
-        // set percentile for High Score -- "TotalScore"
-        //calculatePercentile("TotalScore", totalScore)
-
-        // set percentile for Scan Count -- "scanCount"
-
-
-        // set percentile for Best QR -- "bestQR"
     }
 
     /**
@@ -72,6 +65,11 @@ public class StatsActivity extends AppCompatActivity {
                 tvScanCount.setText(String.valueOf(scanCount));
                 tvBestQR.setText(String.valueOf(bestQR));
 
+                // get and set textviews related to rank (percentile)
+                calculatePercentile("TotalScore", totalScore);
+                calculatePercentile("scanCount", scanCount);
+                calculatePercentile("bestQR", bestQR);
+
             }
         });
     }
@@ -82,6 +80,7 @@ public class StatsActivity extends AppCompatActivity {
      * Uses QueryHandler and Callback to get your percentile among all players
      * Note: egregious rounding - this serves only as an estimate!
      * @param field - (String) Field over which to filter your percentile
+     * @param fieldValue - (int) value which to determine the percentile of
      */
     public void calculatePercentile(String field, int fieldValue) {
         QueryHandler qh = new QueryHandler();
@@ -103,7 +102,7 @@ public class StatsActivity extends AppCompatActivity {
                         int percentile = (countLower*100) / countTotal;
 
                         // send this number to be formatted & displayed
-                        formatMyPercentile(percentile);
+                        formatMyPercentile(percentile, field);
                     }
                 });
             }
@@ -113,8 +112,9 @@ public class StatsActivity extends AppCompatActivity {
     /**
      * Formats a percentile for display by correcting suffix (50th, 51st, 53rd, etc)
      * @param percentile - (int) number to display
+     * @param field - (string) field of rank, dictates which textview to set
      */
-    public void formatMyPercentile(int percentile) {
+    public void formatMyPercentile(int percentile, String field) {
         String percString = "";
         int ones = percentile % 10;
         int tens = percentile / 10;
@@ -130,9 +130,19 @@ public class StatsActivity extends AppCompatActivity {
             percString = percentile + "th";
         }
 
-        // set the textview
-        TextView tvPercentile = findViewById(R.id.tvMyRank);
-        tvPercentile.setText(percString);
+        // get & set the respective textview based on field
+        if (field == "TotalScore") {
+            TextView tvRank = findViewById(R.id.tvRankTotalScore);
+            tvRank.setText(percString);
+        } else if (field == "scanCount") {
+            TextView tvRank = findViewById(R.id.tvRankTotalScans);
+            tvRank.setText(percString);
+        } else {
+            TextView tvRank = findViewById(R.id.tvRankBestQR);
+            tvRank.setText(percString);
+        }
+
+
     }
 
 

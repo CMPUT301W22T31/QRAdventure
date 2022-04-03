@@ -57,7 +57,7 @@
         android:id="@+id/tvLabelTotalScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/fredoka_one"
         android:text="Total Score"
         android:textAlignment="center"
@@ -106,7 +106,7 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvRankTotalScore"
         app:layout_constraintStart_toEndOf="@+id/tvLabelTotalScore"
         app:layout_constraintTop_toTopOf="@+id/tvLabelTotalScore" />
 
@@ -137,6 +137,47 @@
         app:layout_constraintEnd_toEndOf="@+id/tvStatsTotalScore"
         app:layout_constraintStart_toStartOf="@+id/tvStatsTotalScore"
         app:layout_constraintTop_toBottomOf="@+id/tvStatsTotalScore" />
+
+    <TextView
+        android:id="@+id/tvRankTotalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStatsTotalScore"
+        app:layout_constraintTop_toTopOf="@+id/tvLabelTotalScore" />
+
+    <TextView
+        android:id="@+id/tvRankBestQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvRankTotalScans"
+        app:layout_constraintStart_toStartOf="@+id/tvRankTotalScans"
+        app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScans" />
+
+    <TextView
+        android:id="@+id/tvRankTotalScans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/fredoka_one"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvRankTotalScore"
+        app:layout_constraintStart_toStartOf="@+id/tvRankTotalScore"
+        app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScore" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

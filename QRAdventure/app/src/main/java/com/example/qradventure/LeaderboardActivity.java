@@ -38,7 +38,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     int currentFilter;
     int colorToggleOn = Color.argb(120,255,255,255);
     int colorToggleOff = Color.argb(0,255,255,255);
-    String TAG = "Leaderboard_TAG";
+    String TAG = "Log_Leaderboard";
 
     /**
      * Enables navbar, listview, and spinner functionality
@@ -275,8 +275,6 @@ public class LeaderboardActivity extends AppCompatActivity {
 
                         // send this number to be formatted & displayed
                         formatMyPercentile(percentile);
-
-
                     }
                 });
             }
