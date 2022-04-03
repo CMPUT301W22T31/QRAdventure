@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                                              public void onClick(View view) {
 
                                                  AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                                 builder.setMessage("You will be logged out of all other devices")
+                                                 builder.setMessage("You will be logged out of all other devices and the login code will be made invalid")
                                                          .setTitle("Warning");
 
                                                  builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
