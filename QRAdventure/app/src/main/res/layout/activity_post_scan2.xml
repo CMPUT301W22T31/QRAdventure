@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/fredoka_one"
             android:text="null"
-            android:textColor="#FFAA00"
+            android:textColor="#FFEB3B"
             android:textSize="35dp" />
 
         <TextView
@@ -50,7 +50,9 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
         tools:layout_editor_absoluteX="36dp">
 
+
         <TextView
+            android:id="@+id/n_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/fredoka_one"

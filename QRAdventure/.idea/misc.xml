@@ -27,13 +27,14 @@
         <entry key="app/src/main/res/drawable/qr_code2_black.xml" value="0.1525" />
         <entry key="app/src/main/res/drawable/qr_scanner.xml" value="0.1525" />
         <entry key="app/src/main/res/drawable/red_rect2.xml" value="0.212" />
-        <entry key="app/src/main/res/layout/activity_account.xml" value="0.35851223402289284" />
+        <entry key="app/src/main/res/layout/activity_account.xml" value="0.45745785169867414" />
         <entry key="app/src/main/res/layout/activity_add_geolocation.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_comments.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/activity_leaderboard.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.178125" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/layout/activity_my_stats.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/layout/activity_post_scan2.xml" value="0.34403228759765625" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.335" />

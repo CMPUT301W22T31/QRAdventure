@@ -36,13 +36,13 @@
 
                 <ImageView
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="50dp"
-                    android:src="@drawable/account_default" />
+                    android:src="@drawable/account2"></ImageView>
 
                 <ImageView
                     android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:clickable="true"
                     android:onClick="goToEditInfo"
                     android:src="@drawable/edit" />

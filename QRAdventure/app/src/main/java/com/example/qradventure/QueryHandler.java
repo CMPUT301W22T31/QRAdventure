@@ -825,6 +825,7 @@ public class QueryHandler {
                             ArrayList<Object> countArray = new ArrayList<Object>();
                             countArray.add(task.getResult().size());
                             callback.callback(countArray);
+
                         } else {
                             Log.d(TAG, "countTotalPlayers unsuccessful!: ", task.getException());
                         }
@@ -901,6 +902,27 @@ public class QueryHandler {
                         }
                     }
                 });
+    }
+
+    public void getAmntScanned(QR qr , Callback callback) {
+
+        db.collection("QRDB").document(qr.getHash()).collection("Scanned By")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // create the array of 1 element; callback
+                            ArrayList<Object> countArray = new ArrayList<Object>();
+                            countArray.add(task.getResult().size());
+                            callback.callback(countArray);
+
+                        } else {
+                            Log.d(TAG, "Unsucessful query.", task.getException());
+                        }
+                    }
+                });
+
     }
 
 }

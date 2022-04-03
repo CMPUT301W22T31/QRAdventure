@@ -37,10 +37,14 @@ import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -55,8 +59,10 @@ import java.util.HashMap;
 
 public class PostScanActivity extends AppCompatActivity implements  ImageFragment.imageListener {
     private QR qr;
+    FirebaseFirestore db;
     private String recordID;
     private Button photoButton;
+    private TextView nTimes;
     private ActivityResultLauncher cameraLaunch;
     private Boolean keepImage = false;
     private Bitmap image;
@@ -79,11 +85,30 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
         setContentView(R.layout.activity_post_scan2);
         setTitle("Post Scan Activity");
         // Get the account from the singleton
+
+
         account = CurrentAccount.getAccount();
         // unfold intent, create QR object.
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
         qr = new QR(QRContent);
+
+        QueryHandler queryHandler  = new QueryHandler();
+
+        queryHandler.getAmntScanned(qr, new Callback() {
+            @Override
+            public void callback(ArrayList<Object> args) {
+                int count = (int) args.get(0);
+                if (count == 1)
+                    nTimes.setText("Scanned once.");
+                else {
+                    nTimes = findViewById(R.id.n_times);
+                    Log.d("bruh", "CALLBACK ");
+                    nTimes.setText("Scanned " + count + " times.");
+
+                }
+            }
+        });
 
         // Front end stuff
         qrScoreText = findViewById(R.id.post_scan_score);
