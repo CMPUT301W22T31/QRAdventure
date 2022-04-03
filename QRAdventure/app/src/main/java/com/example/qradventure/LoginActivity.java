@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
         String content = result.getContents();
 
         Log.d("meme", "BOOM ");
-        if (content.contains("QRLOGIN-")) {
+        if (content != null && content.contains("QRLOGIN-")) {
 
             QueryHandler q = new QueryHandler();
             String deviceID = content.toString().split("-")[1];
