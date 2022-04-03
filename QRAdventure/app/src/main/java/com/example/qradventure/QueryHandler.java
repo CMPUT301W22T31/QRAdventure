@@ -711,7 +711,7 @@ public class QueryHandler {
                 .addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
                     @Override
                     public void onComplete(@NonNull Task<List<Task<?>>> t) {
-                        ArrayList<HashMap<String,Double>> locationVals = new ArrayList<HashMap<String,Double>>();
+                        ArrayList<NearByQR> nearbyQRs = new ArrayList<NearByQR>();
                         ArrayList<Object> args = new ArrayList<Object>();
 
                         for (Task<QuerySnapshot> task : tasks) {
@@ -720,27 +720,29 @@ public class QueryHandler {
                                 double lat = doc.getDouble("Latitude");
                                 double lng = doc.getDouble("Longitude");
 
+
                                 // We have to filter out a few false positives due to GeoHash
                                 // accuracy, but most will match
+
                                 GeoLocation docLocation = new GeoLocation(lat, lng);
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, usersGeolocation);
                                 Log.d("hi", "nearby distance: " +distanceInM);
                                 if (distanceInM <= radiusInM) {
-                                    HashMap<String,Double> nearbyQRlocation = new HashMap<String,Double>();
-                                    nearbyQRlocation.put("Latitude", lat);
-                                    nearbyQRlocation.put("Longitude", lng);
-                                    locationVals.add(nearbyQRlocation);
+                                    QR qr = new QR(doc.get("QR").toString());
+                                    boolean scanned;
+                                    Log.d("bruh",doc.getString("User").toString());
+                                    if (doc.getString("User").equals(account.getUsername())){ // if its a qr by the user its been scanned
+                                        scanned = true;
+                                        Log.d("bruh", "has been scanned by user ");
+                                    }
+                                    else scanned = false;
+                                    NearByQR nearByQR = new NearByQR(lng,lat, distanceInM,Integer.parseInt(doc.get("UserScore").toString()), scanned);
+                                    nearbyQRs.add(nearByQR);
                                 }
                             }
                         }
-                        for ( HashMap<String,Double> loc: locationVals
-                             ) {
-                            Log.d("hi","nearby lat: "+ loc.get("Latitude").toString());
-                            Log.d("hi", "nearby long: " + loc.get("Longitude").toString());
 
-
-                        }
-                        args.add(locationVals);
+                        args.add(nearbyQRs);
                         callback.callback(args);
                     }
                 });
@@ -786,7 +788,6 @@ public class QueryHandler {
                     }
                 });
     }
-
     /**
      * Performs simple query that returns the number of players whose
      * score is lower than the given score (over given fieldFilter)

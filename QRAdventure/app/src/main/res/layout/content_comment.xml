@@ -9,6 +9,7 @@
     >
 
     <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="8dp"
@@ -34,6 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textColor="#818181"
         android:fontFamily="@font/fredoka_one"
         android:text="This is a comment."
         android:textSize="20sp"
