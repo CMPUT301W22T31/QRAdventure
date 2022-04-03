@@ -1,5 +1,6 @@
 package com.example.qradventure;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -15,6 +16,7 @@ public class Account {
     private String phoneNumber;
     private String loginQR;
     private String statusQR;
+    private ArrayList<Double> location; // 0 index is longitude, 1 is latitude
     private ArrayList<Record> myRecords; // A list is used here to enforce chronological order
     //private Set<Record> alreadyHas; // Used for tracking which records the player has
 
@@ -57,6 +59,9 @@ public class Account {
         this.loginQR = loginQR;
         this.statusQR = statusQR;
         this.myRecords = new ArrayList<Record>();
+        this.location = new ArrayList<Double>();
+        location.add(-113.506660);
+        location.add(53.533172);
 
     }
 
@@ -78,6 +83,14 @@ public class Account {
 
     public String getStatusQR() {
         return statusQR;
+    }
+
+    public ArrayList<Double> getLocation() {
+        return location;
+    }
+
+    public void setLocation(ArrayList<Double> location) {
+        this.location = location;
     }
 
     /**
@@ -126,7 +139,7 @@ public class Account {
      * Add a Record to the Account and an ArrayList of records
      * @param record
      * @return true if addition was successful
-     *      false if the Account already contained the record
+     *      false if the Account already conta                        test = ined the record
      */
     public Boolean addRecord(Record record){
 
