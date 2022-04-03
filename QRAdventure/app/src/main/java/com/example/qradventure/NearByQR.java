@@ -2,7 +2,6 @@ package com.example.qradventure;
 
 // QR's that will be displayed in the nearby qr class
 public class NearByQR { // dont want this to extend QR since it violates liskov principleee
-    private QR qr;
     private Double longitude; // i do not want these on the qr class
     private Double latitude;
     private Double distance;
@@ -10,17 +9,12 @@ public class NearByQR { // dont want this to extend QR since it violates liskov 
     private Boolean scanned;
 
 
-    NearByQR(QR qr, Double longitude, Double latitude, Double distance, Integer score, Boolean scanned) {
-        this.qr = qr;
+    NearByQR(Double longitude, Double latitude, Double distance, Integer score, Boolean scanned) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.distance = distance;
         this.score = score;
         this.scanned = scanned;
-    }
-
-    public QR getQr() {
-        return qr;
     }
 
     public Double getLongitude() {

@@ -720,6 +720,7 @@ public class QueryHandler {
 
                                 // We have to filter out a few false positives due to GeoHash
                                 // accuracy, but most will match
+
                                 GeoLocation docLocation = new GeoLocation(lat, lng);
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, usersGeolocation);
                                 Log.d("hi", "nearby distance: " +distanceInM);
@@ -732,7 +733,7 @@ public class QueryHandler {
                                         Log.d("bruh", "has been scanned by user ");
                                     }
                                     else scanned = false;
-                                    NearByQR nearByQR = new NearByQR(qr, lng,lat, distanceInM, qr.getScore(), scanned);
+                                    NearByQR nearByQR = new NearByQR(lng,lat, distanceInM,Integer.parseInt(doc.get("UserScore").toString()), scanned);
                                     nearbyQRs.add(nearByQR);
                                 }
                             }

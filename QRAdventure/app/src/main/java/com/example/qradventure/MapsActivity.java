@@ -182,12 +182,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         for (NearByQR qr: nearByQRS
                         )
                         {
-                            if (qr.getDistance() >= 1000 && (!qr.hasBeenScanned())) {
-                                // the format would be something like '10pts,1.2km"
-                            nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance()/1000) + "km");
-                            }
-                            else {
-                                nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance()) + "m");
+                            if (!qr.hasBeenScanned()) {
+                                if (qr.getDistance() >= 1000) {
+                                    // the format would be something like '10pts,1.2km"
+                                    nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance() / 1000) + "km");
+                                } else {
+                                    nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance()) + "m");
+                                }
                             }
                         }
                     }
