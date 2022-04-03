@@ -7,13 +7,16 @@ public class NearByQR { // dont want this to extend QR since it violates liskov 
     private Double latitude;
     private Double distance;
     private Integer score;
+    private Boolean scanned;
 
-    NearByQR(QR qr, Double longitude, Double latitude, Double distance, Integer score) {
+
+    NearByQR(QR qr, Double longitude, Double latitude, Double distance, Integer score, Boolean scanned) {
         this.qr = qr;
         this.longitude = longitude;
         this.latitude = latitude;
         this.distance = distance;
         this.score = score;
+        this.scanned = scanned;
     }
 
     public QR getQr() {
@@ -34,5 +37,9 @@ public class NearByQR { // dont want this to extend QR since it violates liskov 
 
     public Integer getScore() {
         return score;
+    }
+
+    public Boolean hasBeenScanned() {
+        return scanned;
     }
 }

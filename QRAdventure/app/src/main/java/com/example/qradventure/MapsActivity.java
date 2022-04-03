@@ -166,7 +166,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         ) {
 
                             LatLng loc = new LatLng((Double) qr.getLatitude(),(Double) qr.getLongitude());
-                            mMap.addMarker(new MarkerOptions().title(qr.getScore().toString() + "pts").position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
+                            if (qr.hasBeenScanned()) {
+                                Log.d("bruh", "in yo ");
+                                mMap.addMarker(new MarkerOptions().title("You've scanned this qr already.").position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_check));
+                            }
+                            else {
+                                mMap.addMarker(new MarkerOptions().title(qr.getScore().toString() + "pts").position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_qr_location));
+                            }
+
                             Log.d("hi", "latitude "+  qr.getLatitude());
                             Log.d("hi", "longitude "+ qr.getLatitude());
 
@@ -175,11 +182,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         for (NearByQR qr: nearByQRS
                         )
                         {
-                            if (qr.getDistance() >= 1000) {
-                            nearByQRs.add(Math.round(qr.getDistance()/1000) + "km");
+                            if (qr.getDistance() >= 1000 && (!qr.hasBeenScanned())) {
+                                // the format would be something like '10pts,1.2km"
+                            nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance()/1000) + "km");
                             }
                             else {
-                                nearByQRs.add(Math.round(qr.getDistance()) + "m");
+                                nearByQRs.add(qr.getScore() + "pts," + Math.round(qr.getDistance()) + "m");
                             }
                         }
                     }

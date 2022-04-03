@@ -28,6 +28,15 @@
                 android:src="@drawable/qr_code2_black">
 
             </ImageView>
+            <TextView
+                android:id="@+id/qr_pt_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/fredoka_one"
+                android:gravity="right"
+                android:text="null pts"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/qr_distance"
@@ -36,7 +45,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/fredoka_one"
                 android:gravity="right"
-                android:text="5.3 km"
+                android:text="null km"
                 android:textSize="30sp" />
             >
         </LinearLayout>

@@ -725,7 +725,14 @@ public class QueryHandler {
                                 Log.d("hi", "nearby distance: " +distanceInM);
                                 if (distanceInM <= radiusInM) {
                                     QR qr = new QR(doc.get("QR").toString());
-                                    NearByQR nearByQR = new NearByQR(qr, lng,lat, distanceInM, qr.getScore());
+                                    boolean scanned;
+                                    Log.d("bruh",doc.getString("User").toString());
+                                    if (doc.getString("User").equals(account.getUsername())){ // if its a qr by the user its been scanned
+                                        scanned = true;
+                                        Log.d("bruh", "has been scanned by user ");
+                                    }
+                                    else scanned = false;
+                                    NearByQR nearByQR = new NearByQR(qr, lng,lat, distanceInM, qr.getScore(), scanned);
                                     nearbyQRs.add(nearByQR);
                                 }
                             }
