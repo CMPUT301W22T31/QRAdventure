@@ -19,7 +19,6 @@ public class StatsActivity extends AppCompatActivity {
     int totalScore;
     int scanCount;
     int bestQR;
-    int[] ranks = new int [3];
     String TAG = "April3";
 
     /**
