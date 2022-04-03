@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -17,10 +18,14 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.WriteResult;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 
 /**
@@ -249,13 +254,36 @@ public class AccountActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-            super.onActivityResult(requestCode, resultCode, data);
+         super.onActivityResult(requestCode, resultCode, data);
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             // get the QR contents, and send it to next activity
             String content = result.getContents();
 
-            if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
+            if (content.contains("QRSTATS-")) {
+                Intent intent = new Intent(AccountActivity.this, ProfileStatsActivity.class);
+                intent.putExtra("QRSTATS", content);
+                startActivity(intent);
+
+        }
+            else if (content.contains("QRLOGIN-")) {
+                QueryHandler q = new QueryHandler();
+                String deviceID = content.toString().split("-")[1];
+                q.getLoginAccount(deviceID, new Callback() {
+                    Intent intent = new Intent(AccountActivity.this, AccountActivity.class);
+                    @Override
+                    public void callback(ArrayList<Object> args) {
+                        DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
+                        docRef.update("device_id", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        return;
+                    }
+                });
+            }
+
+            else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
                 Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
                 intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
                 startActivity(intent);
