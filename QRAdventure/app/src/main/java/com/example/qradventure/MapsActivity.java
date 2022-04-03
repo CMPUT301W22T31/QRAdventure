@@ -161,24 +161,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void callback(ArrayList<Object> args) {
                     if (args.size() > 0) {
 
-                        ArrayList<HashMap<String,Double>> locationVals =  (ArrayList<HashMap<String,Double>>) args.get(0);
-                        for (HashMap<String, Double> pair: locationVals
+                        ArrayList<NearByQR> nearByQRS =  (ArrayList<NearByQR>) args.get(0);
+                        for (NearByQR qr: nearByQRS
                         ) {
-                            LatLng loc = new LatLng((Double) pair.get("Latitude"),(Double) pair.get("Longitude"));
-                            mMap.addMarker(new MarkerOptions().position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
-                            Log.d("hi", "latitude "+ pair.get("Longitude"));
-                            Log.d("hi", "longitude "+ pair.get("Latitude"));
+
+                            LatLng loc = new LatLng((Double) qr.getLatitude(),(Double) qr.getLongitude());
+                            mMap.addMarker(new MarkerOptions().title(qr.getScore().toString() + "pts").position(loc)).setIcon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_qr_location));
+                            Log.d("hi", "latitude "+  qr.getLatitude());
+                            Log.d("hi", "longitude "+ qr.getLatitude());
 
                         }
-                        ArrayList<Double> qrDistances = (ArrayList<Double>) args.get(1);
-                        for (Double value: qrDistances
+
+                        for (NearByQR qr: nearByQRS
                         )
                         {
-                            if (value >= 1000) {
-                            nearByQRs.add(Math.round(value/1000) + "km");
+                            if (qr.getDistance() >= 1000) {
+                            nearByQRs.add(Math.round(qr.getDistance()/1000) + "km");
                             }
                             else {
-                                nearByQRs.add(Math.round(value) + "m");
+                                nearByQRs.add(Math.round(qr.getDistance()) + "m");
                             }
                         }
                     }

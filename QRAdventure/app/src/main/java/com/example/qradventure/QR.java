@@ -136,9 +136,12 @@ public class QR {
         return this.score;
     }
 
+
     public String getHash(){
         return this.hash;
     }
+
+
 
 
 }
