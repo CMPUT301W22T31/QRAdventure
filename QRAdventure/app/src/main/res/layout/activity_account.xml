@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/gradient_bg"
+    android:background="#121212"
     >
 
     <ImageView
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="AccountDefault"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:paddingTop="15dp"
                     android:text="1+ 800 267 2001"
                     android:textColor="@color/white"
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:paddingTop="10dp"
                     android:text="defaultemail@hotspot.com"
                     android:textColor="@color/white"
@@ -137,7 +137,7 @@
                     android:id="@+id/codes_scanned"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -148,7 +148,7 @@
                     android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Codes Scanned"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -168,7 +168,7 @@
                     android:id="@+id/total_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -179,7 +179,7 @@
                     android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Total Score"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -199,7 +199,7 @@
                     android:id="@+id/highest_qr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -210,7 +210,7 @@
                     android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Highest QR"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -230,7 +230,7 @@
                     android:id="@+id/lowest_qr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -241,7 +241,7 @@
                     android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Lowest QR"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -268,7 +268,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="My Codes"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />
@@ -304,7 +304,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="My Stats"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />
@@ -340,7 +340,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Login Code"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />
@@ -376,7 +376,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Status Code"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />

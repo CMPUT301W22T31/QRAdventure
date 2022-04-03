@@ -33,8 +33,6 @@ public class LoginQRActivity extends AppCompatActivity {
 
         imageView = (ImageView)findViewById(R.id.login_qr_image_view);
 
-
-
         String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         String QRLoginCode =  "QRLOGIN-" + androidDeviceID;
         MultiFormatWriter writer = new MultiFormatWriter();

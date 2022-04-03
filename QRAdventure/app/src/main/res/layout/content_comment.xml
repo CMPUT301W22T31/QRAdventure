@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/gotham_medium"
         android:textColor="@color/black"
         android:text="Author Username"
         android:textSize="25sp" />
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/gotham_medium"
         android:text="This is a comment."
         android:textSize="20sp"
         />
