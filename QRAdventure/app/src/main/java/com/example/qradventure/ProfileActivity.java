@@ -3,13 +3,18 @@ package com.example.qradventure;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 public class ProfileActivity extends AppCompatActivity {
     private String username;
     BottomNavigationView navbar;
+    FirebaseFirestore db;
 
     /**
      * Gets and displays fields of a player's profile
@@ -37,9 +43,26 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        db = FirebaseFirestore.getInstance();
+
+        Button deleteButton = findViewById(R.id.button_delete);
+        deleteButton.setVisibility(View.INVISIBLE);
+
         // unpack intent to get account username
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
+
+        // display delete button if owner
+        if (intent.getStringExtra("Owner") == "Owner") {
+            deleteButton.setVisibility(View.VISIBLE);
+        }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteAccount(username);
+            }
+        });
 
         // ====== Enable navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
@@ -84,18 +107,14 @@ public class ProfileActivity extends AppCompatActivity {
         query.getProfile(username, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
-
-
                 String email = (String) args.get(0);
                 String phone = (String) args.get(1);
                 Long totalScore = (Long)args.get(2);
                 setTextViews(username, email, phone, totalScore.toString());
             }
         });
-
-
-
     }
+
     /**
      * Sends to ViewCodes activity. Called when respective button is clicked.
      * @param view: unused
@@ -125,5 +144,32 @@ public class ProfileActivity extends AppCompatActivity {
         tvPhone.setText(email);
         tvEmail.setText(phone);
         tvTotalScore.setText(score);
+    }
+
+    /**
+     * Delete this account. Called when delete button is clicked. Owner functionality.
+     * @param username - account username to delete
+     */
+    public void deleteAccount(String username) {
+        db.collection("AccountDB").document(username)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Account successfully deleted";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Error deleting account";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();                    }
+                });
     }
 }

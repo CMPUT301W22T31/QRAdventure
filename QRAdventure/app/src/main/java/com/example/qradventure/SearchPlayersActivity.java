@@ -113,6 +113,9 @@ public class SearchPlayersActivity extends AppCompatActivity {
     public void goToProfile(String username) {
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+        if (intent.getStringExtra("Owner") == "Owner") {
+            intent.putExtra("Owner", "Owner");
+        }
         startActivity(intent);
     }
 

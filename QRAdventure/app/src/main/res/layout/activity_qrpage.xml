@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/gradient_bg"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_bg"
     tools:context=".QRPageActivity">
 
     <ImageView
@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         app:cardCornerRadius="30dp"
@@ -141,5 +142,17 @@
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/navbar_menu" />
+
+    <Button
+        android:id="@+id/button_delete_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_one"
+        android:text="Delete"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

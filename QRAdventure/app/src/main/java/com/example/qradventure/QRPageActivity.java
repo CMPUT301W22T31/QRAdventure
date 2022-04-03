@@ -1,15 +1,22 @@
 package com.example.qradventure;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -26,11 +33,14 @@ public class QRPageActivity extends AppCompatActivity {
     TextView QRTitle;
     String recordID;
     Account currentAccount = CurrentAccount.getAccount();
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrpage);
+
+        db = FirebaseFirestore.getInstance();
 
         // set textview for qr name
         // try: temporary to prevent crashes
@@ -44,6 +54,19 @@ public class QRPageActivity extends AppCompatActivity {
             QRTitle.setText("PLACEHOLDER");
         }
 
+        Button deleteButton = findViewById(R.id.button_delete_qr);
+        deleteButton.setVisibility(View.INVISIBLE);
+
+        // if (intent.getStringExtra("Owner") == "Owner) {
+        //      deleteButton.setVisibility(View.VISIBLE);
+        // }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteQR(hash);
+            }
+        });
 
         // enable navbar functionality
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);
@@ -135,6 +158,27 @@ public class QRPageActivity extends AppCompatActivity {
         }
     }
 
-
+    public void deleteQR(String hash) {
+        db.collection("QRDB").document(hash)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Context context = getApplicationContext();
+                        CharSequence text = "QR successfully deleted";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Error deleting QR";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();                    }
+                });
+    }
 
 }
