@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,6 +49,7 @@ public class ViewCodesActivity extends AppCompatActivity {
     String LOG = "VCActivity";
     FusedLocationProviderClient fusedLocationProviderClient;
     Account account;
+    String content = null;
 
     /**
      * Initialize Gridview and click listener
@@ -198,19 +201,63 @@ public class ViewCodesActivity extends AppCompatActivity {
     }
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * This method is copied into every activity which we can clock the scannable button from
+     *
+     *
+     * Citation for using the Scanning library
+     * Website:https://androidapps-development-blogs.medium.com
+     * link:https://androidapps-development-blogs.medium.com/qr-code-scanner-using-zxing-library-in-android-fe667862feb7
+     * authir: Golap Gunjun Barman, https://androidapps-development-blogs.medium.com/
+     *
      * @param requestCode
      * @param resultCode
      * @param data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
+        if (content == null){
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // get the QR contents, and send it to next activity
-        String content = result.getContents();
-        Account account = CurrentAccount.getAccount();
 
-        if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
+        if (content == null)
+            content = result.getContents();
+
+        if (account == null)
+            account = CurrentAccount.getAccount();
+
+        if (content.contains("QRSTATS-")) {
+            Intent intent = new Intent(ViewCodesActivity.this, StatsActivity.class);
+
+            // extract the username from QR content, and add it to intentExtra
+            String username = content.split("-")[1];
+            intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+
+            // start activity
+            startActivity(intent);
+
+        }
+        else if (content.contains("QRLOGIN-")) {
+            QueryHandler q = new QueryHandler();
+            String deviceID = content.toString().split("-")[1];
+            q.getLoginAccount(deviceID, new Callback() {
+                Intent intent = new Intent(ViewCodesActivity.this, AccountActivity.class);
+                @Override
+                public void callback(ArrayList<Object> args) {
+                    DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
+                    docRef.update("device_id", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return;
+                }
+            });
+        }
+
+        else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
             Intent intent = new Intent(ViewCodesActivity.this, PostScanActivity.class);
             intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
             startActivity(intent);

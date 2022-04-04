@@ -23,6 +23,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.common.collect.Maps;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -65,6 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FusedLocationProviderClient fusedLocationProviderClient;
     ArrayList<DistanceQRPair> nearQRs = new ArrayList<DistanceQRPair>();
     ArrayList<String> nearByQRs = new ArrayList<String>();
+    String content = null;
 
 
     @Override
@@ -211,22 +215,72 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     /**
-     * Activity is called when the camera scans a QR code. Processes the result and redirects to
-     * PostScanActivity
+     * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * This method is copied into every activity which we can clock the scannable button from
+     *
+     *
+     * Citation for using the Scanning library
+     * Website:https://androidapps-development-blogs.medium.com
+     * link:https://androidapps-development-blogs.medium.com/qr-code-scanner-using-zxing-library-in-android-fe667862feb7
+     * authir: Golap Gunjun Barman, https://androidapps-development-blogs.medium.com/
+     *
      * @param requestCode
      * @param resultCode
      * @param data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (content == null){
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // get the QR contents, and send it to next activity
-        String content = result.getContents();
-        if (content != null) {
+
+        if (content == null)
+            content = result.getContents();
+
+        if (account == null)
+            account = CurrentAccount.getAccount();
+
+        if (content.contains("QRSTATS-")) {
+            Intent intent = new Intent(MapsActivity.this, StatsActivity.class);
+
+            // extract the username from QR content, and add it to intentExtra
+            String username = content.split("-")[1];
+            intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+
+            // start activity
+            startActivity(intent);
+
+        }
+        else if (content.contains("QRLOGIN-")) {
+            QueryHandler q = new QueryHandler();
+            String deviceID = content.toString().split("-")[1];
+            q.getLoginAccount(deviceID, new Callback() {
+                Intent intent = new Intent(MapsActivity.this, AccountActivity.class);
+                @Override
+                public void callback(ArrayList<Object> args) {
+                    DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
+                    docRef.update("device_id", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return;
+                }
+            });
+        }
+
+        else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
             Intent intent = new Intent(MapsActivity.this, PostScanActivity.class);
             intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
             startActivity(intent);
+
+        }else{
+            String text = "You have already scanned that QR";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
         }
     }
 
