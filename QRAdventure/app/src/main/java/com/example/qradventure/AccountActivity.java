@@ -3,14 +3,21 @@ package com.example.qradventure;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +28,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
+
+// ALL PROFILE ICONS WERE IMPORTED FROM SVGREPO.COM UNDER THE CC0 License
 
 /**
  * Activity where the logged in player can manage their account
@@ -30,6 +40,9 @@ import java.text.DecimalFormat;
  */
 public class AccountActivity extends AppCompatActivity {
     Account account;
+    Dialog profileChoiceDialog;
+    CardView profileCard;
+    ImageView profilepic;
     BottomNavigationView navbar;
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -41,12 +54,16 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
+        profilepic = findViewById(R.id.profile_pic);
         // Call FusedLocationProviderClient class to grab location of user
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
+
+        // set up the profile pic chosen by the user
+        profileCard = findViewById(R.id.profile_card);
+        setUpProfilePic();
         //Log.d("logs", "Current location: " + account.getLocation().toString());
 
         navbar = findViewById(R.id.navbar_menu);
@@ -184,8 +201,14 @@ public class AccountActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void goToEditInfo(View view) {
-        Intent intent = new Intent(this, EditInfoActivity.class);
-        startActivity(intent);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.profile_choice_dialogue ,null);
+        alertDialogBuilder.setView(dialogView);
+
+        profileChoiceDialog = alertDialogBuilder.create();
+        profileChoiceDialog.show();
+
     }
 
     /**
@@ -266,6 +289,80 @@ public class AccountActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), text, duration);
                 toast.show();
             }
+    }
+
+    void setUpProfilePic() {
+        switch (account.getProfileIndex()) {
+            case 0:
+                profilepic.setBackgroundResource(R.drawable.ic_turtle);
+                profileCard.setCardBackgroundColor(Color.parseColor("#4361EE"));
+                break;
+            case 1:
+                profilepic.setBackgroundResource(R.drawable.ic_fish);
+                profileCard.setCardBackgroundColor(Color.parseColor("#3A0CA3"));
+                break;
+            case 2:
+                profilepic.setBackgroundResource(R.drawable.ic_butterfly);
+                profileCard.setCardBackgroundColor(Color.parseColor("#a8dadc"));
+                break;
+            case 3:
+                profilepic.setBackgroundResource(R.drawable.ic_ladybug);
+                profileCard.setCardBackgroundColor(Color.parseColor("#b5179e"));
+                break;
+            case 4:
+                profilepic.setBackgroundResource(R.drawable.ic_crocodile);
+                profileCard.setCardBackgroundColor(Color.parseColor("#457b9d"));
+                break;
+            case 5:
+                profilepic.setBackgroundResource(R.drawable.ic_duck);
+                profileCard.setCardBackgroundColor(Color.parseColor("#2a9d8f"));
+                break;
+        }
+
+    }
+
+    // profile choosing
+    public void choseTurtle(View view) {
+        profilepic.setBackgroundResource(R.drawable.ic_turtle);
+        account.setProfileIndex(0);
+        profileCard.setCardBackgroundColor(Color.parseColor("#4361EE"));
+        QueryHandler updateProfile = new QueryHandler();
+
+    }
+    public void choseFish(View view) {
+        profilepic.setBackgroundResource(R.drawable.ic_fish);
+        account.setProfileIndex(1);
+        profileCard.setCardBackgroundColor(Color.parseColor("#3A0CA3"));
+        QueryHandler updateProfile = new QueryHandler();
+        updateProfile.editProfilePic(1);
+    }
+    public void choseButterfly(View view) {
+        profilepic.setBackgroundResource(R.drawable.ic_butterfly);
+        account.setProfileIndex(2);
+        profileCard.setCardBackgroundColor(Color.parseColor("#a8dadc"));
+        QueryHandler updateProfile = new QueryHandler();
+        updateProfile.editProfilePic(2);
+    }
+    public void choseLadyBug(View view) {
+        profilepic.setBackgroundResource(R.drawable.ic_ladybug);
+        account.setProfileIndex(3);
+        profileCard.setCardBackgroundColor(Color.parseColor("#b5179e"));
+        QueryHandler updateProfile = new QueryHandler();
+        updateProfile.editProfilePic(3);
+    }
+    public void choseCrocodile(View view) {
+        profilepic.setBackgroundResource(R.drawable.ic_crocodile);
+        account.setProfileIndex(4);
+        profileCard.setCardBackgroundColor(Color.parseColor("#457b9d"));
+        QueryHandler updateProfile = new QueryHandler();
+        updateProfile.editProfilePic(4);
+    }
+    public void choseDuck(View view) {
+        profilepic.setBackgroundResource(R.drawable.ic_duck);
+        account.setProfileIndex(5);
+        profileCard.setCardBackgroundColor(Color.parseColor("#2a9d8f"));
+        QueryHandler updateProfile = new QueryHandler();
+        updateProfile.editProfilePic(5);
     }
 }
 

@@ -91,12 +91,21 @@ public class QueryHandler {
                                     String phoneNumber = (String) doc.getData().get("Phone Number");
                                     String statusQR = (String) doc.getData().get("StatusQR");
                                     String username = (String) doc.getId();
+
+
                                     Log.d("logs", "doc exists + " + username);
 
                                     Account fetchedAccount =
                                             new Account(username, email, phoneNumber, loginQR, statusQR);
                                     CurrentAccount.setAccount(fetchedAccount);
 
+                                    if (doc.getData().get("profilePic") != null) {
+                                        Long index = (Long) doc.getData().get("profilePic");
+                                        fetchedAccount.setProfileIndex(index.intValue());
+                                    }
+                                    else {
+                                        fetchedAccount.setProfileIndex(0);
+                                    }
                                     // Account reconstructed - need to reconstruct records
                                     Account account = CurrentAccount.getAccount();
                                     try {
@@ -600,10 +609,12 @@ public class QueryHandler {
                                 String email = (String) doc.getData().get("E-mail");
                                 String phone = (String) doc.getData().get("Phone Number");
                                 Long totalScore = (Long) doc.getData().get("TotalScore");
+                                Long profileIndex = (Long) doc.getData().get("profilePic");
 
                                 args.add(email);
                                 args.add(phone);
                                 args.add(totalScore);
+                                args.add(profileIndex);
                                 callback.callback(args);
 
                             } else {
@@ -929,6 +940,16 @@ public class QueryHandler {
                         }
                     }
                 });
+
+    }
+
+    public void editProfilePic(Integer index) {
+        // need a reference to the account document
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(CurrentAccount.getAccount().getUsername());
+        HashMap<String, Object> updateData = new HashMap<String, Object>();
+        updateData.put("profilePic", index);
+        accDocRef.update(updateData);
 
     }
 

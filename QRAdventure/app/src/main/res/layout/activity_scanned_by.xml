@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ScannedByActivity"
-    android:background="@drawable/gradient_bg">
+    android:background="#121212">
 
 
 

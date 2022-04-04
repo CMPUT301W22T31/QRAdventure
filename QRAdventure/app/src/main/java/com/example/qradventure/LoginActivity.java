@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("device_id", androidDeviceID);
                 data.put("bestQR", 0);
                 data.put("scanCount", 0);
+                data.put("profilePic", 0);
 
                 if (!username.matches("")) {
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_bg"
+    android:background="#121212"
     tools:context=".SearchPlayersActivity">
 
     <LinearLayout
@@ -27,7 +27,7 @@
             android:layout_marginTop="0dp"
             android:background="@android:drawable/editbox_background_normal"
             android:ems="10"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:hint="USERNAME"
             android:inputType="textPersonName"
             android:textAlignment="center"
