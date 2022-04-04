@@ -81,13 +81,14 @@ public class ViewCodesActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 Intent QRPageIntent = new Intent(getApplicationContext(), QRPageActivity.class);
 
-                if (intent.getStringExtra("Owner").equals("Owner")) {
+                String ownerRes = intent.getStringExtra("Owner");
+                if (ownerRes != null) {
                     QRPageIntent.putExtra("Owner", "Owner");
                 }
 
                 Record clickedRecord = records.get(position);
 
-                QRPageIntent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                QRPageIntent.putExtra("QRtitle", clickedRecord.getName());
                 QRPageIntent.putExtra("QRHash", clickedRecord.getQRHash());
                 Bitmap image = clickedRecord.getImage();
                 QRPageIntent.putExtra("QRPicture", image);
@@ -175,7 +176,6 @@ public class ViewCodesActivity extends AppCompatActivity {
 
     }
     /**
-<<<<<<< HEAD
      * Grabs location of user before entering maps activity
      */
     @Override

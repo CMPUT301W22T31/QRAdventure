@@ -198,7 +198,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
     public void nearByQRList(){
         nearByQRDialogue.setContentView(R.layout.nearby_qr_list_dialogue);
         nearByQRDialogue.show();

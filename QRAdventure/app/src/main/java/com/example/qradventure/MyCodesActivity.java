@@ -77,44 +77,8 @@ public class MyCodesActivity extends AppCompatActivity {
 
         // If owner, display all QR - WIP
         Intent intent = getIntent();
-        if (intent.getStringExtra("Owner").equals("Owner")) {
-//            db.collection("QRDB")
-//                    .get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            // clear the old list
-//                            //allQRs.clear();
-//                            if (task.isSuccessful()) {
-//                                if (task.getResult().isEmpty()) {
-//                                    // no results
-//                                    Log.d("here", "no results");
-//                                } else {
-//                                    // get the documents
-//                                    for (QueryDocumentSnapshot QRDoc : task.getResult()) {
-//                                        if (QRDoc.exists()) {
-//                                            String hash = (String) QRDoc.getId();
-//                                            Account owner = new Account("owner", null, null, null, null, null);
-//                                            QR qr = new QR(hash, 0, null, null);
-//                                            Record newQR = new Record(owner, qr);
-//                                            allQRs.add(newQR);
-//                                        } else {
-//                                            Log.d("it aint working", "QRDoc doesn't exist");
-//                                        }
-//                                    }
-//                                }
-//                            } else {
-//                                // Query failed
-//                                Log.d("here", "query failed");
-//                            }
-//                            accountRecords.addAll(allQRs);
-//                        }
-//                    });
 
-        } else {
-            accountRecords.addAll(myAccount.getMyRecords());
-        }
-
+        accountRecords = myAccount.getMyRecords();
         // initialize adapter
         qrList = findViewById(R.id.qr_list);
         QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);
@@ -131,25 +95,20 @@ public class MyCodesActivity extends AppCompatActivity {
                 Intent QRintent = new Intent(getApplicationContext(), QRPageActivity.class);
 
                 Record clickedRecord = accountRecords.get(position);
-                QRintent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0, 4));
+                QRintent.putExtra("QRtitle", clickedRecord.getName());
                 QRintent.putExtra("QRHash", clickedRecord.getQRHash());
                 Bitmap image = clickedRecord.getImage();
                 QRintent.putExtra("QRPicture", image);
-
-                if (intent.getStringExtra("Owner") == "Owner") {
-                    QRintent.putExtra("Owner", "Owner");
-                }
 
                 startActivity(QRintent);
             }
         });
 
-    if (intent.getStringExtra("Owner") != "Owner") {
+
         // ====== Long Click Listener for Delete Functionality ======
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
                 new AlertDialog.Builder(MyCodesActivity.this)
                         .setIcon(android.R.drawable.ic_delete)
                         .setTitle("Do you want to delete this QR?")
@@ -178,19 +137,15 @@ public class MyCodesActivity extends AppCompatActivity {
                                 db.collection("AccountDB").document(myAccount.getUsername())
                                         .update(newScore);
 
-
                                 CurrentAccount.setAccount(myAccount);
                                 qrListAdapter.notifyDataSetChanged();
-
                             }
 
                         }).setNegativeButton("No", null)
                         .show();
-
                 return true;
             }
         });
-    }
 
         // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);

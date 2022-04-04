@@ -57,6 +57,15 @@ public class SearchPlayersActivity extends AppCompatActivity {
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
 
+        TextView text = findViewById(R.id.text_owner_mode);
+        text.setVisibility(View.INVISIBLE);
+
+        // Owner mode text
+        Intent intent = getIntent();
+        if (intent.getStringExtra("Owner") != null) {
+            text.setVisibility(View.VISIBLE);
+        }
+
         // Initialize data, listview, adapter
         playerListView = findViewById(R.id.username_list);
         playerNames = new ArrayList<>();
@@ -150,7 +159,8 @@ public class SearchPlayersActivity extends AppCompatActivity {
         Intent profileIntent = new Intent(this, ProfileActivity.class);
         profileIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         Intent intent = getIntent();
-        if (intent.getStringExtra("Owner").equals("Owner")) {
+        String ownerRes = intent.getStringExtra("Owner");
+        if (ownerRes != null) {
             profileIntent.putExtra("Owner", "Owner");
         }
         startActivity(profileIntent);
@@ -182,7 +192,6 @@ public class SearchPlayersActivity extends AppCompatActivity {
         }
 
         QueryHandler query = new QueryHandler();
-
 
         query.playerSearch(username, new Callback() {
                     @Override

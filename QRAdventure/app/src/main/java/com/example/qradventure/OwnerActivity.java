@@ -15,16 +15,6 @@ public class OwnerActivity extends AppCompatActivity {
     }
 
     /**
-     * Sends to MyCodes activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToCodes(View view) {
-        Intent intent = new Intent(this, MyCodesActivity.class);
-        intent.putExtra("Owner", "Owner");
-        startActivity(intent);
-    }
-
-    /**
      * Sends to SearchPlayers activity. Called when respective button is clicked.
      * @param view: unused
      */

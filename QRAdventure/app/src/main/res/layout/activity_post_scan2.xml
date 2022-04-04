@@ -25,7 +25,7 @@
             android:id="@+id/post_scan_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="null"
             android:textColor="#FFEB3B"
             android:textSize="35dp" />
@@ -33,7 +33,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="score"
             android:textColor="@color/white" />
 
@@ -55,7 +55,7 @@
             android:id="@+id/n_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="Scanned null times"
             android:textColor="@color/white" />
 
@@ -133,7 +133,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/gotham_medium"
         android:text="New QR!"
         android:textColor="@color/white"
         android:textSize="30dp"
@@ -149,7 +149,7 @@
         android:layout_height="80dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@drawable/add_btn_color"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/gotham_medium"
         android:onClick="AddQR"
         android:text="add"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -163,7 +163,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:ems="10"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/gotham_medium"
         android:inputType="textPersonName"
         android:textAlignment="center"
         android:hint="Name this QR"
