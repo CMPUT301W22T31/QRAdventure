@@ -45,6 +45,13 @@ import java.util.Map;
 
 /**
  * Class for holding all Querys to the Firestore database.
+ * Makes heavy use of callbacks. The Idea for callbacks
+ * came from this citation:
+ *
+ *      * Website:Stackoverflow
+ *      * link:https://stackoverflow.com/questions/50109885/firestore-how-can-read-data-from-outside-void-oncomplete-methods
+ *      * author: Alex Mamo, https://stackoverflow.com/users/5246885/alex-mamo
+ *
  */
 public class QueryHandler {
 
@@ -115,9 +122,23 @@ public class QueryHandler {
                                                             }
 
 
+
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
 
+
+                                                                /**
+                                                                 * Citation for stratagy of using blob to upload image
+                                                                 *  website:stackoverflow.com
+                                                                 *  link:https://stackoverflow.com/questions/55281418/android-how-to-add-byte-data-to-cloud-firestore-database
+                                                                 *  author: Doug Stevenson: https://stackoverflow.com/users/807126/doug-stevenson
+                                                                 *
+                                                                 *  AND
+                                                                 *  website:stackoverflow.com
+                                                                 *  link:https://stackoverflow.com/questions/7620401/how-to-convert-image-file-data-in-a-byte-array-to-a-bitmap
+                                                                 *  author: Uttam, https://stackoverflow.com/users/840861/uttam
+                                                                 *
+                                                                 */
 
                                                                 Blob imageBlob = (Blob)document.getData().get("ImageData");
 
@@ -136,6 +157,7 @@ public class QueryHandler {
                                                                 }
 
                                                                 Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                                                                String name = (document.getData().get("Name") != null ? document.getData().get("Name").toString() : null);
 
 
                                                                 db.collection("QRDB").document(qrHash)
@@ -153,6 +175,8 @@ public class QueryHandler {
                                                                                     Record newRecord = new Record(account, qr);
 
                                                                                     newRecord.setImage(image);
+                                                                                    if (name != null)
+                                                                                        newRecord.setName(name);
 
                                                                                     account.addRecord(newRecord);
 
@@ -679,10 +703,14 @@ public class QueryHandler {
                     if (document.exists()) {
 
                     } else {
+
                         HashMap<String, Object> recordData = new HashMap<>();
                         recordData.put("User", myAccount.getUsername());
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
+
+                        if (toAdd.getName() != null) // if not null then put a name on the record
+                            recordData.put("Name", toAdd.getName());
 
                         // put longitude and latitude of qr
                         if (qr.getGeolocation().size() != 0){
@@ -809,8 +837,7 @@ public class QueryHandler {
                                 String hash = (String) recordDoc.get("QR");
                                 String score =  "" + recordDoc.get("UserScore");
                                 Blob imageBlob = (Blob)recordDoc.getData().get("ImageData");
-
-
+                                String name = (String) recordDoc.getData().get("Name");
 
                                 QR qr = new QR(hash, Integer.parseInt(score), null, null);
                                 Record newRecord = new Record(account, qr);
@@ -818,6 +845,10 @@ public class QueryHandler {
                                     byte[] imageData = imageBlob.toBytes();
                                     Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                                     newRecord.setImage(image);
+                                }
+
+                                if (name != null) {
+                                    newRecord.setName(name);
                                 }
 
                                 args.add(newRecord);
@@ -873,7 +904,7 @@ public class QueryHandler {
                 .addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
                     @Override
                     public void onComplete(@NonNull Task<List<Task<?>>> t) {
-                        ArrayList<HashMap<String,Double>> locationVals = new ArrayList<HashMap<String,Double>>();
+                        ArrayList<NearByQR> nearbyQRs = new ArrayList<NearByQR>();
                         ArrayList<Object> args = new ArrayList<Object>();
 
                         for (Task<QuerySnapshot> task : tasks) {
@@ -884,25 +915,26 @@ public class QueryHandler {
 
                                 // We have to filter out a few false positives due to GeoHash
                                 // accuracy, but most will match
+
                                 GeoLocation docLocation = new GeoLocation(lat, lng);
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, usersGeolocation);
                                 Log.d("hi", "nearby distance: " +distanceInM);
                                 if (distanceInM <= radiusInM) {
-                                    HashMap<String,Double> nearbyQRlocation = new HashMap<String,Double>();
-                                    nearbyQRlocation.put("Latitude", lat);
-                                    nearbyQRlocation.put("Longitude", lng);
-                                    locationVals.add(nearbyQRlocation);
+                                    QR qr = new QR(doc.get("QR").toString());
+                                    boolean scanned;
+                                    Log.d("bruh",doc.getString("User").toString());
+                                    if (doc.getString("User").equals(account.getUsername())){ // if its a qr by the user its been scanned
+                                        scanned = true;
+                                        Log.d("bruh", "has been scanned by user ");
+                                    }
+                                    else scanned = false;
+                                    NearByQR nearByQR = new NearByQR(lng,lat, distanceInM,Integer.parseInt(doc.get("UserScore").toString()), scanned);
+                                    nearbyQRs.add(nearByQR);
                                 }
                             }
                         }
-                        for ( HashMap<String,Double> loc: locationVals
-                             ) {
-                            Log.d("hi","nearby lat: "+ loc.get("Latitude").toString());
-                            Log.d("hi", "nearby long: " + loc.get("Longitude").toString());
 
-
-                        }
-                        args.add(locationVals);
+                        args.add(nearbyQRs);
                         callback.callback(args);
                     }
                 });
@@ -948,7 +980,6 @@ public class QueryHandler {
                     }
                 });
     }
-
     /**
      * Performs simple query that returns the number of players whose
      * score is lower than the given score (over given fieldFilter)
@@ -1066,6 +1097,52 @@ public class QueryHandler {
 
                         } else {
                             Log.d(TAG, "updateScanCount unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    /**
+     * Simple query to get the common "stats" fields of an account
+     * @param username
+     * @param callback - callback to return array [TotalScore,
+     */
+    public void queryPlayerStats(String username, Callback callback) {
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(username);
+
+        // query to get their stats, return via callback
+        accDocRef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            ArrayList<Object> args = new ArrayList<Object>();
+                            DocumentSnapshot doc = task.getResult();
+
+                            if (doc.exists()) {
+
+                                long totalScore = (long) doc.getData().get("TotalScore");
+                                long scanCount = (long) doc.getData().get("scanCount");
+                                long bestQR = (long) doc.getData().get("bestQR");
+
+                                // order we add them matters
+                                // refer to callback in StatsActivity
+                                args.add(totalScore);
+                                args.add(scanCount);
+                                args.add(bestQR);
+                                callback.callback(args);
+
+                            } else {
+                                // log: document dne
+                                Log.d("logs", "Document does not exist!", task.getException());
+                            }
+                        } else {
+                            // query failed
+                            Log.d("logs", "Query Failed!", task.getException());
                         }
                     }
                 });

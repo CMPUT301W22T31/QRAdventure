@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                                              public void onClick(View view) {
 
                                                  AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                                 builder.setMessage("You will be logged out of all other devices")
+                                                 builder.setMessage("You will be logged out of all other devices and the login code will be made invalid")
                                                          .setTitle("Warning");
 
                                                  builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -163,6 +163,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * FUnction called when the user scans their login code
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

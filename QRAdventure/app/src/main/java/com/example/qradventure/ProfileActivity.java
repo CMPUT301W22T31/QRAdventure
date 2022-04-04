@@ -23,9 +23,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -170,7 +167,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView tvUsername = findViewById(R.id.tvUsername);
         TextView tvPhone = findViewById(R.id.tvPhone);
         TextView tvEmail = findViewById(R.id.tvEmail);
-        TextView tvTotalScore = findViewById(R.id.tvTotalScore);
+        TextView tvTotalScore = findViewById(R.id.tvStatsTotalScore);
 
         // set textview text
         tvUsername.setText(name);

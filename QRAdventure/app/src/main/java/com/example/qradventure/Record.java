@@ -16,6 +16,15 @@ public class Record {
     private ArrayList<String> comments;  // TODO: QR should hold comments, not the record.
     private String recordID; //-> For Firebase document ID
     private Bitmap image;
+    private String name = null;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * Constructor
