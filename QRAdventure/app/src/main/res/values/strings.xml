@@ -7,4 +7,5 @@
     <string name="EXTRA_USERNAME">com.example.qradventure.USERNAME</string>
     <string name="EXTRA_HASH">com.example.qradventure.HASH</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_add_geolocation">AddGeolocationActivity</string>
 </resources>

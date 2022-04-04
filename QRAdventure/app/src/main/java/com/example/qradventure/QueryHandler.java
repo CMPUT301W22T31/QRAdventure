@@ -13,10 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQueryBounds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.Blob;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,11 +32,14 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -430,6 +437,7 @@ public class QueryHandler {
      *      Callback function for the calling activity
      */
     public void addQR(QR qr, Callback callback) {
+        db = FirebaseFirestore.getInstance();
 
         DocumentReference docRef = db.collection("QRDB").document(qr.getHash());
 
@@ -456,9 +464,7 @@ public class QueryHandler {
                         // add this QR to the database
                         // TODO: populate all fields
                         HashMap<String, Object> QRData = new HashMap<>();
-                        QRData.put("Score", qr.getScore()); // use a manual score to test, 1234?
-
-
+                        QRData.put("Score", qr.getScore()); // use a manual score to test, 1234
 
                         docRef.set(QRData); // set the data!
                         // could include success/failure listener?
@@ -516,6 +522,14 @@ public class QueryHandler {
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
 
+                        // put longitude and latitude of qr
+                        if (qr.getGeolocation().size() != 0){
+                            recordData.put("GeoHash",qr.getGeoHash());
+                            recordData.put("Longitude", qr.getGeolocation().get(0));
+                            recordData.put("Latitude", qr.getGeolocation().get(1));
+                        }
+
+
                         if (toAdd.getImage() != null){
                             Bitmap image = toAdd.getImage();
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -525,7 +539,6 @@ public class QueryHandler {
                             recordData.put("ImageData", imageBlob);
 
                         }
-
 
                         RecordDB.document(recordID).set(recordData);
                         RecordDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -665,6 +678,76 @@ public class QueryHandler {
 
     }
 
+
+
+    public void getNearbyQRs(ArrayList<Double> location, Callback callback){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final double range = 10;
+
+        // Get the account from the singleton
+        Account account = CurrentAccount.getAccount();
+
+        // Find QR's within 10km of user's location
+        // References: https://firebase.google.com/docs/firestore/solutions/geoqueries#java_2
+
+        final GeoLocation usersGeolocation = new GeoLocation(account.getLocation().get(1), account.getLocation().get(0));
+        final double radiusInM = 10 * 1000;
+
+        // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+        // a separate query for each pair. There can be up to 9 pairs of bounds
+        // depending on overlap, but in most cases there are 4.
+        List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(usersGeolocation, radiusInM);
+        final List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (GeoQueryBounds b : bounds) {
+            Query q = db.collection("RecordDB")
+                    .orderBy("GeoHash")
+                    .startAt(b.startHash)
+                    .endAt(b.endHash);
+
+            tasks.add(q.get());
+        }
+        // Collect all the query results together into a single list
+        Tasks.whenAllComplete(tasks)
+                .addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Task<?>>> t) {
+                        ArrayList<NearByQR> nearbyQRs = new ArrayList<NearByQR>();
+                        ArrayList<Object> args = new ArrayList<Object>();
+
+                        for (Task<QuerySnapshot> task : tasks) {
+                            QuerySnapshot snap = task.getResult();
+                            for (DocumentSnapshot doc : snap.getDocuments()) {
+                                double lat = doc.getDouble("Latitude");
+                                double lng = doc.getDouble("Longitude");
+
+
+                                // We have to filter out a few false positives due to GeoHash
+                                // accuracy, but most will match
+
+                                GeoLocation docLocation = new GeoLocation(lat, lng);
+                                double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, usersGeolocation);
+                                Log.d("hi", "nearby distance: " +distanceInM);
+                                if (distanceInM <= radiusInM) {
+                                    QR qr = new QR(doc.get("QR").toString());
+                                    boolean scanned;
+                                    Log.d("bruh",doc.getString("User").toString());
+                                    if (doc.getString("User").equals(account.getUsername())){ // if its a qr by the user its been scanned
+                                        scanned = true;
+                                        Log.d("bruh", "has been scanned by user ");
+                                    }
+                                    else scanned = false;
+                                    NearByQR nearByQR = new NearByQR(lng,lat, distanceInM,Integer.parseInt(doc.get("UserScore").toString()), scanned);
+                                    nearbyQRs.add(nearByQR);
+                                }
+                            }
+                        }
+
+                        args.add(nearbyQRs);
+                        callback.callback(args);
+                    }
+                });
+    }
+
     /**
      * Queries for the top ranked players by a certain field (filter).
      * Callback returns an arraylist of PlayerPreview objects.
@@ -705,7 +788,6 @@ public class QueryHandler {
                     }
                 });
     }
-
     /**
      * Performs simple query that returns the number of players whose
      * score is lower than the given score (over given fieldFilter)
