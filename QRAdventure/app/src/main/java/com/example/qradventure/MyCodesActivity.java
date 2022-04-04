@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,8 +32,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -52,6 +57,8 @@ public class MyCodesActivity extends AppCompatActivity {
     BottomNavigationView navbar;
     FusedLocationProviderClient fusedLocationProviderClient;
     Account myAccount;
+    ArrayList<Record> accountRecords;
+    ArrayList<Record> allQRs;
 
     /**
      * Sets button on click listeners
@@ -67,7 +74,46 @@ public class MyCodesActivity extends AppCompatActivity {
         // get db, account references
         db = FirebaseFirestore.getInstance();
         myAccount = CurrentAccount.getAccount();
-        ArrayList<Record> accountRecords = myAccount.getMyRecords();
+
+        // If owner, display all QR - WIP
+        Intent intent = getIntent();
+        if (intent.getStringExtra("Owner").equals("Owner")) {
+//            db.collection("QRDB")
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            // clear the old list
+//                            //allQRs.clear();
+//                            if (task.isSuccessful()) {
+//                                if (task.getResult().isEmpty()) {
+//                                    // no results
+//                                    Log.d("here", "no results");
+//                                } else {
+//                                    // get the documents
+//                                    for (QueryDocumentSnapshot QRDoc : task.getResult()) {
+//                                        if (QRDoc.exists()) {
+//                                            String hash = (String) QRDoc.getId();
+//                                            Account owner = new Account("owner", null, null, null, null, null);
+//                                            QR qr = new QR(hash, 0, null, null);
+//                                            Record newQR = new Record(owner, qr);
+//                                            allQRs.add(newQR);
+//                                        } else {
+//                                            Log.d("it aint working", "QRDoc doesn't exist");
+//                                        }
+//                                    }
+//                                }
+//                            } else {
+//                                // Query failed
+//                                Log.d("here", "query failed");
+//                            }
+//                            accountRecords.addAll(allQRs);
+//                        }
+//                    });
+
+        } else {
+            accountRecords.addAll(myAccount.getMyRecords());
+        }
 
         // initialize adapter
         qrList = findViewById(R.id.qr_list);
@@ -82,19 +128,23 @@ public class MyCodesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // intent to QRPageActivity
-                Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
+                Intent QRintent = new Intent(getApplicationContext(), QRPageActivity.class);
 
                 Record clickedRecord = accountRecords.get(position);
-                intent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
-                intent.putExtra("QRHash", clickedRecord.getQRHash());
+                QRintent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0, 4));
+                QRintent.putExtra("QRHash", clickedRecord.getQRHash());
                 Bitmap image = clickedRecord.getImage();
-                intent.putExtra("QRPicture", image);
+                QRintent.putExtra("QRPicture", image);
 
-                startActivity(intent);
+                if (intent.getStringExtra("Owner") == "Owner") {
+                    QRintent.putExtra("Owner", "Owner");
+                }
+
+                startActivity(QRintent);
             }
         });
 
-
+    if (intent.getStringExtra("Owner") != "Owner") {
         // ====== Long Click Listener for Delete Functionality ======
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -134,12 +184,13 @@ public class MyCodesActivity extends AppCompatActivity {
 
                             }
 
-                        }).setNegativeButton("No",null)
-                .show();
+                        }).setNegativeButton("No", null)
+                        .show();
 
                 return true;
             }
         });
+    }
 
         // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);

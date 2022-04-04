@@ -36,6 +36,10 @@ public class AddGeolocationActivity extends FragmentActivity implements OnMapRea
     Account account;
     Button confirmBtn;
 
+    /**
+     * setup up confirm button and get map
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
