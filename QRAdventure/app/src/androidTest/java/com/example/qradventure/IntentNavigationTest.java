@@ -10,6 +10,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.qradventure.activity.AccountActivity;
+import com.example.qradventure.activity.MainActivity;
+import com.example.qradventure.activity.ProfileActivity;
+import com.example.qradventure.activity.QRPageActivity;
+import com.example.qradventure.activity.SearchPlayersActivity;
+import com.example.qradventure.activity.ViewCodesActivity;
+import com.example.qradventure.model.CurrentAccount;
 import com.robotium.solo.Solo;
 
 import org.junit.After;

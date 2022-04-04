@@ -1,10 +1,8 @@
 package com.example.qradventure;
 
-import static android.provider.Settings.System.getString;
 import static org.junit.Assert.*;
 
 import android.content.Intent;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
 
@@ -13,7 +11,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.google.firebase.firestore.DocumentReference;
+import com.example.qradventure.activity.AccountActivity;
+import com.example.qradventure.activity.CommentsActivity;
+import com.example.qradventure.activity.MainActivity;
+import com.example.qradventure.activity.MapsActivity;
+import com.example.qradventure.activity.MockAccountActivity;
+import com.example.qradventure.activity.MockPostScan;
+import com.example.qradventure.activity.MyCodesActivity;
+import com.example.qradventure.activity.OwnerActivity;
+import com.example.qradventure.activity.PostScanActivity;
+import com.example.qradventure.activity.ProfileActivity;
+import com.example.qradventure.activity.QRPageActivity;
+import com.example.qradventure.activity.ScannedByActivity;
+import com.example.qradventure.activity.StatsActivity;
+import com.example.qradventure.activity.ViewCodesActivity;
+import com.example.qradventure.model.CurrentAccount;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -181,9 +193,7 @@ public class IntentScanTest {
 
 
     /**
-     * Test for taking an image of the QR. Robotium cannot control the camera app on the phone,
-     * so THE PICTURE MUST BE TAKEN MANUALLY DURING THE TEST. The QR scanner also must have been started
-     * up at least once before this test has been ran, likley so the camera has started up before.
+     * Test for the status QR
      * @throws Exception
      */
     @Test
