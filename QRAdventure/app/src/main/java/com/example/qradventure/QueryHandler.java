@@ -115,6 +115,7 @@ public class QueryHandler {
                                                             }
 
 
+
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
 
@@ -136,6 +137,7 @@ public class QueryHandler {
                                                                 }
 
                                                                 Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                                                                String name = (document.getData().get("Name") != null ? document.getData().get("Name").toString() : null);
 
 
                                                                 db.collection("QRDB").document(qrHash)
@@ -151,8 +153,9 @@ public class QueryHandler {
                                                                                     QR qr = new QR(qrHash, qrValue, null, null);
                                                                                     Log.d("logs", qrHash + " " + qrValue);
                                                                                     Record newRecord = new Record(account, qr);
-
                                                                                     newRecord.setImage(image);
+                                                                                    if (name != null)
+                                                                                        newRecord.setName(name);
 
                                                                                     account.addRecord(newRecord);
 
@@ -504,7 +507,6 @@ public class QueryHandler {
 
         CollectionReference RecordDB = db.collection("RecordDB");
 
-
         RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -515,12 +517,13 @@ public class QueryHandler {
 
                     } else {
 
-
-
                         HashMap<String, Object> recordData = new HashMap<>();
                         recordData.put("User", myAccount.getUsername());
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
+
+                        if (toAdd.getName() != null) // if not null then put a name on the record
+                            recordData.put("Name", toAdd.getName());
 
                         // put longitude and latitude of qr
                         if (qr.getGeolocation().size() != 0){
@@ -647,8 +650,7 @@ public class QueryHandler {
                                 String hash = (String) recordDoc.get("QR");
                                 String score =  "" + recordDoc.get("UserScore");
                                 Blob imageBlob = (Blob)recordDoc.getData().get("ImageData");
-
-
+                                String name = (String) recordDoc.getData().get("Name");
 
                                 QR qr = new QR(hash, Integer.parseInt(score), null, null);
                                 Record newRecord = new Record(account, qr);
@@ -656,6 +658,10 @@ public class QueryHandler {
                                     byte[] imageData = imageBlob.toBytes();
                                     Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                                     newRecord.setImage(image);
+                                }
+
+                                if (name != null) {
+                                    newRecord.setName(name);
                                 }
 
                                 args.add(newRecord);

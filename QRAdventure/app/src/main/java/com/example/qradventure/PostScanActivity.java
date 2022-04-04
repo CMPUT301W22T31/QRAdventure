@@ -28,6 +28,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -155,6 +156,8 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
             // Check for a document matching the qr hash
             QueryHandler query = new QueryHandler();
 
+            EditText editText = findViewById(R.id.edit_text_qr_name);
+
             query.addQR(qr, new Callback() {
                 @Override
                 public void callback(ArrayList<Object> args) {
@@ -171,7 +174,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                             // TODO: append CURRENT ACCOUNT to the list of players that have scanned this QR
                             //       use set(data, SetOptions.merge());
 
-
                     }else{
                             // Document does not exist, therefore this QR is brand new!
                             Context context = getApplicationContext();
@@ -180,7 +182,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
                     }
-
                 }
             });
 
@@ -195,6 +196,8 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
             if (keepImage)
                 toAdd.setImage(image);
 
+            if ((!editText.getText().toString().matches("")))
+                toAdd.setName(editText.getText().toString());
 
             if (!currentAccount.containsRecord(toAdd)) {
 
@@ -227,6 +230,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                     userLocation.put("Longitude", qr.getGeolocation().get(0)); // first index is longitude
                     userLocation.put("Latitude", qr.getGeolocation().get(1));  // second index is latitude
                     userLocation.put("Index", locationCount);
+
                     docRef.collection("Locations").document(Integer.toString(locationCount)).set(userLocation);
                 }
 

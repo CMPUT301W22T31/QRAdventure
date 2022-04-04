@@ -56,7 +56,9 @@ public class QRPageActivity extends AppCompatActivity {
         try {
             Bundle bundle = getIntent().getExtras(); // get string from previous activity
             title = bundle.getString("QRtitle");
-            QRTitle.setText(title);
+            if (title == null )
+                QRTitle.setText("Unnamed QR");
+            else QRTitle.setText(title);
             hash = bundle.getString("QRHash");
             image = (Bitmap)bundle.getParcelable("QRPicture");
 
