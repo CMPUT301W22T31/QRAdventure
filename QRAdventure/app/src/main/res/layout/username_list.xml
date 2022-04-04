@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/search_username_box"
     android:fontFamily="@font/gotham_medium"
-    android:padding="10dp"
+    android:padding="12dp"
     android:paddingTop="5dp"
     android:textColor="@color/white"
     android:text="Testing"
