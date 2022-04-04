@@ -31,14 +31,18 @@
         <entry key="app/src/main/res/layout/activity_add_geolocation.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_comments.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/activity_leaderboard.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/activity_login_qractivity.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.178125" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.55" />
         <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.15989583333333332" />
         <entry key="app/src/main/res/layout/activity_my_stats.xml" value="0.11197916666666667" />
+        <entry key="app/src/main/res/layout/activity_owner.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/activity_post_scan2.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_search_players.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.15" />
         <entry key="app/src/main/res/layout/camera.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/content_comment.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/fragment_account.xml" value="0.1796875" />
@@ -47,7 +51,9 @@
         <entry key="app/src/main/res/layout/fragment_maps_title_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/image_confirm_fragment.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/nearby_qr_list_dialogue.xml" value="0.259567387687188" />
-        <entry key="app/src/main/res/layout/player_list_entry.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/player_list_entry.xml" value="0.625" />
+        <entry key="app/src/main/res/layout/profile_choice.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/profile_choice_dialogue.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/qr_distance_info.xml" value="0.375" />
         <entry key="app/src/main/res/layout/single_qr.xml" value="0.3050186157226562" />
         <entry key="app/src/main/res/layout/username_list.xml" value="0.1796875" />
