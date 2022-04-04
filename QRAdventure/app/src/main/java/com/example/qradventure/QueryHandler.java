@@ -322,7 +322,7 @@ public class QueryHandler {
 
 
     /**
-     * Deletes a record from the databnase
+     * Deletes a record from the database
      * @param myAccount The account from which we are deleting the record
      * @param toDelete The record which is being deleted
      */
@@ -389,9 +389,174 @@ public class QueryHandler {
                         Log.w("logs", "Error deleting document", e);
                     }
                 });
+    }
 
+    /**
+     * Deletes a record from the database
+     * @param hash The hash of the QR we are deleting
+     */
+    public void deleteQR(String hash){
+        db.collection("AccountDB")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot accDocument : task.getResult()) {
+                            if (accDocument.exists()) {
+                                db.collection("AccountDB").document(accDocument.getId())
+                                        .collection("My QR Records")
+                                        .whereEqualTo("QR", hash)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    db.collection("AccountDB")
+                                                            .document(accDocument.getId())
+                                                            .collection("My QR Records")
+                                                            .document(document.getId())
+                                                            .delete()
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    updateBestQR();
+                                                                    updateScanCount();
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    Log.d("Deleting record of user", "Deleting this QR from user's records unsuccessful");
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+        db.collection("RecordDB")
+                .whereEqualTo("QR", hash)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                // no results returned
+                            } else {
+                                for (QueryDocumentSnapshot recordDocument : task.getResult()) {
+                                    if (recordDocument.exists()) {
+                                        db.collection("RecordDB")
+                                                .document(recordDocument.getId())
+                                                .delete();
+                                    } else {
+                                        // crash protection & log
+                                        Log.d("delete Record fail", "Record to delete dne");
+                                    }
+                                }
+                            }
+                        } else {
+                            // Query failed
+                            Log.d(TAG, "delete Records Unsuccessful!");
+                        }
+                    }
+                });
+        db.collection("QRDB").document(hash)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("delete QR success", "QR successfully deleted by owner");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("delete QR fail", "Error deleting QR");
+                    }
+                });
+    }
 
-
+    /**
+     * Delete this account. Called when delete button is clicked. Owner functionality.
+     * @param username - account username to delete
+     */
+    public void deleteAccount(String username) {
+        // delete all records of this user
+        db.collection("AccountDB")
+                .document(username)
+                .collection("My QR Records")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            db.collection("AccountDB").document(username)
+                                    .collection("My QR Records")
+                                    .document(document.getId())
+                                    .delete();
+                        }
+                    }
+                });
+        // delete user from scanned by list of QRs
+        db.collection("QRDB")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot QRDocument : task.getResult()) {
+                            if (QRDocument.exists()) {
+                                db.collection("QRDB").document(QRDocument.getId())
+                                        .collection("Scanned By")
+                                        .document(username)
+                                        .delete()
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Deleting username", "Deleting user from scanned by list unsuccessful");
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+        // deleting all records of this user
+        db.collection("RecordDB")
+                .whereEqualTo("User", username)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot recordDoc : task.getResult()) {
+                                    db.collection("RecordDB")
+                                            .document(recordDoc.getId())
+                                            .delete();
+                                }
+                            }
+                        } else {
+                            Log.d("delete Records", "Deleting Records of this user was unsuccessful");
+                        }
+                    }
+                });
+        // deleting the account
+        db.collection("AccountDB").document(username)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("delete Account success", "Account successfully deleted by owner");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("delete QR fail", "Error deleting QR");
+                    }
+                });
     }
 
 
@@ -514,9 +679,6 @@ public class QueryHandler {
                     if (document.exists()) {
 
                     } else {
-
-
-
                         HashMap<String, Object> recordData = new HashMap<>();
                         recordData.put("User", myAccount.getUsername());
                         recordData.put("QR", qr.getHash());

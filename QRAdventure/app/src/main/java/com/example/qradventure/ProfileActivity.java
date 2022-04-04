@@ -67,14 +67,19 @@ public class ProfileActivity extends AppCompatActivity {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // display delete button if owner
-        if (intent.getStringExtra("Owner") == "Owner") {
-            deleteButton.setVisibility(View.VISIBLE);
+        if (intent.getStringExtra("Owner").equals("Owner")) {
+              deleteButton.setVisibility(View.VISIBLE);
         }
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteAccount(username);
+                QueryHandler query = new QueryHandler();
+                query.deleteAccount(username);
+
+                Intent doneIntent = new Intent(ProfileActivity.this, SearchPlayersActivity.class);
+                doneIntent.putExtra("Owner", "Owner");
+                startActivity(doneIntent);
             }
         });
 
@@ -144,9 +149,13 @@ public class ProfileActivity extends AppCompatActivity {
      * @param view: unused
      */
     public void goToViewCodes(View view) {
-        Intent intent = new Intent(this, ViewCodesActivity.class);
-        intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
-        startActivity(intent);
+        Intent intent = getIntent();
+        Intent viewCodesIntent = new Intent(this, ViewCodesActivity.class);
+        viewCodesIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+        if (intent.getStringExtra("Owner").equals("Owner")){
+            viewCodesIntent.putExtra("Owner", "Owner");
+        }
+        startActivity(viewCodesIntent);
     }
 
     /**
@@ -218,34 +227,5 @@ public class ProfileActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(getApplicationContext(), text, duration);
             toast.show();
         }
-    }
-
-
-
-    /**
-     * Delete this account. Called when delete button is clicked. Owner functionality.
-     * @param username - account username to delete
-     */
-    public void deleteAccount(String username) {
-        db.collection("AccountDB").document(username)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Context context = getApplicationContext();
-                        CharSequence text = "Account successfully deleted";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Context context = getApplicationContext();
-                        CharSequence text = "Error deleting account";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();                    }
-                });
     }
 }

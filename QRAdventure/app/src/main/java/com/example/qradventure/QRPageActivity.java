@@ -45,6 +45,7 @@ public class QRPageActivity extends AppCompatActivity {
     Account currentAccount = CurrentAccount.getAccount();
     FirebaseFirestore db;
     FusedLocationProviderClient fusedLocationProviderClient;
+    Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +79,19 @@ public class QRPageActivity extends AppCompatActivity {
         Button deleteButton = findViewById(R.id.button_delete_qr);
         deleteButton.setVisibility(View.INVISIBLE);
 
-        // if (intent.getStringExtra("Owner") == "Owner) {
-        //      deleteButton.setVisibility(View.VISIBLE);
-        // }
+        Intent intent = getIntent();
+        if (intent.getStringExtra("Owner").equals("Owner")) {
+              deleteButton.setVisibility(View.VISIBLE);
+         }
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteQR(hash);
+                QueryHandler query = new QueryHandler();
+                query.deleteQR(hash);
+
+                Intent ownerIntent = new Intent(QRPageActivity.this, OwnerActivity.class);
+                startActivity(ownerIntent);
             }
         });
 
@@ -218,26 +224,7 @@ public class QRPageActivity extends AppCompatActivity {
     }
 
     public void deleteQR(String hash) {
-        db.collection("QRDB").document(hash)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Context context = getApplicationContext();
-                        CharSequence text = "QR successfully deleted";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Context context = getApplicationContext();
-                        CharSequence text = "Error deleting QR";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();                    }
-                });
+
     }
 
 }

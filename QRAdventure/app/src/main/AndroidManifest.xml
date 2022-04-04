@@ -99,6 +99,9 @@
             android:name=".LoginQRActivity"
             android:exported="false" />
         <activity
+            android:name=".OwnerActivity"
+            android:exported="false" />
+        <activity
             android:name=".StatusQRActivity"
             android:exported="false" />
         <activity
