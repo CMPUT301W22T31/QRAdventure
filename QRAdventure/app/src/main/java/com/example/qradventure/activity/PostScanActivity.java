@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -61,15 +62,15 @@ import java.util.HashMap;
  */
 
 public class PostScanActivity extends AppCompatActivity {
-    FirebaseFirestore db;
     protected QR qr;
     private String recordID;
     private Button photoButton;
     private TextView nTimes;
+    FirebaseFirestore db;
     private ActivityResultLauncher cameraLaunch;
-    TextView qrScoreText;
     protected Boolean keepImage = false;
     protected Bitmap image;
+    TextView qrScoreText;
     Account account;
     private int locationCount = 0;
 

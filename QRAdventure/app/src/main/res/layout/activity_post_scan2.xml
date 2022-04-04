@@ -79,6 +79,7 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="76dp"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:onClick="goToPhoto"
         android:src="@drawable/photo_orange"
         app:layout_constraintEnd_toStartOf="@+id/see_comments"
@@ -103,16 +104,17 @@
         android:id="@+id/see_people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
 
         android:onClick="goToScannedBy"
-        android:src="@drawable/people_btn"
+        android:src="@drawable/people_green"
         app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_photo" />
+        app:layout_constraintStart_toStartOf="@+id/add_photo"
+        app:layout_constraintTop_toBottomOf="@+id/add_photo"
+        app:layout_constraintVertical_bias="0.0" />
+
 
     <ImageView
         android:id="@+id/see_comments"
@@ -171,7 +173,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
->>>>>>> staging
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

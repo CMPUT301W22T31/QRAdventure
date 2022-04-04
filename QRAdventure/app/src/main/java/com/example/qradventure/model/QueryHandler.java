@@ -50,20 +50,17 @@ public class QueryHandler {
     FirebaseFirestore db;
     String TAG = "QueryHandler";
 
-    public QueryHandler(){
+    public QueryHandler() {
         db = FirebaseFirestore.getInstance();
     }
 
     /**
      * Very large query for obtaining all the info for the current logged in user account
      *
-     * @param androidDeviceID
-     *      Device ID of the android device. Used to automatically log in the account
-     *
-     * @param callback
-     *      Callback function used after the Query has completed
+     * @param androidDeviceID Device ID of the android device. Used to automatically log in the account
+     * @param callback        Callback function used after the Query has completed
      */
-    public void getLoginAccount(String androidDeviceID, Callback callback){
+    public void getLoginAccount(String androidDeviceID, Callback callback) {
 
         db.collection("AccountDB")
                 .whereEqualTo("device_id", androidDeviceID)
@@ -71,7 +68,7 @@ public class QueryHandler {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             // query completed
                             // TODO: reformat this "for". Surely there's a better way than a for loop for 1 document??
                             if (task.getResult().size() == 0) {
@@ -82,7 +79,7 @@ public class QueryHandler {
                                 args.add(false);
                                 callback.callback(args);
                             }
-                            for(QueryDocumentSnapshot doc: task.getResult()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
                                 if (doc.exists()) {
                                     //Fetch the user account
                                     String email = (String) doc.getData().get("E-mail");
@@ -123,7 +120,6 @@ public class QueryHandler {
                                                             }
 
 
-
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
 
@@ -141,7 +137,7 @@ public class QueryHandler {
                                                                  *
                                                                  */
 
-                                                                Blob imageBlob = (Blob)document.getData().get("ImageData");
+                                                                Blob imageBlob = (Blob) document.getData().get("ImageData");
 
                                                                 /*
                                                                 This needed to check if there is not an image since
@@ -150,10 +146,9 @@ public class QueryHandler {
                                                                 */
                                                                 byte[] imageData = "filler".getBytes();
 
-                                                                try{
+                                                                try {
                                                                     imageData = imageBlob.toBytes();
-                                                                }
-                                                                catch(Exception e){// Just do nothing, since we want imageData to retain its dummy value
+                                                                } catch (Exception e) {// Just do nothing, since we want imageData to retain its dummy value
 
                                                                 }
 
@@ -198,8 +193,7 @@ public class QueryHandler {
                                                         }
                                                     }
                                                 });
-                                    }
-                                    catch (Exception e) {
+                                    } catch (Exception e) {
                                         Log.d("OOPS", "Query failed");
                                     }
                                 } else {
@@ -220,11 +214,11 @@ public class QueryHandler {
      * Used when an account is being created
      * informs the calling activity of the result
      *
-     * @param data Data which will be set if username is not taken
+     * @param data     Data which will be set if username is not taken
      * @param username The name we are checking
      * @param callback Callback function
      */
-    public void checkNameTaken(HashMap<String, Object> data, String username, Callback callback){
+    public void checkNameTaken(HashMap<String, Object> data, String username, Callback callback) {
 
         DocumentReference docRef = db.collection("AccountDB").document(username);
 
@@ -262,49 +256,49 @@ public class QueryHandler {
     /**
      * Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
      * TODO: The scores this returns are only the scores of the QR. Not the player's sum score.
-     * @param qrHash
-     *      The QR code we are querying with
-     * @param myCallback
-     *      Callback function used after the query is done
+     *
+     * @param qrHash     The QR code we are querying with
+     * @param myCallback Callback function used after the query is done
      */
-    public void getOthersScanned(String qrHash, QueryCallback myCallback){
+    public void getOthersScanned(String qrHash, QueryCallback myCallback) {
 
         Task<QuerySnapshot> task = db.collection("RecordDB").whereEqualTo("QR", qrHash)
-        .get()
-        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                String recordID;
-                ArrayList<String> playerNames = new ArrayList<String>();
-                ArrayList<Long> playerScores = new ArrayList<Long>();
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        String recordID;
+                        ArrayList<String> playerNames = new ArrayList<String>();
+                        ArrayList<Long> playerScores = new ArrayList<Long>();
 
-                if (task.isSuccessful()){
-                    // Start list activity with the accounts
-                    for (QueryDocumentSnapshot doc : task.getResult()){
-                        recordID = doc.getId();
-                        Log.d(TAG, recordID);
-                        String accName = recordID.substring(0, recordID.indexOf('-'));
-                        Map<String, Object> accData = doc.getData();
-                        Long totalScore = (Long)accData.get("UserScore");
-                        Log.d(TAG, "accName = " + accName);
-                        Log.d(TAG, "totalScore = "+ totalScore);
+                        if (task.isSuccessful()) {
+                            // Start list activity with the accounts
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                recordID = doc.getId();
+                                Log.d(TAG, recordID);
+                                String accName = recordID.substring(0, recordID.indexOf('-'));
+                                Map<String, Object> accData = doc.getData();
+                                Long totalScore = (Long) accData.get("UserScore");
+                                Log.d(TAG, "accName = " + accName);
+                                Log.d(TAG, "totalScore = " + totalScore);
 
-                        playerNames.add(accName);
-                        playerScores.add(totalScore);
+                                playerNames.add(accName);
+                                playerScores.add(totalScore);
+                            }
+                            myCallback.callback(playerNames, playerScores);
+                        } else {
+                            // ERROR: Task failed
+                            Log.d(TAG, "QUERY FAILED");
+                        }
+
                     }
-                    myCallback.callback(playerNames, playerScores);
-                }else{
-                    // ERROR: Task failed
-                    Log.d(TAG, "QUERY FAILED");
-                }
-
-            }
-        });
+                });
     }
 
 
     /**
      * Takes a string and querys a search result based off of the string
+     *
      * @param username What we are searching for
      * @param callback Callback function
      */
@@ -313,7 +307,7 @@ public class QueryHandler {
         db.collection("AccountDB")
                 // query where document name starts with username
                 .whereGreaterThanOrEqualTo("__name__", username)
-                .whereLessThanOrEqualTo("__name__", username+"\uf8ff")
+                .whereLessThanOrEqualTo("__name__", username + "\uf8ff")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -348,10 +342,11 @@ public class QueryHandler {
 
     /**
      * Deletes a record from the database
+     *
      * @param myAccount The account from which we are deleting the record
-     * @param toDelete The record which is being deleted
+     * @param toDelete  The record which is being deleted
      */
-    public void deleteRecord(Account myAccount, Record toDelete){
+    public void deleteRecord(Account myAccount, Record toDelete) {
 
         String QRRecord = myAccount.getUsername() + "-" + toDelete.getQRHash();
 
@@ -418,9 +413,10 @@ public class QueryHandler {
 
     /**
      * Deletes a record from the database
+     *
      * @param hash The hash of the QR we are deleting
      */
-    public void deleteQR(String hash){
+    public void deleteQR(String hash) {
         db.collection("AccountDB")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -557,6 +553,7 @@ public class QueryHandler {
 
     /**
      * Delete this account. Called when delete button is clicked. Owner functionality.
+     *
      * @param username - account username to delete
      */
     public void deleteAccount(String username) {
@@ -638,10 +635,11 @@ public class QueryHandler {
 
     /**
      * Gets a list of comments for CommentsActivity
-     * @param hash Hash of the QR we are getting the comments from
+     *
+     * @param hash     Hash of the QR we are getting the comments from
      * @param callback Callback function for the calling activity
      */
-    public void getComments(String hash, Callback callback){
+    public void getComments(String hash, Callback callback) {
 
         DocumentReference QRRef = db.collection("QRDB").document(hash);
 
@@ -672,10 +670,9 @@ public class QueryHandler {
 
     /**
      * Adds a QR to the database
-     * @param qr
-     *      What we are adding
-     * @param callback
-     *      Callback function for the calling activity
+     *
+     * @param qr       What we are adding
+     * @param callback Callback function for the calling activity
      */
     public void addQR(QR qr, Callback callback) {
         db = FirebaseFirestore.getInstance();
@@ -729,17 +726,14 @@ public class QueryHandler {
 
     /**
      * Adds a new record to the database
-     * @param androidDeviceID
-     *      Device of the account which is being used
-     * @param qr
-     *      QR code of the record
-     * @param myAccount
-     *      Account of the record
-     * @param toAdd
-     *      The record we are adding
+     *
+     * @param androidDeviceID Device of the account which is being used
+     * @param qr              QR code of the record
+     * @param myAccount       Account of the record
+     * @param toAdd           The record we are adding
      */
 
-    public void addRecord(String androidDeviceID, QR qr, Account myAccount, Record toAdd){
+    public void addRecord(String androidDeviceID, QR qr, Account myAccount, Record toAdd) {
         db = FirebaseFirestore.getInstance();
         String recordID = toAdd.getID();
 
@@ -765,14 +759,14 @@ public class QueryHandler {
                             recordData.put("Name", toAdd.getName());
 
                         // put longitude and latitude of qr
-                        if (qr.getGeolocation().size() != 0){
-                            recordData.put("GeoHash",qr.getGeoHash());
+                        if (qr.getGeolocation().size() != 0) {
+                            recordData.put("GeoHash", qr.getGeoHash());
                             recordData.put("Longitude", qr.getGeolocation().get(0));
                             recordData.put("Latitude", qr.getGeolocation().get(1));
                         }
 
 
-                        if (toAdd.getImage() != null){
+                        if (toAdd.getImage() != null) {
                             Bitmap image = toAdd.getImage();
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
                             image.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -822,12 +816,11 @@ public class QueryHandler {
 
     /**
      * Gets information about another players profile
-     * @param username
-     *      The profile we are querying for
-     * @param callback
-     *      Callback function for the main thread
+     *
+     * @param username The profile we are querying for
+     * @param callback Callback function for the main thread
      */
-    public void getProfile(String username, Callback callback){
+    public void getProfile(String username, Callback callback) {
 
         db.collection("AccountDB").document(username)
                 .get()
@@ -862,17 +855,15 @@ public class QueryHandler {
                 });
 
 
-
     }
 
     /**
      * Querys for a users records
-     * @param username
-     *      Name of the account whos records we are getting
-     * @param callback
-     *      Callback function for the main thread
+     *
+     * @param username Name of the account whos records we are getting
+     * @param callback Callback function for the main thread
      */
-    public void loadRecords(String username, Callback callback){
+    public void loadRecords(String username, Callback callback) {
 
         Account account = new Account(username, "", "", "", "");
 
@@ -889,13 +880,13 @@ public class QueryHandler {
                             for (QueryDocumentSnapshot recordDoc : task.getResult()) {
                                 // reconstruct the record
                                 String hash = (String) recordDoc.get("QR");
-                                String score =  "" + recordDoc.get("UserScore");
-                                Blob imageBlob = (Blob)recordDoc.getData().get("ImageData");
+                                String score = "" + recordDoc.get("UserScore");
+                                Blob imageBlob = (Blob) recordDoc.getData().get("ImageData");
                                 String name = (String) recordDoc.getData().get("Name");
 
                                 QR qr = new QR(hash, Integer.parseInt(score), null, null);
                                 Record newRecord = new Record(account, qr);
-                                if (imageBlob!=null){
+                                if (imageBlob != null) {
                                     byte[] imageData = imageBlob.toBytes();
                                     Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                                     newRecord.setImage(image);
@@ -906,7 +897,6 @@ public class QueryHandler {
                                 }
 
                                 args.add(newRecord);
-
 
 
                                 // add the record and notify view!
@@ -921,13 +911,10 @@ public class QueryHandler {
                 });
 
 
-
-
     }
 
 
-
-    public void getNearbyQRs(ArrayList<Double> location, Callback callback){
+    public void getNearbyQRs(ArrayList<Double> location, Callback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final double range = 10;
 
@@ -972,17 +959,16 @@ public class QueryHandler {
 
                                 GeoLocation docLocation = new GeoLocation(lat, lng);
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, usersGeolocation);
-                                Log.d("hi", "nearby distance: " +distanceInM);
+                                Log.d("hi", "nearby distance: " + distanceInM);
                                 if (distanceInM <= radiusInM) {
                                     QR qr = new QR(doc.get("QR").toString());
                                     boolean scanned;
-                                    Log.d("bruh",doc.getString("User").toString());
-                                    if (doc.getString("User").equals(account.getUsername())){ // if its a qr by the user its been scanned
+                                    Log.d("bruh", doc.getString("User").toString());
+                                    if (doc.getString("User").equals(account.getUsername())) { // if its a qr by the user its been scanned
                                         scanned = true;
                                         Log.d("bruh", "has been scanned by user ");
-                                    }
-                                    else scanned = false;
-                                    NearByQR nearByQR = new NearByQR(lng,lat, distanceInM,Integer.parseInt(doc.get("UserScore").toString()), scanned);
+                                    } else scanned = false;
+                                    NearByQR nearByQR = new NearByQR(lng, lat, distanceInM, Integer.parseInt(doc.get("UserScore").toString()), scanned);
                                     nearbyQRs.add(nearByQR);
                                 }
                             }
@@ -997,9 +983,10 @@ public class QueryHandler {
     /**
      * Queries for the top ranked players by a certain field (filter).
      * Callback returns an arraylist of PlayerPreview objects.
+     *
      * @param fieldFilter - field over which to rank players
-     * @param fetchCount - number of ranks to fetch (top 3/5/10/25, etc)
-     * @param callback - callback to return previewArray when query complete.
+     * @param fetchCount  - number of ranks to fetch (top 3/5/10/25, etc)
+     * @param callback    - callback to return previewArray when query complete.
      */
     public void getTopRanks(String fieldFilter, int fetchCount, Callback callback) {
 
@@ -1034,12 +1021,14 @@ public class QueryHandler {
                     }
                 });
     }
+
     /**
      * Performs simple query that returns the number of players whose
      * score is lower than the given score (over given fieldFilter)
      * Note: Can alter query to be inclusive/exclusive of given score. Opt for inclusive.
+     *
      * @param fieldFilter - field over which to rank players
-     * @param callback - callback to return count to
+     * @param callback    - callback to return count to
      */
     public void countLowerScores(String fieldFilter, int score, Callback callback) {
 
@@ -1064,6 +1053,7 @@ public class QueryHandler {
 
     /**
      * Performs simple query that returns the total number of Accounts
+     *
      * @param callback - callback to return count to
      */
     public void countTotalPlayers(Callback callback) {
@@ -1175,8 +1165,8 @@ public class QueryHandler {
                         }
                     }
                 });
-
     }
+
 
     public void editProfilePic(Integer index) {
         // need a reference to the account document
@@ -1204,33 +1194,31 @@ public class QueryHandler {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
+                                ArrayList<Object> args = new ArrayList<Object>();
+                                DocumentSnapshot doc = task.getResult();
 
-                            ArrayList<Object> args = new ArrayList<Object>();
-                            DocumentSnapshot doc = task.getResult();
+                                if (doc.exists()) {
 
-                            if (doc.exists()) {
+                                    long totalScore = (long) doc.getData().get("TotalScore");
+                                    long scanCount = (long) doc.getData().get("scanCount");
+                                    long bestQR = (long) doc.getData().get("bestQR");
 
-                                long totalScore = (long) doc.getData().get("TotalScore");
-                                long scanCount = (long) doc.getData().get("scanCount");
-                                long bestQR = (long) doc.getData().get("bestQR");
+                                    // order we add them matters
+                                    // refer to callback in StatsActivity
+                                    args.add(totalScore);
+                                    args.add(scanCount);
+                                    args.add(bestQR);
+                                    callback.callback(args);
 
-                                // order we add them matters
-                                // refer to callback in StatsActivity
-                                args.add(totalScore);
-                                args.add(scanCount);
-                                args.add(bestQR);
-                                callback.callback(args);
-
+                                } else {
+                                    // log: document dne
+                                    Log.d("logs", "Document does not exist!", task.getException());
+                                }
                             } else {
-                                // log: document dne
-                                Log.d("logs", "Document does not exist!", task.getException());
+                                // query failed
+                                Log.d("logs", "Query Failed!", task.getException());
                             }
-                        } else {
-                            // query failed
-                            Log.d("logs", "Query Failed!", task.getException());
                         }
-                    }
-                });
+                    });
+                }
     }
-
-}

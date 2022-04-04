@@ -78,6 +78,7 @@ public class QRPageActivity extends AppCompatActivity {
             if (title == null )
                 QRTitle.setText("Unnamed QR");
             else QRTitle.setText(title);
+
             hash = bundle.getString("QRHash");
             image = (Bitmap)bundle.getParcelable("QRPicture");
 

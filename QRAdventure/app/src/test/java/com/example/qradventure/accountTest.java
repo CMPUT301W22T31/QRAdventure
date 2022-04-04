@@ -74,7 +74,7 @@ public class accountTest {
         testAccount.addRecord(record);
         testAccount.addRecord(record2);
 
-        assertEquals(testAccount.getLowestQR(), record2.getQRscore());
+        assertEquals(testAccount.getLowestQR(), record.getQRscore());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class accountTest {
         testAccount.addRecord(record);
         testAccount.addRecord(record2);
 
-        assertEquals(testAccount.getHighestQR(), record.getQRscore());
+        assertEquals(testAccount.getHighestQR(), record2.getQRscore());
     }
 
 }
