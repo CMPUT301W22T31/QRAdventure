@@ -270,50 +270,46 @@ public class AccountActivity extends AppCompatActivity {
         }
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
-            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            // get the QR contents, and send it to next activity
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        // get the QR contents, and send it to next activity
 
-            if (content == null)
-                content = result.getContents();
 
-            if (content.contains("QRSTATS-")) {
-                Intent intent = new Intent(AccountActivity.this, StatsActivity.class);
+        content = result.getContents();
 
-                // extract the username from QR content, and add it to intentExtra
-                String username = content.split("-")[1];
-                intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+        if (content.contains("QRSTATS-")) {
+            Intent intent = new Intent(AccountActivity.this, StatsActivity.class);
 
-                // start activity
-                startActivity(intent);
+            // extract the username from QR content, and add it to intentExtra
+            String username = content.split("-")[1];
+            intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
 
-        }
-            else if (content.contains("QRLOGIN-")) {
-                QueryHandler q = new QueryHandler();
-                String deviceID = content.toString().split("-")[1];
-                q.getLoginAccount(deviceID, new Callback() {
-                    Intent intent = new Intent(AccountActivity.this, AccountActivity.class);
-                    @Override
-                    public void callback(ArrayList<Object> args) {
-                        DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
-                        docRef.update("device_id", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        return;
-                    }
-                });
-            }
+            // start activity
+            startActivity(intent);
 
-            else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
+        } else if (content.contains("QRLOGIN-")) {
+            QueryHandler q = new QueryHandler();
+            String deviceID = content.toString().split("-")[1];
+            q.getLoginAccount(deviceID, new Callback() {
+                Intent intent = new Intent(AccountActivity.this, AccountActivity.class);
+                @Override
+                public void callback(ArrayList<Object> args) {
+                    DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
+                    docRef.update("device_id", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return;
+                }
+            });
+        } else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
                 Intent intent = new Intent(AccountActivity.this, PostScanActivity.class);
                 intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
                 startActivity(intent);
-
-            }else{
-                String text = "You have already scanned that QR";
-                int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-                toast.show();
-            }
+        } else {
+            String text = "You have already scanned that QR";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
+        }
     }
 }
 
