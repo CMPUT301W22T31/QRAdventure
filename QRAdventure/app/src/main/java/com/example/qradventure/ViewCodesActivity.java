@@ -175,7 +175,6 @@ public class ViewCodesActivity extends AppCompatActivity {
 
     }
     /**
-<<<<<<< HEAD
      * Grabs location of user before entering maps activity
      */
     @Override

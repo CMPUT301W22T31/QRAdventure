@@ -100,20 +100,15 @@ public class MyCodesActivity extends AppCompatActivity {
                 Bitmap image = clickedRecord.getImage();
                 QRintent.putExtra("QRPicture", image);
 
-                if (intent.getStringExtra("Owner") == "Owner") {
-                    QRintent.putExtra("Owner", "Owner");
-                }
-
                 startActivity(QRintent);
             }
         });
 
-    if (intent.getStringExtra("Owner") != "Owner") {
+
         // ====== Long Click Listener for Delete Functionality ======
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
                 new AlertDialog.Builder(MyCodesActivity.this)
                         .setIcon(android.R.drawable.ic_delete)
                         .setTitle("Do you want to delete this QR?")
@@ -142,19 +137,15 @@ public class MyCodesActivity extends AppCompatActivity {
                                 db.collection("AccountDB").document(myAccount.getUsername())
                                         .update(newScore);
 
-
                                 CurrentAccount.setAccount(myAccount);
                                 qrListAdapter.notifyDataSetChanged();
-
                             }
 
                         }).setNegativeButton("No", null)
                         .show();
-
                 return true;
             }
         });
-    }
 
         // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
