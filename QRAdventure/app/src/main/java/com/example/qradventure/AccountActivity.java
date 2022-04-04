@@ -263,8 +263,13 @@ public class AccountActivity extends AppCompatActivity {
             String content = result.getContents();
 
             if (content.contains("QRSTATS-")) {
-                Intent intent = new Intent(AccountActivity.this, ProfileStatsActivity.class);
-                intent.putExtra("QRSTATS", content);
+                Intent intent = new Intent(AccountActivity.this, StatsActivity.class);
+
+                // extract the username from QR content, and add it to intentExtra
+                String username = content.split("-")[1];
+                intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+
+                // start activity
                 startActivity(intent);
 
         }
