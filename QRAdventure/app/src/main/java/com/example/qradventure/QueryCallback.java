@@ -8,8 +8,7 @@ import androidx.core.util.Pair;
 
 
 /**
- *
- * WILL SOON BE REPLACED WITH THE REGULAR CALLBACK IN PART 4
+ * Special callback since we were having trouble passing two ArrayLists as args in the other one
  */
 public interface QueryCallback {
 

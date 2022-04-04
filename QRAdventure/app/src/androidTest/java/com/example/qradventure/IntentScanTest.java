@@ -175,26 +175,6 @@ public class IntentScanTest {
         solo.goBack();
         solo.clickLongInList(0);
         solo.clickOnText("Yes");
-//
-//        // click on ScanActivity
-//        View scanButton = solo.getView("scan");
-//        Thread.sleep(100);
-//        solo.clickOnView(scanButton);
-//
-//        // backdoor into PostScanActivity with an intent extra (dummy qr content)
-//        Intent intent = new Intent(solo.getCurrentActivity(), PostScanActivity.class);
-//        intent.putExtra("com.example.qradventure.QR_CONTENT", "test picture");
-//        ActivityScenario.launch(intent);
-//
-//        View photo = solo.getView(R.id.add_photo);
-//
-//        solo.clickOnView(photo);
-//
-//        Thread.sleep(5000);
-//
-//        View add = solo.getView(R.id.button);
-//
-//        solo.clickOnView(add);
 
     }
 
@@ -275,7 +255,12 @@ public class IntentScanTest {
 
     }
 
-
+    /**
+     * Test for deleting a QR of a player
+     * The account which it deletes from is hardcoded, and will have a number of QRs to start.
+     * Once the account is out of QRs this test will not work
+     * @throws Exception
+     */
     @Test
     public void testOwnerQR() throws Exception{
         solo.waitForActivity("LoginActivity", 5000);
@@ -290,12 +275,18 @@ public class IntentScanTest {
         solo.clickOnText("pts");
         solo.assertCurrentActivity("Wrong Activity", QRPageActivity.class);
         solo.clickOnText("Delete");
-        solo.assertCurrentActivity("Wrong Activity", QRPageActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", OwnerActivity.class);
 
 
     }
 
-
+    /**
+     * Test for deleting a players account
+     * The account is hardcoded, so running this test once succesfully ensure other runs will
+     * fail unless the account is re-created. DO NOT RUN THIS TEST UNLESS YOU ARE SURE YOU
+     * WANT TO DELETE THE ACCOUNT, AS IT WILL ALSO MAKE testOwnerQR NOT WORK.
+     * @throws Exception
+     */
     @Test
     public void testOwnerAcc() throws Exception{
         solo.waitForActivity("LoginActivity", 5000);
