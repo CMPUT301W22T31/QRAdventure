@@ -251,6 +251,14 @@ public class AccountActivity extends AppCompatActivity {
 
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
+     * This method is copied into every activity which we can clock the scannable button from
+     *
+     *
+     * Citation for using the Scanning library
+     * Website:https://androidapps-development-blogs.medium.com
+     * link:https://androidapps-development-blogs.medium.com/qr-code-scanner-using-zxing-library-in-android-fe667862feb7
+     * authir: Golap Gunjun Barman, https://androidapps-development-blogs.medium.com/
+     *
      * @param requestCode
      * @param resultCode
      * @param data

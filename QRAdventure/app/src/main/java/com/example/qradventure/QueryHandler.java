@@ -45,6 +45,13 @@ import java.util.Map;
 
 /**
  * Class for holding all Querys to the Firestore database.
+ * Makes heavy use of callbacks. The Idea for callbacks
+ * came from this citation:
+ *
+ *      * Website:Stackoverflow
+ *      * link:https://stackoverflow.com/questions/50109885/firestore-how-can-read-data-from-outside-void-oncomplete-methods
+ *      * author: Alex Mamo, https://stackoverflow.com/users/5246885/alex-mamo
+ *
  */
 public class QueryHandler {
 
@@ -118,6 +125,19 @@ public class QueryHandler {
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
 
+
+                                                                /**
+                                                                 * Citation for stratagy of using blob to upload image
+                                                                 *  website:stackoverflow.com
+                                                                 *  link:https://stackoverflow.com/questions/55281418/android-how-to-add-byte-data-to-cloud-firestore-database
+                                                                 *  author: Doug Stevenson: https://stackoverflow.com/users/807126/doug-stevenson
+                                                                 *
+                                                                 *  AND
+                                                                 *  website:stackoverflow.com
+                                                                 *  link:https://stackoverflow.com/questions/7620401/how-to-convert-image-file-data-in-a-byte-array-to-a-bitmap
+                                                                 *  author: Uttam, https://stackoverflow.com/users/840861/uttam
+                                                                 *
+                                                                 */
 
                                                                 Blob imageBlob = (Blob)document.getData().get("ImageData");
 

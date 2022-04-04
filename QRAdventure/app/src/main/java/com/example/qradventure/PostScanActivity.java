@@ -114,6 +114,21 @@ public class PostScanActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        /**
+         * Code for launching the camera.
+         *
+         * Citation for some of this code:
+         *        Website:youtube
+         *        link:https://www.youtube.com/watch?v=qO3FFuBrT2E
+         *        author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
+         *
+         * Citation for a bugfix with the camera
+         *         Website:youtube
+         *         link:https://www.youtube.com/watch?v=qO3FFuBrT2E
+         *         author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
+         *
+         */
         cameraLaunch = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -254,6 +269,7 @@ public class PostScanActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -303,6 +319,7 @@ public class PostScanActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(PostScanActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

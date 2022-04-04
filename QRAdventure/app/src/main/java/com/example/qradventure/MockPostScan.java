@@ -12,13 +12,16 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
+/**
+ * For testing adding pictures
+ */
 public class MockPostScan extends PostScanActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        image = bitmapFromVector(getApplicationContext(), R.drawable.qr_code3);
+        image = bitmapFromVector(getApplicationContext(), R.drawable.qr_code3); // random picture
         keepImage = true;
         qr = new QR("testQR");
 
