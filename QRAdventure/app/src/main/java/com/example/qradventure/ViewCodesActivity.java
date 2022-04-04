@@ -81,7 +81,8 @@ public class ViewCodesActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 Intent QRPageIntent = new Intent(getApplicationContext(), QRPageActivity.class);
 
-                if (intent.getStringExtra("Owner").equals("Owner")) {
+                String ownerRes = intent.getStringExtra("Owner");
+                if (ownerRes != null) {
                     QRPageIntent.putExtra("Owner", "Owner");
                 }
 
