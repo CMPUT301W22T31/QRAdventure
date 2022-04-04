@@ -65,7 +65,8 @@ public class ProfileActivity extends AppCompatActivity {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // display delete button if owner
-        if (intent.getStringExtra("Owner").equals("Owner")) {
+        String ownerRes = intent.getStringExtra("Owner");
+        if (ownerRes != null) {
               deleteButton.setVisibility(View.VISIBLE);
         }
 
