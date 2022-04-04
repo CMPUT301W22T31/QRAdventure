@@ -85,7 +85,7 @@ public class MyCodesActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
 
                 Record clickedRecord = accountRecords.get(position);
-                intent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                intent.putExtra("QRtitle", clickedRecord.getName());
                 intent.putExtra("QRHash", clickedRecord.getQRHash());
                 Bitmap image = clickedRecord.getImage();
                 intent.putExtra("QRPicture", image);

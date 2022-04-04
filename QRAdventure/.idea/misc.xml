@@ -3,85 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-
-        <entry key="../../../../../layout/custom_preview.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/account2.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/edit.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/leaderboard.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/location2.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/people.xml" value="0.3651041666666667" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/qr_scanner.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_account.xml" value="0.5" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_comments.xml" value="0.3489583333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_edit_info.xml" value="0.3489583333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_leaderboard.xml" value="0.3489583333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login_qractivity.xml" value="0.3489583333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_my_codes.xml" value="0.3489583333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_profile.xml" value="0.3489583333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_search_players.xml" value="0.26875" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/fragment_main.xml" value="0.3489583333333333" />
-        <entry key="..\:/Users/Huey/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/menu/navbar_menu.xml" value="0.2791666666666667" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_account.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_comments.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_edit_info.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_leaderboard.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login_qractivity.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_my_codes.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_my_stats.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_photo.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_post_scan.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_qrpage.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_scan.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_scanned_by.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_search_players.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_status_qractivity.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Tyler/Documents/301/Project/QRAdventure/QRAdventure/app/src/main/res/layout/activity_view_codes.xml" value="0.35260416666666666" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.5442708333333334" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/drawable/ic__0_main_screen__1_.xml" value="0.5442708333333334" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/drawable/location2.xml" value="0.5442708333333334" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/drawable/trophy.xml" value="0.5442708333333334" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/drawable/z_main.xml" value="0.5442708333333334" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/font/gotham_medium.xml" value="0.32222222222222224" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/font/my_custom_font.xml" value="0.32222222222222224" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/font/source_sans_pro.xml" value="0.32222222222222224" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_account.xml" value="0.5" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_add_geolocation.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_edit_info.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_leaderboard.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login.xml" value="0.4466666666666667" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login_qractivity.xml" value="0.3333333333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_main.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_my_codes.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_post_scan.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_post_scan2.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_profile.xml" value="0.20923913043478262" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_profile_stats.xml" value="0.6" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_qrpage.xml" value="0.3223958333333333" />
-        <entry key="..\:/dev/QRAdventure/QRAdventure/app/src/main/res/layout/activity_status_qractivity.xml" value="0.3333333333333333" />
-        <entry key="app/src/main/res/layout/activity_account.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_comments.xml" value="0.21" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/camera.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/content_comment.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layout/player_list_entry.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/menu/navbar_menu.xml" value="0.25462962962962965" />
-      </map>
-    </option>
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
         <entry key="app/src/main/res/drawable/account2.xml" value="0.188" />
         <entry key="app/src/main/res/drawable/box.xml" value="0.188" />
         <entry key="app/src/main/res/drawable/button_bg.xml" value="0.1525" />
@@ -107,8 +28,11 @@
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.178125" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.55" />
         <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.15989583333333332" />
+        <entry key="app/src/main/res/layout/activity_my_stats.xml" value="0.11197916666666667" />
+        <entry key="app/src/main/res/layout/activity_post_scan2.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/activity_search_players.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/camera.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/content_comment.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/fragment_account.xml" value="0.1796875" />
@@ -119,7 +43,7 @@
         <entry key="app/src/main/res/layout/nearby_qr_list_dialogue.xml" value="0.259567387687188" />
         <entry key="app/src/main/res/layout/player_list_entry.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/qr_distance_info.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/single_qr.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/single_qr.xml" value="0.3050186157226562" />
         <entry key="app/src/main/res/layout/username_list.xml" value="0.1796875" />
       </map>
     </option>
