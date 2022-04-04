@@ -8,8 +8,6 @@
     tools:context=".ScannedByActivity"
     android:background="#121212">
 
-
-
     <ListView
         android:id="@+id/username_list"
         android:layout_width="match_parent"
