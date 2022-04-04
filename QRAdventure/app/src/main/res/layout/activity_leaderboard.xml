@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LeaderboardActivity"
+    tools:context=".activity.LeaderboardActivity"
     android:background="@color/black">
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:onClick="displayHighScores"
             android:text="High Scores"
             android:textColor="#FFFFFF" />
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:onClick="displayBestQR"
             android:text="Best QR"
             android:textColor="#FFFFFF" />
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:onClick="displayMostScanned"
             android:text="Total Scans"
             android:textColor="#FFFFFF" />
@@ -71,7 +71,7 @@
             android:id="@+id/tvPRHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="Personal Ranking"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
@@ -83,7 +83,7 @@
             android:id="@+id/tvMyRank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="###"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -96,7 +96,7 @@
             android:id="@+id/tvPercHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="Percentile"
             android:textAlignment="center"
             android:textColor="#FFFFFF"

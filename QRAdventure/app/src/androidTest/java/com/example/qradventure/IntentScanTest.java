@@ -3,7 +3,6 @@ package com.example.qradventure;
 import static org.junit.Assert.*;
 
 import android.content.Intent;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,7 +11,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.google.firebase.firestore.DocumentReference;
+import com.example.qradventure.activity.AccountActivity;
+import com.example.qradventure.activity.CommentsActivity;
+import com.example.qradventure.activity.MainActivity;
+import com.example.qradventure.activity.MapsActivity;
+import com.example.qradventure.activity.MockAccountActivity;
+import com.example.qradventure.activity.MockPostScan;
+import com.example.qradventure.activity.MyCodesActivity;
+import com.example.qradventure.activity.OwnerActivity;
+import com.example.qradventure.activity.PostScanActivity;
+import com.example.qradventure.activity.ProfileActivity;
+import com.example.qradventure.activity.QRPageActivity;
+import com.example.qradventure.activity.ScannedByActivity;
+import com.example.qradventure.activity.StatsActivity;
+import com.example.qradventure.activity.ViewCodesActivity;
+import com.example.qradventure.model.CurrentAccount;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -174,35 +187,13 @@ public class IntentScanTest {
         solo.goBack();
         solo.clickLongInList(0);
         solo.clickOnText("Yes");
-//
-//        // click on ScanActivity
-//        View scanButton = solo.getView("scan");
-//        Thread.sleep(100);
-//        solo.clickOnView(scanButton);
-//
-//        // backdoor into PostScanActivity with an intent extra (dummy qr content)
-//        Intent intent = new Intent(solo.getCurrentActivity(), PostScanActivity.class);
-//        intent.putExtra("com.example.qradventure.QR_CONTENT", "test picture");
-//        ActivityScenario.launch(intent);
-//
-//        View photo = solo.getView(R.id.add_photo);
-//
-//        solo.clickOnView(photo);
-//
-//        Thread.sleep(5000);
-//
-//        View add = solo.getView(R.id.button);
-//
-//        solo.clickOnView(add);
 
     }
 
 
 
     /**
-     * Test for taking an image of the QR. Robotium cannot control the camera app on the phone,
-     * so THE PICTURE MUST BE TAKEN MANUALLY DURING THE TEST. The QR scanner also must have been started
-     * up at least once before this test has been ran, likley so the camera has started up before.
+     * Test for the status QR
      * @throws Exception
      */
     @Test
@@ -271,6 +262,52 @@ public class IntentScanTest {
         solo.assertCurrentActivity("Wrong Activity", MapsActivity.class);
         solo.clickOnButton(0);
         solo.waitForText("QRs Nearby", 1, 2000);
+
+    }
+
+    /**
+     * Test for deleting a QR of a player
+     * The account which it deletes from is hardcoded, and will have a number of QRs to start.
+     * Once the account is out of QRs this test will not work
+     * @throws Exception
+     */
+    @Test
+    public void testOwnerQR() throws Exception{
+        solo.waitForActivity("LoginActivity", 5000);
+
+        Intent profileIntent = new Intent(solo.getCurrentActivity(), ProfileActivity.class);
+        profileIntent.putExtra("com.example.qradventure.USERNAME", "otherjack");
+        profileIntent.putExtra("Owner", "Owner");
+        ActivityScenario.launch(profileIntent);
+        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
+        solo.clickOnText("View Codes");
+        solo.assertCurrentActivity("Wrong Activity", ViewCodesActivity.class);
+        solo.clickOnText("pts");
+        solo.assertCurrentActivity("Wrong Activity", QRPageActivity.class);
+        solo.clickOnText("Delete");
+        solo.assertCurrentActivity("Wrong Activity", OwnerActivity.class);
+
+
+    }
+
+    /**
+     * Test for deleting a players account
+     * The account is hardcoded, so running this test once succesfully ensure other runs will
+     * fail unless the account is re-created. DO NOT RUN THIS TEST UNLESS YOU ARE SURE YOU
+     * WANT TO DELETE THE ACCOUNT, AS IT WILL ALSO MAKE testOwnerQR NOT WORK.
+     * @throws Exception
+     */
+    @Test
+    public void testOwnerAcc() throws Exception{
+        solo.waitForActivity("LoginActivity", 5000);
+
+        Intent profileIntent = new Intent(solo.getCurrentActivity(), ProfileActivity.class);
+        profileIntent.putExtra("com.example.qradventure.USERNAME", "otherjack");
+        profileIntent.putExtra("Owner", "Owner");
+        ActivityScenario.launch(profileIntent);
+        solo.waitForActivity("ProfileActivity", 5000);
+        solo.clickOnText("Delete");
+
 
     }
 
