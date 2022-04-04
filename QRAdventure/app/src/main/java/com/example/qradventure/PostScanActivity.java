@@ -51,14 +51,14 @@ import java.util.HashMap;
  * Activity that comes immediately after scanning a QR code.
  * Allows the player to manage and interact with the code they have just scanned.
  */
+public class PostScanActivity extends AppCompatActivity {
 
-public class PostScanActivity extends AppCompatActivity implements  ImageFragment.imageListener {
-    private QR qr;
+    protected QR qr;
     private String recordID;
     private Button photoButton;
     private ActivityResultLauncher cameraLaunch;
-    private Boolean keepImage = false;
-    private Bitmap image;
+    protected Boolean keepImage = false;
+    protected Bitmap image;
     Account account;
     private int locationCount = 0;
 
@@ -76,19 +76,20 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setContentView(R.layout.activity_post_scan2);
         setTitle("Post Scan Activity");
+        keepImage = false;
+
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
+
         // unfold intent, create QR object.
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
+
+
+
         qr = new QR(QRContent);
 
-        // For testing purposes, display a dialog of the QR scanned
-        new AlertDialog.Builder(PostScanActivity.this).setTitle("Result")
-                .setMessage(QRContent)
-                .setPositiveButton("QR code scanned", null)
-                .setNegativeButton("Cancel", null)
-                .create().show();
+
 
         // Grabs geolocation from adding geolocation activity
         getGeo = registerForActivityResult(
@@ -114,6 +115,21 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                         }
                     }
                 });
+
+        /**
+         * Code for launching the camera.
+         *
+         * Citation for some of this code:
+         *        Website:youtube
+         *        link:https://www.youtube.com/watch?v=qO3FFuBrT2E
+         *        author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
+         *
+         * Citation for a bugfix with the camera
+         *         Website:youtube
+         *         link:https://www.youtube.com/watch?v=qO3FFuBrT2E
+         *         author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
+         *
+         */
         cameraLaunch = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -121,9 +137,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                         if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                             Bundle bundle = result.getData().getExtras();
 
-                            ImageFragment showPicture = new ImageFragment();
-                            showPicture.setArguments(bundle);
-                            showPicture.show(getSupportFragmentManager(), "CONFIRM_IMAGE");
+                            keepImage = true;
 
                             image = (Bitmap) bundle.get("data");
 
@@ -136,13 +150,13 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
                         }
                     }
                 });
+
     }
 
     /**
      * Called when respective button is clicked.
      * Handles the logic of completing a QR code scan;
      * Updates firestore with the QR and creates a record.
-     * @param view: unused
      */
     public void AddQR(View view) {
         try {
@@ -259,6 +273,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -276,10 +291,6 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
     }
 
 
-    @Override
-    public void keepImage(Boolean res) {
-        keepImage = res;
-    }
 
     /**
      * Aborts the scan; does not add to account. Called when respective button is clicked.
@@ -312,6 +323,7 @@ public class PostScanActivity extends AppCompatActivity implements  ImageFragmen
             ActivityCompat.requestPermissions(PostScanActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

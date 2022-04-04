@@ -16,12 +16,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 /**
  * Displays the map of nearby QR codes
- * To be developed later
  */
 public class MapActivity extends AppCompatActivity {
-
-
-
 
     /**
      * Sets layout and enables navbar
