@@ -77,44 +77,8 @@ public class MyCodesActivity extends AppCompatActivity {
 
         // If owner, display all QR - WIP
         Intent intent = getIntent();
-        if (intent.getStringExtra("Owner").equals("Owner")) {
-//            db.collection("QRDB")
-//                    .get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            // clear the old list
-//                            //allQRs.clear();
-//                            if (task.isSuccessful()) {
-//                                if (task.getResult().isEmpty()) {
-//                                    // no results
-//                                    Log.d("here", "no results");
-//                                } else {
-//                                    // get the documents
-//                                    for (QueryDocumentSnapshot QRDoc : task.getResult()) {
-//                                        if (QRDoc.exists()) {
-//                                            String hash = (String) QRDoc.getId();
-//                                            Account owner = new Account("owner", null, null, null, null, null);
-//                                            QR qr = new QR(hash, 0, null, null);
-//                                            Record newQR = new Record(owner, qr);
-//                                            allQRs.add(newQR);
-//                                        } else {
-//                                            Log.d("it aint working", "QRDoc doesn't exist");
-//                                        }
-//                                    }
-//                                }
-//                            } else {
-//                                // Query failed
-//                                Log.d("here", "query failed");
-//                            }
-//                            accountRecords.addAll(allQRs);
-//                        }
-//                    });
 
-        } else {
-            accountRecords.addAll(myAccount.getMyRecords());
-        }
-
+        accountRecords = myAccount.getMyRecords();
         // initialize adapter
         qrList = findViewById(R.id.qr_list);
         QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);

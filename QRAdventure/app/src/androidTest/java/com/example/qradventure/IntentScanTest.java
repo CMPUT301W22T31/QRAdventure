@@ -1,5 +1,6 @@
 package com.example.qradventure;
 
+import static android.provider.Settings.System.getString;
 import static org.junit.Assert.*;
 
 import android.content.Intent;
@@ -271,6 +272,41 @@ public class IntentScanTest {
         solo.assertCurrentActivity("Wrong Activity", MapsActivity.class);
         solo.clickOnButton(0);
         solo.waitForText("QRs Nearby", 1, 2000);
+
+    }
+
+
+    @Test
+    public void testOwnerQR() throws Exception{
+        solo.waitForActivity("LoginActivity", 5000);
+
+        Intent profileIntent = new Intent(solo.getCurrentActivity(), ProfileActivity.class);
+        profileIntent.putExtra("com.example.qradventure.USERNAME", "otherjack");
+        profileIntent.putExtra("Owner", "Owner");
+        ActivityScenario.launch(profileIntent);
+        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
+        solo.clickOnText("View Codes");
+        solo.assertCurrentActivity("Wrong Activity", ViewCodesActivity.class);
+        solo.clickOnText("pts");
+        solo.assertCurrentActivity("Wrong Activity", QRPageActivity.class);
+        solo.clickOnText("Delete");
+        solo.assertCurrentActivity("Wrong Activity", QRPageActivity.class);
+
+
+    }
+
+
+    @Test
+    public void testOwnerAcc() throws Exception{
+        solo.waitForActivity("LoginActivity", 5000);
+
+        Intent profileIntent = new Intent(solo.getCurrentActivity(), ProfileActivity.class);
+        profileIntent.putExtra("com.example.qradventure.USERNAME", "otherjack");
+        profileIntent.putExtra("Owner", "Owner");
+        ActivityScenario.launch(profileIntent);
+        solo.waitForActivity("ProfileActivity", 5000);
+        solo.clickOnText("Delete");
+
 
     }
 

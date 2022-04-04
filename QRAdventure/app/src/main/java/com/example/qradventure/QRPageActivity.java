@@ -82,7 +82,9 @@ public class QRPageActivity extends AppCompatActivity {
         deleteButton.setVisibility(View.INVISIBLE);
 
         Intent intent = getIntent();
-        if (intent.getStringExtra("Owner").equals("Owner")) {
+        String ownerRes = intent.getStringExtra("Owner");
+
+        if (ownerRes != null) {
               deleteButton.setVisibility(View.VISIBLE);
          }
 

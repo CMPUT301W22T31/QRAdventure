@@ -107,40 +107,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/green_rect"
-            android:clickable="true"
-            android:onClick="goToCodes"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="20dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
-                android:text="Codes"
-                android:textColor="#FFFFFF"
-                android:textSize="25dp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="6dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingRight="10dp"
-                android:src="@drawable/qr_scanner"
-
-                />
-
-
-        </LinearLayout>
 
 
     </LinearLayout>
