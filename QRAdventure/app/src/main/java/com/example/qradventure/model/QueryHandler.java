@@ -87,12 +87,21 @@ public class QueryHandler {
                                     String phoneNumber = (String) doc.getData().get("Phone Number");
                                     String statusQR = (String) doc.getData().get("StatusQR");
                                     String username = (String) doc.getId();
+
+
                                     Log.d("logs", "doc exists + " + username);
 
                                     Account fetchedAccount =
                                             new Account(username, email, phoneNumber, loginQR, statusQR);
                                     CurrentAccount.setAccount(fetchedAccount);
 
+                                    if (doc.getData().get("profilePic") != null) {
+                                        Long index = (Long) doc.getData().get("profilePic");
+                                        fetchedAccount.setProfileIndex(index.intValue());
+                                    }
+                                    else {
+                                        fetchedAccount.setProfileIndex(0);
+                                    }
                                     // Account reconstructed - need to reconstruct records
                                     Account account = CurrentAccount.getAccount();
                                     try {
@@ -826,10 +835,12 @@ public class QueryHandler {
                                 String email = (String) doc.getData().get("E-mail");
                                 String phone = (String) doc.getData().get("Phone Number");
                                 Long totalScore = (Long) doc.getData().get("TotalScore");
+                                Long profileIndex = (Long) doc.getData().get("profilePic");
 
                                 args.add(email);
                                 args.add(phone);
                                 args.add(totalScore);
+                                args.add(profileIndex);
                                 callback.callback(args);
 
                             } else {
@@ -1136,7 +1147,7 @@ public class QueryHandler {
                 });
     }
 
-    public void getAmntScanned(QR qr, Callback callback) {
+    public void getAmntScanned(QR qr , Callback callback) {
 
         db.collection("QRDB").document(qr.getHash()).collection("Scanned By")
                 .get()
@@ -1156,23 +1167,33 @@ public class QueryHandler {
                 });
     }
 
-        /**
-         * Simple query to get the common "stats" fields of an account
-         * @param username
-         * @param callback - callback to return array [TotalScore,
-         */
-        public void queryPlayerStats (String username, Callback callback){
-            DocumentReference accDocRef = db.collection("AccountDB")
-                    .document(username);
 
-            // query to get their stats, return via callback
-            accDocRef
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
+    public void editProfilePic(Integer index) {
+        // need a reference to the account document
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(CurrentAccount.getAccount().getUsername());
+        HashMap<String, Object> updateData = new HashMap<String, Object>();
+        updateData.put("profilePic", index);
+        accDocRef.update(updateData);
+    }
 
+
+    /**
+     * Simple query to get the common "stats" fields of an account
+     * @param username
+     * @param callback - callback to return array [TotalScore,
+     */
+    public void queryPlayerStats(String username, Callback callback) {
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(username);
+
+        // query to get their stats, return via callback
+        accDocRef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
                                 ArrayList<Object> args = new ArrayList<Object>();
                                 DocumentSnapshot doc = task.getResult();
 
@@ -1199,6 +1220,5 @@ public class QueryHandler {
                             }
                         }
                     });
-        }
-
+                }
     }
