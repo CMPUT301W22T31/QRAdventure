@@ -50,7 +50,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/user_username"
+                android:id="@+id/text_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

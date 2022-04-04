@@ -78,15 +78,20 @@ public class ViewCodesActivity extends AppCompatActivity {
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), QRPageActivity.class);
+                Intent intent = getIntent();
+                Intent QRPageIntent = new Intent(getApplicationContext(), QRPageActivity.class);
+
+                if (intent.getStringExtra("Owner").equals("Owner")) {
+                    QRPageIntent.putExtra("Owner", "Owner");
+                }
 
                 Record clickedRecord = records.get(position);
 
-                intent.putExtra("QRtitle", clickedRecord.getName());
-                intent.putExtra("QRHash", clickedRecord.getQRHash());
+                QRPageIntent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                QRPageIntent.putExtra("QRHash", clickedRecord.getQRHash());
                 Bitmap image = clickedRecord.getImage();
-                intent.putExtra("QRPicture", image);
-                startActivity(intent);
+                QRPageIntent.putExtra("QRPicture", image);
+                startActivity(QRPageIntent);
             }
         });
 

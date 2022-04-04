@@ -132,7 +132,6 @@ public class AccountActivity extends AppCompatActivity {
 
         account = CurrentAccount.getAccount();
 
-
         // Give info to textviews to display
         try {
             // get textviews
@@ -140,7 +139,7 @@ public class AccountActivity extends AppCompatActivity {
             TextView displayCodesScanned = findViewById(R.id.codes_scanned);
             TextView displayLowestQR = findViewById(R.id.lowest_qr);
             TextView displayHighestQR = findViewById(R.id.highest_qr);
-            TextView displayUsername = findViewById(R.id.user_username);
+            TextView displayUsername = findViewById(R.id.text_owner);
             TextView displayEmail = findViewById(R.id.user_email);
             TextView displayPhoneNumber = findViewById(R.id.user_phone_number);
 

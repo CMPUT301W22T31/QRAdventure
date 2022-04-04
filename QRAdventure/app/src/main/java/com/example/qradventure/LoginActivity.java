@@ -20,6 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,8 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                              }
                                          });
-
-                                //scanner.scan(LoginActivity.this);
 
 
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
                 @Override
                 public void callback(ArrayList<Object> args) {
-                    Account account =CurrentAccount.getAccount();
+                    Account account = CurrentAccount.getAccount();
                     DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
                     docRef.update("device_id", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -197,10 +198,13 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
 
+        // If owner QR, go to owner activity
+        String hash = new String(Hex.encodeHex(DigestUtils.md5(content)));
+        if (hash.contains("78bbd35e17f62967d")) {
+            Intent intentOwner = new Intent(this, OwnerActivity.class);
+            startActivity(intentOwner);
+        }
 
-
-            Log.d("meme", "BOOM ");
-            //Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
         }
 
     }

@@ -6,17 +6,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -31,6 +35,7 @@ import java.util.ArrayList;
 public class ProfileActivity extends AppCompatActivity {
     private String username;
     BottomNavigationView navbar;
+    FirebaseFirestore db;
     FusedLocationProviderClient fusedLocationProviderClient;
     Account account;
 
@@ -45,6 +50,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        db = FirebaseFirestore.getInstance();
+
+        Button deleteButton = findViewById(R.id.button_delete);
+        deleteButton.setVisibility(View.INVISIBLE);
+
         // unpack intent to get account username
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
@@ -52,6 +62,23 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Call FusedLocationProviderClient class to grab location of user
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // display delete button if owner
+        if (intent.getStringExtra("Owner").equals("Owner")) {
+              deleteButton.setVisibility(View.VISIBLE);
+        }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QueryHandler query = new QueryHandler();
+                query.deleteAccount(username);
+
+                Intent doneIntent = new Intent(ProfileActivity.this, SearchPlayersActivity.class);
+                doneIntent.putExtra("Owner", "Owner");
+                startActivity(doneIntent);
+            }
+        });
 
         // ====== Enable navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
@@ -112,18 +139,20 @@ public class ProfileActivity extends AppCompatActivity {
                 setTextViews(username, email, phone, totalScore.toString());
             }
         });
-
-
-
     }
+
     /**
      * Sends to ViewCodes activity. Called when respective button is clicked.
      * @param view: unused
      */
     public void goToViewCodes(View view) {
-        Intent intent = new Intent(this, ViewCodesActivity.class);
-        intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
-        startActivity(intent);
+        Intent intent = getIntent();
+        Intent viewCodesIntent = new Intent(this, ViewCodesActivity.class);
+        viewCodesIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+        if (intent.getStringExtra("Owner").equals("Owner")){
+            viewCodesIntent.putExtra("Owner", "Owner");
+        }
+        startActivity(viewCodesIntent);
     }
 
     /**
@@ -196,6 +225,4 @@ public class ProfileActivity extends AppCompatActivity {
             toast.show();
         }
     }
-
-
 }
