@@ -247,6 +247,8 @@ public class AccountActivity extends AppCompatActivity {
     }
 
 
+
+
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
      * @param requestCode
@@ -262,7 +264,9 @@ public class AccountActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             // get the QR contents, and send it to next activity
-            content = result.getContents();
+
+            if (content == null)
+                content = result.getContents();
 
             if (content.contains("QRSTATS-")) {
                 Intent intent = new Intent(AccountActivity.this, ProfileStatsActivity.class);

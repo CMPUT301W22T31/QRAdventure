@@ -52,12 +52,12 @@ import java.util.HashMap;
  */
 public class PostScanActivity extends AppCompatActivity {
 
-    private QR qr;
+    protected QR qr;
     private String recordID;
     private Button photoButton;
     private ActivityResultLauncher cameraLaunch;
-    private Boolean keepImage = false;
-    private Bitmap image;
+    protected Boolean keepImage = false;
+    protected Bitmap image;
     Account account;
     private int locationCount = 0;
 
@@ -141,7 +141,6 @@ public class PostScanActivity extends AppCompatActivity {
      * Called when respective button is clicked.
      * Handles the logic of completing a QR code scan;
      * Updates firestore with the QR and creates a record.
-     * @param view: unused
      */
     public void AddQR(View view) {
         try {
