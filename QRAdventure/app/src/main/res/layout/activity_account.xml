@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/gradient_bg"
+    android:background="#121212"
     >
 
     <ImageView
@@ -257,6 +257,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/red_rect"
             android:clickable="true"
             android:onClick="goToMyCodes"
@@ -293,6 +294,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/orange_rect"
             android:clickable="true"
             android:onClick="goToMyStats"
@@ -329,6 +331,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/green_rect"
             android:clickable="true"
             android:onClick="goToLoginQR"
@@ -364,6 +367,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/blue_rect"
             android:clickable="true"
             android:onClick="goToStatusQR"
