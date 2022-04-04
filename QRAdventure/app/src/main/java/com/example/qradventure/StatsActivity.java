@@ -3,7 +3,6 @@ package com.example.qradventure;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Activity that displays the stats of a user.
- * Received the username via intent
+ * Receives the username via intent
  * Leaf activity - no navbar
  */
 public class StatsActivity extends AppCompatActivity {
@@ -19,10 +18,9 @@ public class StatsActivity extends AppCompatActivity {
     int totalScore;
     int scanCount;
     int bestQR;
-    String TAG = "April3";
 
     /**
-     * Controls calls to get stats and set textviews
+     * Initiates call to display stats on textviews
      * @param savedInstanceState - unused
      */
     @Override
@@ -30,7 +28,7 @@ public class StatsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
 
-        // get username via intent, set textview
+        // get username via intent (using global string); set textview
         username = getIntent().getStringExtra(getString(R.string.EXTRA_USERNAME));
         TextView tvUsername = findViewById(R.id.tvUsername);
         tvUsername.setText(username);
@@ -42,6 +40,7 @@ public class StatsActivity extends AppCompatActivity {
     /**
      * Uses QueryHandler and Callback to get player stats
      * Sets relevant textviews
+     * Further calls methods to display percentiles (requires user scores)
      */
     public void SetPlayerStats() {
         QueryHandler qh = new QueryHandler();
@@ -110,6 +109,7 @@ public class StatsActivity extends AppCompatActivity {
 
     /**
      * Formats a percentile for display by correcting suffix (50th, 51st, 53rd, etc)
+     * Sets the corresponding textview text
      * @param percentile - (int) number to display
      * @param field - (string) field of rank, dictates which textview to set
      */
