@@ -88,65 +88,96 @@ public class LoginActivity extends AppCompatActivity {
                 String phoneNumber = phone_number_entered.getText().toString();
                 EditText email_entered = findViewById(R.id.editText_email);
                 String email = email_entered.getText().toString();
-                // TODO: develop LoginQR and StatusQR
-                String LoginQR = "usernameLoginQRHash";
-                String StatusQR = "usernameStatusQRHash";
 
-                // Create new user
-                currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR);
 
-                //Get Device ID
-                String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                // validate data
+                InputValidator inputValidator = new InputValidator();
+                Boolean validUser = inputValidator.checkUser(username);
+                Boolean validPhone = inputValidator.checkPhone(phoneNumber);
+                Boolean validEmail = inputValidator.checkEmail(email);
 
-                // Put Player data into HashMap
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("E-mail", email);
-                data.put("Phone Number", phoneNumber);
-                data.put("LoginQR", LoginQR);
-                data.put("StatusQR", StatusQR);
-                data.put("TotalScore", 0);
-                data.put("device_id", androidDeviceID);
-                data.put("bestQR", 0);
-                data.put("scanCount", 0);
+                if (!validUser || !validPhone || !validEmail) {
+                    if (!validUser) {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Username must be 3-18 characters";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                    if (!validPhone && !(phoneNumber.equals(""))) {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Must provide 10 digit phone number";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                    if (!validEmail && !(email.equals(""))) {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Must provide valid email";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                }
+                else {  // all data has been provided in legal format
+                    // TODO: develop LoginQR and StatusQR
+                    String LoginQR = "usernameLoginQRHash";
+                    String StatusQR = "usernameStatusQRHash";
 
-                if (!username.matches("")) {
+                    // Create new user
+                    currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR);
 
-                    // Check for a document matching the input username
-                    QueryHandler query = new QueryHandler();
+                    //Get Device ID
+                    String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                    query.checkNameTaken(data, username, new Callback() {
-                        @Override
-                        public void callback(ArrayList<Object> args) {
+                    // Put Player data into HashMap
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("E-mail", email);
+                    data.put("Phone Number", phoneNumber);
+                    data.put("LoginQR", LoginQR);
+                    data.put("StatusQR", StatusQR);
+                    data.put("TotalScore", 0);
+                    data.put("device_id", androidDeviceID);
+                    data.put("bestQR", 0);
+                    data.put("scanCount", 0);
 
-                            Boolean alreadyCreated = (Boolean)args.get(0);
+                    if (!username.matches("")) {
 
-                            if (!alreadyCreated){
-                                // on success: proceed to app!
-                                signedIn();
-                            }else{
-                                Context context = getApplicationContext();
-                                CharSequence text = "Username is taken";
-                                int duration = Toast.LENGTH_SHORT;
-                                Toast toast = Toast.makeText(context, text, duration);
-                                toast.show();
-                                // TODO: Does this case need extra logic? Or just a toast?
+                        // Check for a document matching the input username
+                        QueryHandler query = new QueryHandler();
+
+                        query.checkNameTaken(data, username, new Callback() {
+                            @Override
+                            public void callback(ArrayList<Object> args) {
+
+                                Boolean alreadyCreated = (Boolean)args.get(0);
+
+                                if (!alreadyCreated){
+                                    // on success: proceed to app!
+                                    signedIn();
+                                }else{
+                                    Context context = getApplicationContext();
+                                    CharSequence text = "Username is taken";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                    // TODO: Does this case need extra logic? Or just a toast?
+                                }
+
                             }
+                        });
 
-                        }
-                    });
-
-                } else {
-                    // user input was empty, notify them via toast:
-                    Context context = getApplicationContext();
-                    CharSequence text = "Username Empty";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    } else {
+                        // user input was empty, notify them via toast:
+                        Context context = getApplicationContext();
+                        CharSequence text = "Username Empty";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
                 }
             }
         });
-
-
     }
 
     /**
