@@ -112,7 +112,6 @@ public class AddGeolocationActivity extends FragmentActivity implements OnMapRea
 
     @Override
     public void onMarkerDragEnd(@NonNull Marker marker) {
-        Toast.makeText(this, "Lat" + marker.getPosition().latitude + " lng " + marker.getPosition().longitude, Toast.LENGTH_SHORT).show();
         longitude = marker.getPosition().longitude;
         latitude = marker.getPosition().latitude;
     }

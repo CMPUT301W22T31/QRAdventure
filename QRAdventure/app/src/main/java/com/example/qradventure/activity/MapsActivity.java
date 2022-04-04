@@ -67,9 +67,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -115,7 +112,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
                     break;
-
             }
             return false;
         });
@@ -194,7 +190,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
-
 
     public void nearByQRList(){
         nearByQRDialogue.setContentView(R.layout.nearby_qr_list_dialogue);

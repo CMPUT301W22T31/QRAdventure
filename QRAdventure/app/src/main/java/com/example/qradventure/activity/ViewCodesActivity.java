@@ -96,7 +96,7 @@ public class ViewCodesActivity extends AppCompatActivity {
 
                 Record clickedRecord = records.get(position);
 
-                QRPageIntent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                QRPageIntent.putExtra("QRtitle", clickedRecord.getName());
                 QRPageIntent.putExtra("QRHash", clickedRecord.getQRHash());
                 Bitmap image = clickedRecord.getImage();
                 QRPageIntent.putExtra("QRPicture", image);
