@@ -25,21 +25,20 @@ Notes for part 3:
 
 
  * Citation for using android camera
-   *        Website:youtube
-   *        link:https://www.youtube.com/watch?v=qO3FFuBrT2E
-   *        author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
+   * Website:youtube
+   * link:https://www.youtube.com/watch?v=qO3FFuBrT2E
+   * author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
 
  * Citation for a bugfix with the camera
-   *         Website:youtube
-   *         link:https://www.youtube.com/watch?v=qO3FFuBrT2E
-   *         author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
+   * Website:youtube
+   * link:https://www.youtube.com/watch?v=qO3FFuBrT2E
+   * author: Coding Demos, https://www.youtube.com/channel/UC8wUjFMSX_anYXmZ96NGcfg
 
 
 * Citation for callbacks
-
-   *       Website:Stackoverflow
-   *       link:https://stackoverflow.com/questions/50109885/firestore-how-can-read-data-from-outside-void-oncomplete-methods
-   *       author: Alex Mamo, https://stackoverflow.com/users/5246885/alex-mamo
+   *Website:Stackoverflow
+   *link:https://stackoverflow.com/questions/50109885/firestore-how-can-read-data-from-outside-void-oncomplete-methods
+   *author: Alex Mamo, https://stackoverflow.com/users/5246885/alex-mamo
 
 
 
