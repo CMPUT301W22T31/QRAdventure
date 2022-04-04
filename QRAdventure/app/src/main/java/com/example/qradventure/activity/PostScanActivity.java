@@ -7,10 +7,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.arch.core.executor.TaskExecutor;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +24,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.example.qradventure.model.Callback;
@@ -37,10 +42,14 @@ import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -57,9 +66,12 @@ public class PostScanActivity extends AppCompatActivity {
     protected QR qr;
     private String recordID;
     private Button photoButton;
+    private TextView nTimes;
+    FirebaseFirestore db;
     private ActivityResultLauncher cameraLaunch;
     protected Boolean keepImage = false;
     protected Bitmap image;
+    TextView qrScoreText;
     Account account;
     private int locationCount = 0;
 
@@ -80,6 +92,8 @@ public class PostScanActivity extends AppCompatActivity {
         keepImage = false;
 
         // Get the account from the singleton
+
+
         account = CurrentAccount.getAccount();
 
         // unfold intent, create QR object.
@@ -90,6 +104,26 @@ public class PostScanActivity extends AppCompatActivity {
 
         qr = new QR(QRContent);
 
+        QueryHandler queryHandler  = new QueryHandler();
+
+        queryHandler.getAmntScanned(qr, new Callback() {
+            @Override
+            public void callback(ArrayList<Object> args) {
+                int count = (int) args.get(0);
+                nTimes = findViewById(R.id.n_times);
+                if (count == 1)
+                    nTimes.setText("Scanned once.");
+                else {
+                    Log.d("bruh", "CALLBACK ");
+                    nTimes.setText("Scanned " + count + " times.");
+
+                }
+            }
+        });
+
+        // Front end stuff
+        qrScoreText = findViewById(R.id.post_scan_score);
+        qrScoreText.setText(Integer.toString(qr.getScore()));
 
 
         // Grabs geolocation from adding geolocation activity
