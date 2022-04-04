@@ -42,7 +42,12 @@ public class QRListAdapter extends ArrayAdapter<Record>{
         else {
             holder = (QRListViewHolder) singleItem.getTag();
         }
-        holder.setQRTitle(accountRecords.get(position).getQRHash().substring(0,4));
+        if (accountRecords.get(position).getName() != null) {
+            holder.setQRTitle(accountRecords.get(position).getName());
+        }
+        else {
+            holder.setQRTitle("Unnamed QR");
+        }
         holder.setPts(Integer.toString(accountRecords.get(position).getQRscore()));
 
         return singleItem;

@@ -45,6 +45,13 @@ import java.util.Map;
 
 /**
  * Class for holding all Querys to the Firestore database.
+ * Makes heavy use of callbacks. The Idea for callbacks
+ * came from this citation:
+ *
+ *      * Website:Stackoverflow
+ *      * link:https://stackoverflow.com/questions/50109885/firestore-how-can-read-data-from-outside-void-oncomplete-methods
+ *      * author: Alex Mamo, https://stackoverflow.com/users/5246885/alex-mamo
+ *
  */
 public class QueryHandler {
 
@@ -124,9 +131,23 @@ public class QueryHandler {
                                                             }
 
 
+
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
 
+
+                                                                /**
+                                                                 * Citation for stratagy of using blob to upload image
+                                                                 *  website:stackoverflow.com
+                                                                 *  link:https://stackoverflow.com/questions/55281418/android-how-to-add-byte-data-to-cloud-firestore-database
+                                                                 *  author: Doug Stevenson: https://stackoverflow.com/users/807126/doug-stevenson
+                                                                 *
+                                                                 *  AND
+                                                                 *  website:stackoverflow.com
+                                                                 *  link:https://stackoverflow.com/questions/7620401/how-to-convert-image-file-data-in-a-byte-array-to-a-bitmap
+                                                                 *  author: Uttam, https://stackoverflow.com/users/840861/uttam
+                                                                 *
+                                                                 */
 
                                                                 Blob imageBlob = (Blob)document.getData().get("ImageData");
 
@@ -145,6 +166,7 @@ public class QueryHandler {
                                                                 }
 
                                                                 Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                                                                String name = (document.getData().get("Name") != null ? document.getData().get("Name").toString() : null);
 
 
                                                                 db.collection("QRDB").document(qrHash)
@@ -162,6 +184,8 @@ public class QueryHandler {
                                                                                     Record newRecord = new Record(account, qr);
 
                                                                                     newRecord.setImage(image);
+                                                                                    if (name != null)
+                                                                                        newRecord.setName(name);
 
                                                                                     account.addRecord(newRecord);
 
@@ -331,7 +355,7 @@ public class QueryHandler {
 
 
     /**
-     * Deletes a record from the databnase
+     * Deletes a record from the database
      * @param myAccount The account from which we are deleting the record
      * @param toDelete The record which is being deleted
      */
@@ -398,9 +422,174 @@ public class QueryHandler {
                         Log.w("logs", "Error deleting document", e);
                     }
                 });
+    }
 
+    /**
+     * Deletes a record from the database
+     * @param hash The hash of the QR we are deleting
+     */
+    public void deleteQR(String hash){
+        db.collection("AccountDB")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot accDocument : task.getResult()) {
+                            if (accDocument.exists()) {
+                                db.collection("AccountDB").document(accDocument.getId())
+                                        .collection("My QR Records")
+                                        .whereEqualTo("QR", hash)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    db.collection("AccountDB")
+                                                            .document(accDocument.getId())
+                                                            .collection("My QR Records")
+                                                            .document(document.getId())
+                                                            .delete()
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    updateBestQR();
+                                                                    updateScanCount();
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    Log.d("Deleting record of user", "Deleting this QR from user's records unsuccessful");
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+        db.collection("RecordDB")
+                .whereEqualTo("QR", hash)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                // no results returned
+                            } else {
+                                for (QueryDocumentSnapshot recordDocument : task.getResult()) {
+                                    if (recordDocument.exists()) {
+                                        db.collection("RecordDB")
+                                                .document(recordDocument.getId())
+                                                .delete();
+                                    } else {
+                                        // crash protection & log
+                                        Log.d("delete Record fail", "Record to delete dne");
+                                    }
+                                }
+                            }
+                        } else {
+                            // Query failed
+                            Log.d(TAG, "delete Records Unsuccessful!");
+                        }
+                    }
+                });
+        db.collection("QRDB").document(hash)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("delete QR success", "QR successfully deleted by owner");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("delete QR fail", "Error deleting QR");
+                    }
+                });
+    }
 
-
+    /**
+     * Delete this account. Called when delete button is clicked. Owner functionality.
+     * @param username - account username to delete
+     */
+    public void deleteAccount(String username) {
+        // delete all records of this user
+        db.collection("AccountDB")
+                .document(username)
+                .collection("My QR Records")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            db.collection("AccountDB").document(username)
+                                    .collection("My QR Records")
+                                    .document(document.getId())
+                                    .delete();
+                        }
+                    }
+                });
+        // delete user from scanned by list of QRs
+        db.collection("QRDB")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot QRDocument : task.getResult()) {
+                            if (QRDocument.exists()) {
+                                db.collection("QRDB").document(QRDocument.getId())
+                                        .collection("Scanned By")
+                                        .document(username)
+                                        .delete()
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Deleting username", "Deleting user from scanned by list unsuccessful");
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+        // deleting all records of this user
+        db.collection("RecordDB")
+                .whereEqualTo("User", username)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot recordDoc : task.getResult()) {
+                                    db.collection("RecordDB")
+                                            .document(recordDoc.getId())
+                                            .delete();
+                                }
+                            }
+                        } else {
+                            Log.d("delete Records", "Deleting Records of this user was unsuccessful");
+                        }
+                    }
+                });
+        // deleting the account
+        db.collection("AccountDB").document(username)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("delete Account success", "Account successfully deleted by owner");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("delete QR fail", "Error deleting QR");
+                    }
+                });
     }
 
 
@@ -524,12 +713,13 @@ public class QueryHandler {
 
                     } else {
 
-
-
                         HashMap<String, Object> recordData = new HashMap<>();
                         recordData.put("User", myAccount.getUsername());
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
+
+                        if (toAdd.getName() != null) // if not null then put a name on the record
+                            recordData.put("Name", toAdd.getName());
 
                         // put longitude and latitude of qr
                         if (qr.getGeolocation().size() != 0){
@@ -658,8 +848,7 @@ public class QueryHandler {
                                 String hash = (String) recordDoc.get("QR");
                                 String score =  "" + recordDoc.get("UserScore");
                                 Blob imageBlob = (Blob)recordDoc.getData().get("ImageData");
-
-
+                                String name = (String) recordDoc.getData().get("Name");
 
                                 QR qr = new QR(hash, Integer.parseInt(score), null, null);
                                 Record newRecord = new Record(account, qr);
@@ -667,6 +856,10 @@ public class QueryHandler {
                                     byte[] imageData = imageBlob.toBytes();
                                     Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                                     newRecord.setImage(image);
+                                }
+
+                                if (name != null) {
+                                    newRecord.setName(name);
                                 }
 
                                 args.add(newRecord);
@@ -730,7 +923,6 @@ public class QueryHandler {
                             for (DocumentSnapshot doc : snap.getDocuments()) {
                                 double lat = doc.getDouble("Latitude");
                                 double lng = doc.getDouble("Longitude");
-
 
                                 // We have to filter out a few false positives due to GeoHash
                                 // accuracy, but most will match
@@ -950,7 +1142,52 @@ public class QueryHandler {
         HashMap<String, Object> updateData = new HashMap<String, Object>();
         updateData.put("profilePic", index);
         accDocRef.update(updateData);
+    }
 
+
+    /**
+     * Simple query to get the common "stats" fields of an account
+     * @param username
+     * @param callback - callback to return array [TotalScore,
+     */
+    public void queryPlayerStats(String username, Callback callback) {
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(username);
+
+        // query to get their stats, return via callback
+        accDocRef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            ArrayList<Object> args = new ArrayList<Object>();
+                            DocumentSnapshot doc = task.getResult();
+
+                            if (doc.exists()) {
+
+                                long totalScore = (long) doc.getData().get("TotalScore");
+                                long scanCount = (long) doc.getData().get("scanCount");
+                                long bestQR = (long) doc.getData().get("bestQR");
+
+                                // order we add them matters
+                                // refer to callback in StatsActivity
+                                args.add(totalScore);
+                                args.add(scanCount);
+                                args.add(bestQR);
+                                callback.callback(args);
+
+                            } else {
+                                // log: document dne
+                                Log.d("logs", "Document does not exist!", task.getException());
+                            }
+                        } else {
+                            // query failed
+                            Log.d("logs", "Query Failed!", task.getException());
+                        }
+                    }
+                });
     }
 
 }

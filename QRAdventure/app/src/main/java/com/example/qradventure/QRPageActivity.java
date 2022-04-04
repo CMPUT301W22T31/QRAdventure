@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Context;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,14 +13,18 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -38,12 +43,16 @@ public class QRPageActivity extends AppCompatActivity {
     String recordID;
     ImageView qrPicture;
     Account currentAccount = CurrentAccount.getAccount();
+    FirebaseFirestore db;
     FusedLocationProviderClient fusedLocationProviderClient;
+    Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrpage);
+
+        db = FirebaseFirestore.getInstance();
 
         // Call FusedLocationProviderClient class to grab location of user
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -56,7 +65,9 @@ public class QRPageActivity extends AppCompatActivity {
         try {
             Bundle bundle = getIntent().getExtras(); // get string from previous activity
             title = bundle.getString("QRtitle");
-            QRTitle.setText(title);
+            if (title == null )
+                QRTitle.setText("Unnamed QR");
+            else QRTitle.setText(title);
             hash = bundle.getString("QRHash");
             image = (Bitmap)bundle.getParcelable("QRPicture");
 
@@ -67,6 +78,24 @@ public class QRPageActivity extends AppCompatActivity {
             QRTitle.setText("PLACEHOLDER");
         }
 
+        Button deleteButton = findViewById(R.id.button_delete_qr);
+        deleteButton.setVisibility(View.INVISIBLE);
+
+        Intent intent = getIntent();
+        if (intent.getStringExtra("Owner").equals("Owner")) {
+              deleteButton.setVisibility(View.VISIBLE);
+         }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QueryHandler query = new QueryHandler();
+                query.deleteQR(hash);
+
+                Intent ownerIntent = new Intent(QRPageActivity.this, OwnerActivity.class);
+                startActivity(ownerIntent);
+            }
+        });
 
         // enable navbar functionality
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);
@@ -196,5 +225,8 @@ public class QRPageActivity extends AppCompatActivity {
         }
     }
 
+    public void deleteQR(String hash) {
+
+    }
 
 }

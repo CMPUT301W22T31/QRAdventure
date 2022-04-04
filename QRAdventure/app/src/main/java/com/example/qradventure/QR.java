@@ -18,7 +18,6 @@ public class QR {
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
     private ArrayList<Double> geolocation; // first index is longitude, second is latitude
-    private ArrayList<Comment> comments;
     private String geohash;
 
     /**
@@ -61,7 +60,6 @@ public class QR {
         QR qr = (QR) o;
         return Objects.equals(hash, qr.hash);
     }
-
 
     @Override
     public int hashCode() {

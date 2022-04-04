@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/gotham_medium"
+                android:fontFamily="@font/fredoka_one"
                 android:gravity="left"
                 android:text="null pts"
                 android:textSize="15sp" />
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/gotham_medium"
+                android:fontFamily="@font/fredoka_one"
                 android:gravity="right"
                 android:text="null km"
                 android:textSize="30sp" />

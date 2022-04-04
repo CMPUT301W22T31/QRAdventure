@@ -136,9 +136,16 @@ public class IntentNavigationTest {
         // click on first result and check activity navigation
         solo.clickInList(1);
         solo.assertCurrentActivity("Profile Activity Failed!", ProfileActivity.class);
+        solo.clickOnText("View Codes");
+        solo.assertCurrentActivity("Other Player QR page Activity Failed!", ViewCodesActivity.class);
+        // verify navbar to AccountActivity  works
 
-        // verify navbar to AccountActivity works
+        solo.clickInList(0);
+
+        solo.assertCurrentActivity("Other Player QR Activity Failed!", QRPageActivity.class);
+
         View accButton = solo.getView("my_account");
+
         solo.clickOnView(accButton);
         solo.assertCurrentActivity("Account button failed!", AccountActivity.class);
     }

@@ -72,7 +72,7 @@ public class AccountFragment extends Fragment {
             Log.d("logs", username);
             String email = account.getEmail();
             String phoneNumber = account.getPhoneNumber();
-            TextView displayUsername = view.findViewById(R.id.user_username);
+            TextView displayUsername = view.findViewById(R.id.text_owner);
             displayUsername.setText(username);
             TextView displayEmail = view.findViewById(R.id.user_email);
             displayEmail.setText(email);

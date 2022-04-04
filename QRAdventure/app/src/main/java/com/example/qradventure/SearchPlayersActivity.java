@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -73,8 +74,6 @@ public class SearchPlayersActivity extends AppCompatActivity {
                 goToProfile(username);
             }
         });
-
-
 
         // enable navbar functionality
         navbar = findViewById(R.id.navbar_menu);
@@ -148,9 +147,13 @@ public class SearchPlayersActivity extends AppCompatActivity {
      * @param username - username of selected profile
      */
     public void goToProfile(String username) {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra(getString(R.string.EXTRA_USERNAME), username);
-        startActivity(intent);
+        Intent profileIntent = new Intent(this, ProfileActivity.class);
+        profileIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+        Intent intent = getIntent();
+        if (intent.getStringExtra("Owner").equals("Owner")) {
+            profileIntent.putExtra("Owner", "Owner");
+        }
+        startActivity(profileIntent);
     }
 
     /**
