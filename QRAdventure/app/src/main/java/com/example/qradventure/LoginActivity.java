@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -54,8 +55,11 @@ public class LoginActivity extends AppCompatActivity {
                 String LoginQR = "usernameLoginQRHash";
                 String StatusQR = "usernameStatusQRHash";
 
+                // a profile pic will randomly be chosen for the user at registration
+                int profileIndex = ThreadLocalRandom.current().nextInt(0, 6);
                 // Create new user
                 currentAccount = new Account(username, email, phoneNumber, LoginQR, StatusQR);
+                currentAccount.setProfileIndex(profileIndex);
 
                 //Get Device ID
                 String androidDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -70,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("device_id", androidDeviceID);
                 data.put("bestQR", 0);
                 data.put("scanCount", 0);
-                data.put("profilePic", 0);
+                data.put("profilePic", profileIndex);
 
                 if (!username.matches("")) {
 

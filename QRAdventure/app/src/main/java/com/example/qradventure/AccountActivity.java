@@ -60,7 +60,13 @@ public class AccountActivity extends AppCompatActivity {
 
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
-
+        Log.d("bruh", "account test:");
+        if (account == null) {
+            Log.d("bruh", "account is null ");
+        }
+        else {
+            Log.d("bruh", "account NOT null ");
+        }
         // set up the profile pic chosen by the user
         profileCard = findViewById(R.id.profile_card);
         setUpProfilePic();
@@ -292,6 +298,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     void setUpProfilePic() {
+
         switch (account.getProfileIndex()) {
             case 0:
                 profilepic.setBackgroundResource(R.drawable.ic_turtle);
