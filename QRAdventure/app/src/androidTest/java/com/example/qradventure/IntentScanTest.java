@@ -2,10 +2,8 @@ package com.example.qradventure;
 
 import static org.junit.Assert.*;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.test.core.app.ActivityScenario;
@@ -98,16 +96,26 @@ public class IntentScanTest {
         ActivityScenario.launch(intent);
 
         // assert we made it to PostScanActivity
-        solo.assertCurrentActivity("Failed to reach PostScanActivity!", PostScanActivity.class);
 
         View scannedBy = solo.getView(R.id.see_people);
 
         solo.clickOnView(scannedBy);
-
+        solo.clickOnView(scannedBy);
 
         solo.assertCurrentActivity("Failed to reach ScannedByActivity!", ScannedByActivity.class);
 
         solo.goBack();
+
+        // adding geolocation
+        View map = solo.getView(R.id.add_geo);
+        solo.clickOnView(map);
+
+        View confirm = solo.getView(R.id.confirm_geo);
+
+        solo.clickOnView(confirm);
+
+
+
 
         // close dialogue and click add
         // TODO: revise if PostScanActivity changes
@@ -139,6 +147,63 @@ public class IntentScanTest {
 
         assertTrue(solo.waitForText("This is a comment", 1, 2000));
 
+        solo.goBack();
+        solo.goBack();
+        solo.clickLongInList(0);
+        solo.clickOnText("Yes");
+
+    }
+
+    /**
+     * Test for taking an image of the QR. Robotium cannot control the camera app on the phone,
+     * so THE PICTURE MUST BE TAKEN MANUALLY DURING THE TEST. The QR scanner also must have been started
+     * up at least once before this test has been ran, likley so the camera has started up before.
+     * @throws Exception
+     */
+    @Test
+    public void testPicture() throws Exception {
+        solo.waitForActivity("AccountActivity", 5000);
+
+        // click on ScanActivity
+        View scanButton = solo.getView("scan");
+        Thread.sleep(100);
+        solo.clickOnView(scanButton);
+
+        // backdoor into PostScanActivity with an intent extra (dummy qr content)
+        Intent intent = new Intent(solo.getCurrentActivity(), PostScanActivity.class);
+        intent.putExtra("com.example.qradventure.QR_CONTENT", "test picture");
+        ActivityScenario.launch(intent);
+
+        View photo = solo.getView(R.id.add_photo);
+
+        solo.clickOnView(photo);
+
+        Thread.sleep(5000);
+
+        View add = solo.getView(R.id.button);
+
+        solo.clickOnView(add);
+
+    }
+
+
+
+    /**
+     * Test for taking an image of the QR. Robotium cannot control the camera app on the phone,
+     * so THE PICTURE MUST BE TAKEN MANUALLY DURING THE TEST. The QR scanner also must have been started
+     * up at least once before this test has been ran, likley so the camera has started up before.
+     * @throws Exception
+     */
+    @Test
+    public void testStatusQR() throws Exception {
+        solo.waitForActivity("AccountActivity", 5000);
+
+        // backdoor into PostScanActivity with an intent extra (dummy qr content)
+        Intent intent = new Intent(solo.getCurrentActivity(), MockAccountActivity.class);
+        intent.putExtra("TEST", "QRSTATS-otherjack");
+        ActivityScenario.launch(intent);
+        solo.assertCurrentActivity("Stats test failed", MyStatsActivity.class);
+
     }
 
     @Test
@@ -157,6 +222,16 @@ public class IntentScanTest {
         solo.clickOnText("Total Scans");
         solo.clickInList(3);
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
+
+    }
+
+    @Test
+    public void testMap() throws Exception{
+        solo.waitForActivity("AccountActivity", 5000);
+        solo.clickOnView(solo.getView(R.id.map));
+        solo.assertCurrentActivity("Wrong Activity", MapsActivity.class);
+        solo.clickOnButton(0);
+        solo.waitForText("QRs Nearby", 1, 2000);
 
     }
 

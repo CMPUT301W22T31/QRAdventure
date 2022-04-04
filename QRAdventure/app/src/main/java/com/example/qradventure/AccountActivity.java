@@ -37,6 +37,7 @@ public class AccountActivity extends AppCompatActivity {
     Account account;
     BottomNavigationView navbar;
     FusedLocationProviderClient fusedLocationProviderClient;
+    String content = null; // For getting QR content. needs to be global for the mock class
 
     /**
      * Sets layout and Enables navbar
@@ -254,12 +255,14 @@ public class AccountActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-         super.onActivityResult(requestCode, resultCode, data);
+        if (content == null){
+            super.onActivityResult(requestCode, resultCode, data);
+        }
         FirebaseFirestore db;
         db = FirebaseFirestore.getInstance();
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             // get the QR contents, and send it to next activity
-            String content = result.getContents();
+            content = result.getContents();
 
             if (content.contains("QRSTATS-")) {
                 Intent intent = new Intent(AccountActivity.this, ProfileStatsActivity.class);

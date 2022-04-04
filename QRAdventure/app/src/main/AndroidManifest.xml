@@ -113,6 +113,10 @@
         <activity
             android:name=".MapActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".MockAccountActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

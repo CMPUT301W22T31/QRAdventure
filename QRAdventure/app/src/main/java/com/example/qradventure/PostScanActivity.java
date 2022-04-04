@@ -83,14 +83,12 @@ public class PostScanActivity extends AppCompatActivity {
         // unfold intent, create QR object.
         Intent intent = getIntent();
         String QRContent = intent.getStringExtra(getString(R.string.EXTRA_QR_CONTENT));
+
+
+
         qr = new QR(QRContent);
 
-        // For testing purposes, display a dialog of the QR scanned
-        new AlertDialog.Builder(PostScanActivity.this).setTitle("Result")
-                .setMessage(QRContent)
-                .setPositiveButton("QR code scanned", null)
-                .setNegativeButton("Cancel", null)
-                .create().show();
+
 
         // Grabs geolocation from adding geolocation activity
         getGeo = registerForActivityResult(
