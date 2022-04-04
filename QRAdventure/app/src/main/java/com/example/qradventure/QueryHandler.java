@@ -488,6 +488,57 @@ public class QueryHandler {
                     }
                 });
         db.collection("QRDB").document(hash)
+                .collection("Comments")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.exists()) {
+                                db.collection("QRDB")
+                                        .document(hash)
+                                        .collection("Comments")
+                                        .document(document.getId())
+                                        .delete();
+                            }
+                        }
+                    }
+                });
+        db.collection("QRDB").document(hash)
+                .collection("Locations")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.exists()) {
+                                db.collection("QRDB")
+                                        .document(hash)
+                                        .collection("Locations")
+                                        .document(document.getId())
+                                        .delete();
+                            }
+                        }
+                    }
+                });
+        db.collection("QRDB").document(hash)
+                .collection("Scanned By")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.exists()) {
+                                db.collection("QRDB")
+                                        .document(hash)
+                                        .collection("Scanned By")
+                                        .document(document.getId())
+                                        .delete();
+                            }
+                        }
+                    }
+                });
+        db.collection("QRDB").document(hash)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
