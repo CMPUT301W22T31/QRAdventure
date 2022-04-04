@@ -238,24 +238,6 @@ public class AccountActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /**
-     * Displays the camera for scanning a QR code.
-     */
-    public void goToScan() {
-
-        // Use IntentIntegrator to activate camera
-        IntentIntegrator tempIntent = new IntentIntegrator(AccountActivity.this);
-        tempIntent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        tempIntent.setCameraId(0);
-        tempIntent.setOrientationLocked(false);
-        tempIntent.setPrompt("Scanning");
-        tempIntent.setBeepEnabled(true);
-        tempIntent.setBarcodeImageEnabled(true);
-        tempIntent.initiateScan();
-    }
-
-
-
 
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
