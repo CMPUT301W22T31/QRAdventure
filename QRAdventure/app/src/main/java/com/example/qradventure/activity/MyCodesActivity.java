@@ -284,8 +284,4 @@ public class MyCodesActivity extends AppCompatActivity {
             toast.show();
         }
     }
-
-
-
-
 }
