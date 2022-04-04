@@ -10,6 +10,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.qradventure.activity.AccountActivity;
+import com.example.qradventure.activity.MainActivity;
+import com.example.qradventure.activity.ProfileActivity;
+import com.example.qradventure.activity.QRPageActivity;
+import com.example.qradventure.activity.SearchPlayersActivity;
+import com.example.qradventure.activity.ViewCodesActivity;
+import com.example.qradventure.model.CurrentAccount;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -71,47 +78,7 @@ public class IntentNavigationTest {
         assertTrue(solo.waitForText(username, 1, 2000));
     }
 
-    /**
-     * Tests the navbar, which should be present between all* 4 primary activities (-Scan?)
-     * @throws Exception
-     */
-    @Test
-    public void testNavbar() throws Exception {
-        // wait for launch to reach AccountActivity
-        solo.waitForActivity("AccountActivity", 5000);
 
-        // test search players button
-        View spButton = solo.getView("search_players");
-        solo.clickOnView(spButton);
-        solo.assertCurrentActivity("Search Players button failed!", SearchPlayersActivity.class);
-
-        // test map button
-        View mapButton = solo.getView("map");
-        solo.clickOnView(mapButton);
-        solo.assertCurrentActivity("Map button failed!", MapActivity.class);
-
-        // test my_account button
-        View accButton = solo.getView("my_account");
-        solo.clickOnView(accButton);
-        solo.assertCurrentActivity("Account button failed!", AccountActivity.class);
-
-        /*
-        // test leaderboard button
-        // TODO: Leaderboard does not have a navbar (yet, *part4*)
-        View lbButton = solo.getView("leaderboards");
-        solo.clickOnView(lbButton);
-        solo.assertCurrentActivity("Leaderboard button failed!", LeaderboardActivity.class);
-        */
-
-        /*
-        // test scan button
-        * TODO: ScanActivity does not have a navbar.
-        * TODO: ScanActivity is subject to change. Adjust/remove this.
-        View scanButton = solo.getView("scan");
-        solo.clickOnView(scanButton);
-        solo.assertCurrentActivity("Scan button failed!", ScanActivity.class);
-        */
-    }
 
     /**
      * Tests the activity to search players by username
@@ -134,11 +101,18 @@ public class IntentNavigationTest {
         solo.clickOnView(searchButton);
 
         // click on first result and check activity navigation
-        solo.clickInList(1);
+        solo.clickOnText("otherjack");
         solo.assertCurrentActivity("Profile Activity Failed!", ProfileActivity.class);
+        solo.clickOnText("View Codes");
+        solo.assertCurrentActivity("Other Player QR page Activity Failed!", ViewCodesActivity.class);
+        // verify navbar to AccountActivity  works
 
-        // verify navbar to AccountActivity works
+        solo.clickInList(0);
+
+        solo.assertCurrentActivity("Other Player QR Activity Failed!", QRPageActivity.class);
+
         View accButton = solo.getView("my_account");
+
         solo.clickOnView(accButton);
         solo.assertCurrentActivity("Account button failed!", AccountActivity.class);
     }

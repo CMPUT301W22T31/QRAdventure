@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/gradient_bg"
+    android:background="#121212"
     >
 
     <ImageView
@@ -36,13 +36,13 @@
 
                 <ImageView
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="50dp"
-                    android:src="@drawable/account_default" />
+                    android:src="@drawable/account2"></ImageView>
 
                 <ImageView
                     android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:clickable="true"
                     android:onClick="goToEditInfo"
                     android:src="@drawable/edit" />
@@ -50,11 +50,11 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/user_username"
+                android:id="@+id/text_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="AccountDefault"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:paddingTop="15dp"
                     android:text="1+ 800 267 2001"
                     android:textColor="@color/white"
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:paddingTop="10dp"
                     android:text="defaultemail@hotspot.com"
                     android:textColor="@color/white"
@@ -137,7 +137,7 @@
                     android:id="@+id/codes_scanned"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -145,10 +145,10 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="72dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Codes Scanned"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -168,7 +168,7 @@
                     android:id="@+id/total_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -179,7 +179,7 @@
                     android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Total Score"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -199,7 +199,7 @@
                     android:id="@+id/highest_qr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -210,7 +210,7 @@
                     android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Highest QR"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -230,7 +230,7 @@
                     android:id="@+id/lowest_qr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -241,7 +241,7 @@
                     android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:fontFamily="@font/fredoka_one"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="Lowest QR"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
@@ -257,18 +257,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/red_rect"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/p4"
             android:clickable="true"
             android:onClick="goToMyCodes"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:paddingBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="My Codes"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />
@@ -293,18 +294,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/orange_rect"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/p3"
             android:clickable="true"
             android:onClick="goToMyStats"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="20dp">
+            android:paddingTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="My Stats"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />
@@ -329,18 +331,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/green_rect"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/p2"
             android:clickable="true"
             android:onClick="goToLoginQR"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:paddingBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Login Code"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />
@@ -364,19 +367,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/blue_rect"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/blue_rect3"
             android:clickable="true"
             android:onClick="goToStatusQR"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:paddingBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:text="LOGIN CODE">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Status Code"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />

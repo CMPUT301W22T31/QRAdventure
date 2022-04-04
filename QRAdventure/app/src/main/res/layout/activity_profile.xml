@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@drawable/gradient_bg">
+    android:background="#121212">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="User123456789"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:paddingTop="15dp"
                 android:text="1+ 800 267 2001"
                 android:textColor="@color/white"
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Phone number"
                 android:textColor="@color/white"
                 android:textSize="10dp" />
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:paddingTop="10dp"
                 android:text="defaultemail@hotspot.com"
                 android:textColor="@color/white"
@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:paddingBottom="10dp"
                 android:text="Email"
                 android:textColor="@color/white"
@@ -119,10 +119,10 @@
 
 
             <TextView
-                android:id="@+id/tvTotalScore"
+                android:id="@+id/tvStatsTotalScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
@@ -133,7 +133,7 @@
 
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Total Score"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
@@ -154,19 +154,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:background="@drawable/orange_rect"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/blue_rect3"
             android:clickable="true"
             android:onClick="goToViewCodes"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-
-            android:paddingBottom="20dp">
+>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="View Codes"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />
@@ -194,6 +194,15 @@
             android:layout_weight="2">
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/gotham_medium"
+            android:text="Delete"
+            android:visibility="invisible" />
 
 
     </LinearLayout>
