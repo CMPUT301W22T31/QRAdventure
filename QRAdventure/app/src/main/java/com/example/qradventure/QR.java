@@ -18,7 +18,6 @@ public class QR {
     private int score = 0;
     private ArrayList<Account> scannedAccounts;
     private ArrayList<Double> geolocation; // first index is longitude, second is latitude
-    private ArrayList<Comment> comments;
     private String geohash;
 
     /**

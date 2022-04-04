@@ -213,7 +213,7 @@ public class IntentScanTest {
         Intent intent = new Intent(solo.getCurrentActivity(), MockAccountActivity.class);
         intent.putExtra("TEST", "QRSTATS-test-1-2-3-4");
         ActivityScenario.launch(intent);
-        solo.assertCurrentActivity("Stats test failed", ProfileStatsActivity.class);
+        solo.assertCurrentActivity("Stats test failed", StatsActivity.class);
 
     }
 
@@ -228,9 +228,9 @@ public class IntentScanTest {
 
         // backdoor into PostScanActivity with an intent extra (dummy qr content)
         Intent intent = new Intent(solo.getCurrentActivity(), MockAccountActivity.class);
-        intent.putExtra("TEST", "QRLOGIN-0ca612928c85c2aa");
+        intent.putExtra("TEST", "QRLOGIN-b4048ce9c5919adf");
         ActivityScenario.launch(intent);
-        solo.waitForText("jacktest", 1, 2000);
+        solo.waitForText("otherjack", 1, 2000);
 
 
 
