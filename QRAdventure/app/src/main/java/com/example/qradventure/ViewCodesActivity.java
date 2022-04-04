@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -81,7 +82,7 @@ public class ViewCodesActivity extends AppCompatActivity {
 
                 Record clickedRecord = records.get(position);
 
-                intent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0,4));
+                intent.putExtra("QRtitle", clickedRecord.getName());
                 intent.putExtra("QRHash", clickedRecord.getQRHash());
                 Bitmap image = clickedRecord.getImage();
                 intent.putExtra("QRPicture", image);
@@ -92,7 +93,14 @@ public class ViewCodesActivity extends AppCompatActivity {
         // query DB to get records
         loadRecords();
 
+        // display header
 
+        TextView header = findViewById(R.id.codes_header);
+        header.setText(username+ "'s codes");
+        header.setTextSize(35);
+        if (username.length() >= 10) {
+            header.setTextSize(25);
+        }
         // ====== NAVBAR ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);

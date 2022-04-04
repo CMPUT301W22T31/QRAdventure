@@ -62,7 +62,6 @@ public class QR {
         return Objects.equals(hash, qr.hash);
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hash(hash);

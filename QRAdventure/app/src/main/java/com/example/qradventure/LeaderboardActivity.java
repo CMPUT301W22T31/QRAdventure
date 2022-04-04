@@ -305,8 +305,6 @@ public class LeaderboardActivity extends AppCompatActivity {
 
                         // send this number to be formatted & displayed
                         formatMyPercentile(percentile);
-
-
                     }
                 });
             }

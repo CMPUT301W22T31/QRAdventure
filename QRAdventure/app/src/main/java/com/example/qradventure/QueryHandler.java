@@ -122,6 +122,7 @@ public class QueryHandler {
                                                             }
 
 
+
                                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                                 String qrHash = (String) document.getData().get("QR");
 
@@ -156,6 +157,7 @@ public class QueryHandler {
                                                                 }
 
                                                                 Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                                                                String name = (document.getData().get("Name") != null ? document.getData().get("Name").toString() : null);
 
 
                                                                 db.collection("QRDB").document(qrHash)
@@ -171,8 +173,9 @@ public class QueryHandler {
                                                                                     QR qr = new QR(qrHash, qrValue, null, null);
                                                                                     Log.d("logs", qrHash + " " + qrValue);
                                                                                     Record newRecord = new Record(account, qr);
-
                                                                                     newRecord.setImage(image);
+                                                                                    if (name != null)
+                                                                                        newRecord.setName(name);
 
                                                                                     account.addRecord(newRecord);
 
@@ -524,7 +527,6 @@ public class QueryHandler {
 
         CollectionReference RecordDB = db.collection("RecordDB");
 
-
         RecordDB.document(recordID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -535,12 +537,13 @@ public class QueryHandler {
 
                     } else {
 
-
-
                         HashMap<String, Object> recordData = new HashMap<>();
                         recordData.put("User", myAccount.getUsername());
                         recordData.put("QR", qr.getHash());
                         recordData.put("UserScore", qr.getScore());
+
+                        if (toAdd.getName() != null) // if not null then put a name on the record
+                            recordData.put("Name", toAdd.getName());
 
                         // put longitude and latitude of qr
                         if (qr.getGeolocation().size() != 0){
@@ -667,8 +670,7 @@ public class QueryHandler {
                                 String hash = (String) recordDoc.get("QR");
                                 String score =  "" + recordDoc.get("UserScore");
                                 Blob imageBlob = (Blob)recordDoc.getData().get("ImageData");
-
-
+                                String name = (String) recordDoc.getData().get("Name");
 
                                 QR qr = new QR(hash, Integer.parseInt(score), null, null);
                                 Record newRecord = new Record(account, qr);
@@ -676,6 +678,10 @@ public class QueryHandler {
                                     byte[] imageData = imageBlob.toBytes();
                                     Bitmap image = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                                     newRecord.setImage(image);
+                                }
+
+                                if (name != null) {
+                                    newRecord.setName(name);
                                 }
 
                                 args.add(newRecord);
@@ -925,6 +931,52 @@ public class QueryHandler {
 
                         } else {
                             Log.d(TAG, "updateScanCount unsuccessful!: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    /**
+     * Simple query to get the common "stats" fields of an account
+     * @param username
+     * @param callback - callback to return array [TotalScore,
+     */
+    public void queryPlayerStats(String username, Callback callback) {
+        DocumentReference accDocRef = db.collection("AccountDB")
+                .document(username);
+
+        // query to get their stats, return via callback
+        accDocRef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            ArrayList<Object> args = new ArrayList<Object>();
+                            DocumentSnapshot doc = task.getResult();
+
+                            if (doc.exists()) {
+
+                                long totalScore = (long) doc.getData().get("TotalScore");
+                                long scanCount = (long) doc.getData().get("scanCount");
+                                long bestQR = (long) doc.getData().get("bestQR");
+
+                                // order we add them matters
+                                // refer to callback in StatsActivity
+                                args.add(totalScore);
+                                args.add(scanCount);
+                                args.add(bestQR);
+                                callback.callback(args);
+
+                            } else {
+                                // log: document dne
+                                Log.d("logs", "Document does not exist!", task.getException());
+                            }
+                        } else {
+                            // query failed
+                            Log.d("logs", "Query Failed!", task.getException());
                         }
                     }
                 });
