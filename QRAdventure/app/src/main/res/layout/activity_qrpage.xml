@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
-        android:background="@drawable/orange_rect2"
+        android:background="@drawable/p3"
         android:clickable="true"
         android:onClick="goToComments"
         android:orientation="horizontal"
