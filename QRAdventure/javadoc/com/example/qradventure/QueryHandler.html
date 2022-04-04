@@ -121,7 +121,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>com.example.qradventure.QueryHandler</li>
+<li>com.example.qradventure.model.QueryHandler</li>
 </ul>
 </li>
 </ul>
@@ -175,7 +175,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addQR(com.example.qradventure.model.QR,com.example.qradventure.Callback)">addQR</a></span>&#8203;(<a href="QR.html" title="class in com.example.qradventure">QR</a>&nbsp;qr,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addQR(com.example.qradventure.model.QR,com.example.qradventure.model.Callback)">addQR</a></span>&#8203;(<a href="QR.html" title="class in com.example.qradventure">QR</a>&nbsp;qr,
      <a href="Callback.html" title="interface in com.example.qradventure">Callback</a>&nbsp;callback)</code></th>
 <td class="colLast">
 <div class="block">Adds a QR to the database</div>
@@ -193,7 +193,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#checkNameTaken(java.util.HashMap,java.lang.String,com.example.qradventure.Callback)">checkNameTaken</a></span>&#8203;(java.util.HashMap&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;data,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#checkNameTaken(java.util.HashMap,java.lang.String,com.example.qradventure.model.Callback)">checkNameTaken</a></span>&#8203;(java.util.HashMap&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;data,
               java.lang.String&nbsp;username,
               <a href="Callback.html" title="interface in com.example.qradventure">Callback</a>&nbsp;callback)</code></th>
 <td class="colLast">
@@ -212,7 +212,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getComments(java.lang.String,com.example.qradventure.Callback)">getComments</a></span>&#8203;(java.lang.String&nbsp;hash,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getComments(java.lang.String,com.example.qradventure.model.Callback)">getComments</a></span>&#8203;(java.lang.String&nbsp;hash,
            <a href="Callback.html" title="interface in com.example.qradventure">Callback</a>&nbsp;callback)</code></th>
 <td class="colLast">
 <div class="block">Gets a list of comments for CommentsActivity</div>
@@ -220,7 +220,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLoginAccount(java.lang.String,com.example.qradventure.Callback)">getLoginAccount</a></span>&#8203;(java.lang.String&nbsp;androidDeviceID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLoginAccount(java.lang.String,com.example.qradventure.model.Callback)">getLoginAccount</a></span>&#8203;(java.lang.String&nbsp;androidDeviceID,
                <a href="Callback.html" title="interface in com.example.qradventure">Callback</a>&nbsp;callback)</code></th>
 <td class="colLast">
 <div class="block">Very large query for obtaining all the info for the current logged in user account</div>
@@ -228,7 +228,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOthersScanned(java.lang.String,com.example.qradventure.QueryCallback)">getOthersScanned</a></span>&#8203;(java.lang.String&nbsp;qrHash,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOthersScanned(java.lang.String,com.example.qradventure.model.QueryCallback)">getOthersScanned</a></span>&#8203;(java.lang.String&nbsp;qrHash,
                 <a href="QueryCallback.html" title="interface in com.example.qradventure">QueryCallback</a>&nbsp;myCallback)</code></th>
 <td class="colLast">
 <div class="block">Gets all other players which have scanned a QR code and displays them in ScannedBy ACtivity
@@ -237,7 +237,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProfile(java.lang.String,com.example.qradventure.Callback)">getProfile</a></span>&#8203;(java.lang.String&nbsp;username,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProfile(java.lang.String,com.example.qradventure.model.Callback)">getProfile</a></span>&#8203;(java.lang.String&nbsp;username,
           <a href="Callback.html" title="interface in com.example.qradventure">Callback</a>&nbsp;callback)</code></th>
 <td class="colLast">
 <div class="block">Gets information about another players profile</div>
@@ -245,7 +245,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadRecords(java.lang.String,com.example.qradventure.Callback)">loadRecords</a></span>&#8203;(java.lang.String&nbsp;username,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadRecords(java.lang.String,com.example.qradventure.model.Callback)">loadRecords</a></span>&#8203;(java.lang.String&nbsp;username,
            <a href="Callback.html" title="interface in com.example.qradventure">Callback</a>&nbsp;callback)</code></th>
 <td class="colLast">
 <div class="block">Querys for a users records</div>
@@ -260,7 +260,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#playerSearch(java.lang.String,com.example.qradventure.Callback)">playerSearch</a></span>&#8203;(java.lang.String&nbsp;username,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#playerSearch(java.lang.String,com.example.qradventure.model.Callback)">playerSearch</a></span>&#8203;(java.lang.String&nbsp;username,
             <a href="Callback.html" title="interface in com.example.qradventure">Callback</a>&nbsp;callback)</code></th>
 <td class="colLast">
 <div class="block">Takes a string and querys a search result based off of the string</div>
@@ -309,7 +309,7 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getLoginAccount(java.lang.String,com.example.qradventure.Callback)">
+<a id="getLoginAccount(java.lang.String,com.example.qradventure.model.Callback)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -325,7 +325,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="checkNameTaken(java.util.HashMap,java.lang.String,com.example.qradventure.Callback)">
+<a id="checkNameTaken(java.util.HashMap,java.lang.String,com.example.qradventure.model.Callback)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -345,7 +345,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getOthersScanned(java.lang.String,com.example.qradventure.QueryCallback)">
+<a id="getOthersScanned(java.lang.String,com.example.qradventure.model.QueryCallback)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -362,7 +362,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="playerSearch(java.lang.String,com.example.qradventure.Callback)">
+<a id="playerSearch(java.lang.String,com.example.qradventure.model.Callback)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -394,7 +394,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getComments(java.lang.String,com.example.qradventure.Callback)">
+<a id="getComments(java.lang.String,com.example.qradventure.model.Callback)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -410,7 +410,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addQR(com.example.qradventure.model.QR,com.example.qradventure.Callback)">
+<a id="addQR(com.example.qradventure.model.QR,com.example.qradventure.model.Callback)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -446,7 +446,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getProfile(java.lang.String,com.example.qradventure.Callback)">
+<a id="getProfile(java.lang.String,com.example.qradventure.model.Callback)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -462,7 +462,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="loadRecords(java.lang.String,com.example.qradventure.Callback)">
+<a id="loadRecords(java.lang.String,com.example.qradventure.model.Callback)">
 <!--   -->
 </a>
 <ul class="blockList">

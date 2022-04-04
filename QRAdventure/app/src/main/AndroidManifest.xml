@@ -44,11 +44,11 @@
             android:value="AIzaSyBuD_w7mlyGqF2L4EoJAL44JXOcfO8wi5k" />
 
         <activity
-            android:name=".AddGeolocationActivity"
+            android:name=".activity.AddGeolocationActivity"
             android:exported="false"
             android:label="@string/title_activity_add_geolocation" />
         <activity
-            android:name=".MapsActivity"
+            android:name=".activity.MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
 
@@ -57,65 +57,65 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".LeaderboardActivity"
+            android:name=".activity.LeaderboardActivity"
             android:exported="false" />
         <activity
-            android:name=".QRPageActivity"
+            android:name=".activity.QRPageActivity"
             android:exported="false" />
         <activity
-            android:name=".ViewCodesActivity"
+            android:name=".activity.ViewCodesActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchPlayersActivity"
+            android:name=".activity.SearchPlayersActivity"
             android:exported="false" />
         <activity
-            android:name=".CommentsActivity"
+            android:name=".activity.CommentsActivity"
             android:exported="false" />
         <activity
-            android:name=".ScannedByActivity"
+            android:name=".activity.ScannedByActivity"
             android:exported="false" />
         <activity
-            android:name=".PostScanActivity"
+            android:name=".activity.PostScanActivity"
             android:exported="false" />
         <activity
-            android:name=".MyCodesActivity"
+            android:name=".activity.MyCodesActivity"
             android:exported="false" />
         <activity
-            android:name=".StatsActivity"
+            android:name=".activity.StatsActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginQRActivity"
+            android:name=".activity.LoginQRActivity"
             android:exported="false" />
         <activity
-            android:name=".OwnerActivity"
+            android:name=".activity.OwnerActivity"
             android:exported="false" />
         <activity
-            android:name=".StatusQRActivity"
+            android:name=".activity.StatusQRActivity"
             android:exported="false" />
         <activity
-            android:name=".EditInfoActivity"
+            android:name=".activity.EditInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountActivity"
+            android:name=".activity.AccountActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             tools:replace="android:screenOrientation" />
 
         <activity
-            android:name=".MockAccountActivity"
+            android:name=".activity.MockAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".MockPostScan"
+            android:name=".activity.MockPostScan"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,8 +1,5 @@
-package com.example.qradventure;
+package com.example.qradventure.model;
 
-
-import com.example.qradventure.model.Account;
-import com.example.qradventure.model.Record;
 
 import java.util.ArrayList;
 

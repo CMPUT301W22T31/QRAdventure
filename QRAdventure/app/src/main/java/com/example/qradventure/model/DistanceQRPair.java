@@ -1,6 +1,4 @@
-package com.example.qradventure;
-
-import com.example.qradventure.model.QR;
+package com.example.qradventure.model;
 
 public class DistanceQRPair implements Comparable<DistanceQRPair> {
 

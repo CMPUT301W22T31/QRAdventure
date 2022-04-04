@@ -1,22 +1,19 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.View;
-
-
 
 
 //import com.example.qradventure.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.qradventure.model.Callback;
+import com.example.qradventure.model.QueryHandler;
+import com.example.qradventure.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qradventure.R;
 import com.example.qradventure.model.Comment;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.utility;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

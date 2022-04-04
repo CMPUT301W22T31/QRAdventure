@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.qradventure.model.CurrentAccount;
+import com.example.qradventure.R;
 import com.example.qradventure.model.Account;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

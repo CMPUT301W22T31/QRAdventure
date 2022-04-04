@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.provider.Settings;
 
 import androidx.annotation.Nullable;
 
+import com.example.qradventure.model.CurrentAccount;
 import com.example.qradventure.model.Account;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;

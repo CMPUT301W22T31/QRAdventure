@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.qradventure.R;
 import com.example.qradventure.activity.SearchPlayersActivity;
 
 public class OwnerActivity extends AppCompatActivity {

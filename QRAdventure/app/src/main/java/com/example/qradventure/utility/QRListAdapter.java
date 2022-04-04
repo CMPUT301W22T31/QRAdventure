@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.utility;
 
 
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qradventure.R;
 import com.example.qradventure.model.Record;
 
 import java.util.ArrayList;

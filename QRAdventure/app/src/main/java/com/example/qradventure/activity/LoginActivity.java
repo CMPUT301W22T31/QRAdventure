@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.qradventure.model.Callback;
+import com.example.qradventure.model.CurrentAccount;
+import com.example.qradventure.model.QueryHandler;
+import com.example.qradventure.R;
 import com.example.qradventure.model.Account;
 import com.example.qradventure.model.scanner;
 import com.google.firebase.firestore.DocumentReference;

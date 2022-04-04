@@ -1,8 +1,10 @@
-package com.example.qradventure;
+package com.example.qradventure.utility;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.qradventure.R;
 
 /**
  * Holder class for a QR ListView

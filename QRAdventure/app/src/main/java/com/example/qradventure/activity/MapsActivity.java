@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -19,6 +19,13 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.qradventure.model.Callback;
+import com.example.qradventure.model.CurrentAccount;
+import com.example.qradventure.model.DistanceQRPair;
+import com.example.qradventure.model.NearByQR;
+import com.example.qradventure.utility.QRDistanceInfoAdapter;
+import com.example.qradventure.model.QueryHandler;
+import com.example.qradventure.R;
 import com.example.qradventure.model.Account;
 import com.example.qradventure.model.QR;
 import com.example.qradventure.model.Record;

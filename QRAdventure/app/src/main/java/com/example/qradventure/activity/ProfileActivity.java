@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +16,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.qradventure.activity.AccountActivity;
-import com.example.qradventure.activity.LeaderboardActivity;
-import com.example.qradventure.activity.MapsActivity;
+import com.example.qradventure.model.Callback;
+import com.example.qradventure.model.CurrentAccount;
+import com.example.qradventure.utility.LocationGrabber;
+import com.example.qradventure.model.QueryHandler;
+import com.example.qradventure.R;
 import com.example.qradventure.model.Account;
 import com.example.qradventure.model.QR;
 import com.example.qradventure.model.Record;

@@ -1,10 +1,12 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.qradventure.R;
+import com.example.qradventure.model.Callback;
 import com.example.qradventure.model.QueryHandler;
 
 import java.util.ArrayList;

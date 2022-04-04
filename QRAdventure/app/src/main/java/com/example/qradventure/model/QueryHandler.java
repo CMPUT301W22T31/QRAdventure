@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,10 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.qradventure.model.Account;
-import com.example.qradventure.model.Comment;
-import com.example.qradventure.model.QR;
-import com.example.qradventure.model.Record;
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryBounds;

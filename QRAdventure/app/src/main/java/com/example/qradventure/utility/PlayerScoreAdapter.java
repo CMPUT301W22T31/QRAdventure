@@ -1,8 +1,7 @@
-package com.example.qradventure;
+package com.example.qradventure.utility;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.qradventure.R;
+import com.example.qradventure.model.PlayerPreview;
 
 import java.util.ArrayList;
 

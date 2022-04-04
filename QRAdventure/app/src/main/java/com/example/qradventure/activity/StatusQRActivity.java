@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.example.qradventure.R;
 import com.example.qradventure.model.Account;
 import com.example.qradventure.model.CurrentAccount;
 import com.google.zxing.BarcodeFormat;

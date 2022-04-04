@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.model;
 
 // QR's that will be displayed in the nearby qr class
 public class NearByQR { // dont want this to extend QR since it violates liskov principleee

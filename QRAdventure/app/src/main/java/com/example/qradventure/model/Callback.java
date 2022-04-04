@@ -1,4 +1,4 @@
-package com.example.qradventure;
+package com.example.qradventure.model;
 
 import java.util.ArrayList;
 
