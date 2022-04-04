@@ -50,6 +50,8 @@
             android:name=".AddGeolocationActivity"
             android:exported="false"
             android:label="@string/title_activity_add_geolocation" />
+
+
         <activity
             android:name=".MapsActivity"
             android:exported="false"
@@ -76,6 +78,7 @@
             android:exported="false" />
         <activity
             android:name=".SearchPlayersActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".CommentsActivity"

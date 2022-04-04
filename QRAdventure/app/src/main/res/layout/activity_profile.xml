@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="User123456789"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:paddingTop="15dp"
                 android:text="1+ 800 267 2001"
                 android:textColor="@color/white"
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Phone number"
                 android:textColor="@color/white"
                 android:textSize="10dp" />
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:paddingTop="10dp"
                 android:text="defaultemail@hotspot.com"
                 android:textColor="@color/white"
@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:paddingBottom="10dp"
                 android:text="Email"
                 android:textColor="@color/white"
@@ -122,7 +122,7 @@
                 android:id="@+id/tvTotalScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
@@ -133,7 +133,7 @@
 
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="Total Score"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
@@ -167,7 +167,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="View Codes"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp" />

@@ -7,56 +7,68 @@
     android:background="#121212"
     tools:context=".SearchPlayersActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutSearch"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/black"
-        android:gravity="center"
-        android:orientation="horizontal"
+
+    <ImageButton
+        android:id="@+id/buttonConfirmSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="0dp"
+        android:background="@drawable/search_button_bg"
+        android:onClick="queryUsername"
+        app:layout_constraintHeight_percent="0.050"
+        app:layout_constraintStart_toEndOf="@+id/etUsername"
+        app:layout_constraintTop_toTopOf="@+id/etUsername"
+        app:layout_constraintWidth_percent="0.15"
+        app:srcCompat="@drawable/ic_iconmonstr_search_thin" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="Search"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintHeight_percent="0.065"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintWidth_percent="0.75" />
 
-        <EditText
-            android:id="@+id/etUsername"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:background="@android:drawable/editbox_background_normal"
-            android:ems="10"
-            android:fontFamily="@font/fredoka_one"
-            android:hint="USERNAME"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/buttonConfirmSearch"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="0dp"
-            android:background="#00FFFFFF"
-            android:onClick="queryUsername"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.875"
-            app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_search" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/editbox_bg_normal"
+        android:ems="10"
+        android:fontFamily="@font/gotham_medium"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:paddingLeft="20dp"
+        app:layout_constraintHeight_percent="0.050"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintWidth_percent="0.75" />
 
     <ListView
         android:id="@+id/username_list"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:choiceMode="singleChoice"
         android:gravity="top"
         android:listSelector="#999999"
         app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSearch"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etUsername"
+        app:layout_constraintVertical_bias="0.003"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        app:layout_constraintWidth_percent="0.9">
 
     </ListView>
 
