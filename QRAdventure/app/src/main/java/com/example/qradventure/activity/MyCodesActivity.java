@@ -2,20 +2,27 @@ package com.example.qradventure;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.Toast;
 
+
+import com.example.qradventure.activity.AccountActivity;
+import com.example.qradventure.activity.LeaderboardActivity;
+import com.example.qradventure.activity.MapsActivity;
 import com.example.qradventure.model.Account;
 import com.example.qradventure.model.QR;
 import com.example.qradventure.model.Record;
@@ -23,72 +30,123 @@ import com.example.qradventure.model.scanner;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
- * Activity displaying the profile of any player. Anyone can access this activity.
+ * Activity where logged in user can access and manage the codes they have scanned
+ * NOTE: This is functionally different from ViewCodesActivity.
  */
-public class ProfileActivity extends AppCompatActivity {
-    private String username;
-    BottomNavigationView navbar;
+public class MyCodesActivity extends AppCompatActivity {
+    GridView qrList;
     FirebaseFirestore db;
+    BottomNavigationView navbar;
     FusedLocationProviderClient fusedLocationProviderClient;
-    Account account;
+    Account myAccount;
+    ArrayList<Record> accountRecords;
+    ArrayList<Record> allQRs;
     String content = null;
-
+    Account account = null;
 
     /**
-     * Gets and displays fields of a player's profile
+     * Sets button on click listeners
+     * Holds logic to delete QR codes
      * Enables navbar
      * @param savedInstanceState - unused
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_my_codes);
 
+        // get db, account references
         db = FirebaseFirestore.getInstance();
+        myAccount = CurrentAccount.getAccount();
 
-        Button deleteButton = findViewById(R.id.button_delete);
-        deleteButton.setVisibility(View.INVISIBLE);
-
-        // unpack intent to get account username
+        // If owner, display all QR - WIP
         Intent intent = getIntent();
-        username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
-        Account account = CurrentAccount.getAccount();
+
+        accountRecords = myAccount.getMyRecords();
+        // initialize adapter
+        qrList = findViewById(R.id.qr_list);
+        QRListAdapter qrListAdapter = new QRListAdapter(this, accountRecords);
+        qrList.setAdapter(qrListAdapter);
 
         // Call FusedLocationProviderClient class to grab location of user
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // display delete button if owner
-        String ownerRes = intent.getStringExtra("Owner");
-        if (ownerRes != null) {
-              deleteButton.setVisibility(View.VISIBLE);
-        }
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        // ====== on click listener : intent to activity ======
+        qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                QueryHandler query = new QueryHandler();
-                query.deleteAccount(username);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // intent to QRPageActivity
+                Intent QRintent = new Intent(getApplicationContext(), QRPageActivity.class);
 
-                Intent doneIntent = new Intent(ProfileActivity.this, SearchPlayersActivity.class);
-                doneIntent.putExtra("Owner", "Owner");
-                startActivity(doneIntent);
+                Record clickedRecord = accountRecords.get(position);
+                QRintent.putExtra("QRtitle", clickedRecord.getQRHash().substring(0, 4));
+                QRintent.putExtra("QRHash", clickedRecord.getQRHash());
+                Bitmap image = clickedRecord.getImage();
+                QRintent.putExtra("QRPicture", image);
+
+                startActivity(QRintent);
             }
         });
 
-        // ====== Enable navbar functionality ======
+
+        // ====== Long Click Listener for Delete Functionality ======
+        qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                new AlertDialog.Builder(MyCodesActivity.this)
+                        .setIcon(android.R.drawable.ic_delete)
+                        .setTitle("Do you want to delete this QR?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String QRRecord = myAccount.getUsername() + "-" + myAccount.getMyRecords().get(position).getQRHash();
+
+                                Log.d("logs", QRRecord);
+
+                                Record toDelete = accountRecords.get(position);
+
+                                myAccount.removeRecord(toDelete.getQRHash());
+
+                                QueryHandler delete = new QueryHandler();
+                                try {
+                                    delete.deleteRecord(myAccount, toDelete);
+
+                                } catch (Exception e) {
+                                    Log.d("logs", e.toString());
+                                }
+
+                                HashMap<String, Object> newScore = new HashMap<String, Object>();
+                                newScore.put("TotalScore", myAccount.getTotalScore());
+
+                                db.collection("AccountDB").document(myAccount.getUsername())
+                                        .update(newScore);
+
+                                CurrentAccount.setAccount(myAccount);
+                                qrListAdapter.notifyDataSetChanged();
+                            }
+
+                        }).setNegativeButton("No", null)
+                        .show();
+                return true;
+            }
+        });
+
+        // ====== Navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
-        navbar.setOnItemSelectedListener((item) ->  {
-            switch(item.getItemId()) {
+        navbar.setOnItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
                 case R.id.leaderboards:
                     Log.d("check", "WORKING???");
                     Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
@@ -101,14 +159,14 @@ public class ProfileActivity extends AppCompatActivity {
                     break;
                 case R.id.scan:
                     // Use IntentIntegrator to activate camera
-                    scanner.scan(ProfileActivity.this);
+                    scanner.scan(MyCodesActivity.this);
                     break;
                 case R.id.my_account:
                     Intent intent4 = new Intent(getApplicationContext(), AccountActivity.class);
                     startActivity(intent4);
                     break;
                 case R.id.map:
-                    if (ActivityCompat.checkSelfPermission(ProfileActivity.this,
+                    if (ActivityCompat.checkSelfPermission(MyCodesActivity.this,
                             Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         // grab location of user before map activity starts
                         try {
@@ -123,62 +181,12 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     }
                     else {
-                        ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                        ActivityCompat.requestPermissions(MyCodesActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                     }
                     break;
             }
             return false;
         });
-
-        // ====== query DB for display fields ======
-        QueryHandler query = new QueryHandler();
-        query.getProfile(username, new Callback() {
-            @Override
-            public void callback(ArrayList<Object> args) {
-
-
-                String email = (String) args.get(0);
-                String phone = (String) args.get(1);
-                Long totalScore = (Long)args.get(2);
-                setTextViews(username, email, phone, totalScore.toString());
-            }
-        });
-    }
-
-    /**
-     * Sends to ViewCodes activity. Called when respective button is clicked.
-     * @param view: unused
-     */
-    public void goToViewCodes(View view) {
-        Intent intent = getIntent();
-        Intent viewCodesIntent = new Intent(this, ViewCodesActivity.class);
-        viewCodesIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
-        String ownerRes = intent.getStringExtra("Owner");
-        if (ownerRes != null){
-            viewCodesIntent.putExtra("Owner", "Owner");
-        }
-        startActivity(viewCodesIntent);
-    }
-
-    /**
-     * Updates the textviews to display user data
-     * @param name - account username
-     * @param email - account email
-     * @param phone - account phone #
-     * @param score - account score
-     */
-    public void setTextViews(String name, String email, String phone, String score) {
-        // get reference to the textviews
-        TextView tvUsername = findViewById(R.id.tvUsername);
-        TextView tvPhone = findViewById(R.id.tvPhone);
-        TextView tvEmail = findViewById(R.id.tvEmail);
-        TextView tvTotalScore = findViewById(R.id.tvStatsTotalScore);
-
-        // set textview text
-        tvUsername.setText(name);
-        tvPhone.setText(phone);
-        tvEmail.setText(email);
-        tvTotalScore.setText(score);
     }
     /**
      * Grabs location of user before entering maps activity
@@ -193,15 +201,14 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == 44) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             Log.d("logs", "Grabbing location ");
-            Log.d("logs", "Location before: " + account.getLocation().toString() );
+            Log.d("logs", "Location before: " + myAccount.getLocation().toString() );
             LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
             locationGrabber.getLocation(this);
             Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent5);
-            Log.d("logs", "Location after: " + account.getLocation().toString() );
+            Log.d("logs", "Location after: " + myAccount.getLocation().toString() );
         }
     }
-
 
 
     /**
@@ -236,7 +243,7 @@ public class ProfileActivity extends AppCompatActivity {
             account = CurrentAccount.getAccount();
 
         if (content.contains("QRSTATS-")) {
-            Intent intent = new Intent(ProfileActivity.this, StatsActivity.class);
+            Intent intent = new Intent(MyCodesActivity.this, StatsActivity.class);
 
             // extract the username from QR content, and add it to intentExtra
             String username = content.split("-")[1];
@@ -250,7 +257,7 @@ public class ProfileActivity extends AppCompatActivity {
             QueryHandler q = new QueryHandler();
             String deviceID = content.toString().split("-")[1];
             q.getLoginAccount(deviceID, new Callback() {
-                Intent intent = new Intent(ProfileActivity.this, AccountActivity.class);
+                Intent intent = new Intent(MyCodesActivity.this, AccountActivity.class);
                 @Override
                 public void callback(ArrayList<Object> args) {
                     DocumentReference docRef = db.collection("AccountDB").document(account.getUsername());
@@ -263,7 +270,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         else if (content != null && !account.containsRecord(new Record(account, new QR(content)))) {
-            Intent intent = new Intent(ProfileActivity.this, PostScanActivity.class);
+            Intent intent = new Intent(MyCodesActivity.this, PostScanActivity.class);
             intent.putExtra(getString(R.string.EXTRA_QR_CONTENT), content);
             startActivity(intent);
 
@@ -274,4 +281,8 @@ public class ProfileActivity extends AppCompatActivity {
             toast.show();
         }
     }
+
+
+
+
 }

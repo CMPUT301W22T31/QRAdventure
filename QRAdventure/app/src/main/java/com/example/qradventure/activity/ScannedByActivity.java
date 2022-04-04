@@ -2,17 +2,15 @@ package com.example.qradventure;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.lang.reflect.Array;
+import com.example.qradventure.activity.ProfileActivity;
+
 import java.util.ArrayList;
 
 

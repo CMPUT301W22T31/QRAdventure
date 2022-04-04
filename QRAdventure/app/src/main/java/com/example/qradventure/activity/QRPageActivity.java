@@ -18,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qradventure.activity.AccountActivity;
+import com.example.qradventure.activity.CommentsActivity;
+import com.example.qradventure.activity.LeaderboardActivity;
+import com.example.qradventure.activity.MapsActivity;
 import com.example.qradventure.model.Account;
 import com.example.qradventure.model.QR;
 import com.example.qradventure.model.Record;
