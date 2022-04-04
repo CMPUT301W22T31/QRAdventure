@@ -151,7 +151,8 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Intent viewCodesIntent = new Intent(this, ViewCodesActivity.class);
         viewCodesIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
-        if (intent.getStringExtra("Owner").equals("Owner")){
+        String ownerRes = intent.getStringExtra("Owner");
+        if (ownerRes != null){
             viewCodesIntent.putExtra("Owner", "Owner");
         }
         startActivity(viewCodesIntent);

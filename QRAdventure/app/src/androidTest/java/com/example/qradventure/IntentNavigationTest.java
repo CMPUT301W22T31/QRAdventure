@@ -94,7 +94,7 @@ public class IntentNavigationTest {
         solo.clickOnView(searchButton);
 
         // click on first result and check activity navigation
-        solo.clickInList(1);
+        solo.clickOnText("otherjack");
         solo.assertCurrentActivity("Profile Activity Failed!", ProfileActivity.class);
         solo.clickOnText("View Codes");
         solo.assertCurrentActivity("Other Player QR page Activity Failed!", ViewCodesActivity.class);
