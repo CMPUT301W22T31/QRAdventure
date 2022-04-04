@@ -278,6 +278,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
     }
 
+
     /**
      * Uses QueryHandler and Callback to get your percentile among all players
      * Note: egregious rounding - this serves only as an estimate!

@@ -8,6 +8,7 @@
     tools:context=".LeaderboardActivity"
     android:background="@color/black">
 
+
     <LinearLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
@@ -16,6 +17,16 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
 
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/personalPlacementRegion"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/ic_polygon_13"
+        app:layout_constraintTop_toBottomOf="@id/topPanel">
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFilter1"
             android:layout_width="wrap_content"
@@ -58,74 +69,49 @@
             android:layout_height="45dp"
             android:contextClickable="false" />
 
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/personalPlacementRegion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FF9800"
-        app:layout_constraintTop_toBottomOf="@id/topPanel">
+        <TextView
+            android:id="@+id/tvMyRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gotham_light"
+            android:text="###"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvPercHeader"
+            app:layout_constraintHorizontal_bias="0.924"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvPRHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_medium"
-            android:text="Personal Ranking"
+            android:fontFamily="@font/gotham_light"
+            android:text="You are in the"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvMyRank"
+            app:layout_constraintHorizontal_bias="0.877"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvMyRank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_medium"
-            android:text="###"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPRHeader" />
 
         <TextView
             android:id="@+id/tvPercHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_medium"
-            android:text="Percentile"
+            android:layout_marginEnd="116dp"
+            android:fontFamily="@font/gotham_light"
+            android:text="percentile"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:textFontWeight="200"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMyRank" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/tvPRHeader"
-            app:layout_constraintHorizontal_bias="0.573"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/trophy" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvPRHeader"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/trophy" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,11 +30,11 @@
                 android:textSize="16sp" />
 
             <ImageView
-                android:id="@+id/ivTrophy"
+                android:id="@+id/leaderboard_profile_pic"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/trophy"
+                app:srcCompat="@drawable/ic_turtle"
                 app:tint="#00FFFFFF" />
 
             <TextView
