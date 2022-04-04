@@ -1,10 +1,7 @@
-package com.example.qradventure;
+package com.example.qradventure.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Represents an player account. Tracks Contact info, Player QRs, and Records the player has scanned

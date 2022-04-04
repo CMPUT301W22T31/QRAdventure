@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qradventure.model.Comment;
+
 import java.util.ArrayList;
 
 /**

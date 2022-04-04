@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qradventure.model.Account;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 

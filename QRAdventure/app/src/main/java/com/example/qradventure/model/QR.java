@@ -1,12 +1,8 @@
-package com.example.qradventure;
-
-import android.util.Log;
+package com.example.qradventure.model;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Objects;
 

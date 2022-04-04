@@ -2,14 +2,11 @@ package com.example.qradventure;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
-import com.google.mlkit.vision.barcode.common.Barcode;
+import com.example.qradventure.model.Account;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
