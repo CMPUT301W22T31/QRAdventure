@@ -55,3 +55,50 @@ Notes for part 3:
   *  website:stackoverflow.com
   *    link:https://stackoverflow.com/questions/7620401/how-to-convert-image-file-data-in-a-byte-array-to-a-bitmap
   *   author: Uttam, https://stackoverflow.com/users/840861/uttam
+
+* Citation for a specific query operation
+    * Website: Stackoverflow
+    * Link: https://stackoverflow.com/a/56815787
+    * Author: Ankit Prajapati
+    * Purpose: mimic the "like" query operator.
+
+* Citation for basic query structure (documentation)
+    * Website: firebase.google.com
+    * Link: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
+    * Author: Google
+
+* Citation for custom listview adapter special functionality
+    * Website: Stackoverflow
+    * Link: https://stackoverflow.com/a/10479144
+    * Author: Samir Mangroliya
+    * Purpose: Set special attributes to items in a listview
+
+* Citation: dropping keyboard functionality
+    * Website: Stackoverflow
+    * Link: https://stackoverflow.com/a/1109108
+    * Author: Reto Meier (+15 revisions)
+    * Purpose: automatically drop the on screen keyboard
+
+* Citation for implementing navbar
+    * Website: Youtube
+    * Link: https://www.youtube.com/watch?v=Chso6xrJ6aU&t=314s
+    * Author: Stevdza-San
+    * Purpose: Implement navbar in bottom of screen.
+   
+* Citation for getting current location of user
+    * Website: Youtube
+    * Link: https://www.youtube.com/watch?v=2rEqH6Blex4
+    * Author: Coding With Tea 
+    * Purpose: Grab current location of user
+
+* Citation for adding map to app
+    * Website: Youtube
+    * Link: https://www.youtube.com/watch?v=eiexkzCI8m8&t=62s
+    * Author: Android Coding
+    * Purpose: Implementing map and geolocation for user story
+
+* Citation for geoqueries
+    * Website: Firebase 
+    * Link: https://firebase.google.com/docs/firestore/solutions/geoqueries 
+    * Author: Google Firebase
+    * Purpose: Get location of nearby qr's
