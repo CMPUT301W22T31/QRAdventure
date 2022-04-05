@@ -102,3 +102,9 @@ Notes for part 3:
     * Link: https://firebase.google.com/docs/firestore/solutions/geoqueries 
     * Author: Google Firebase
     * Purpose: Get location of nearby qr's
+
+* Citations for profile pictures
+    * Website: SVGREPO
+    * Link: SVGREPO.COM
+    * Author: SVGREPO
+    * Purpose: Profile pictures for accounts
