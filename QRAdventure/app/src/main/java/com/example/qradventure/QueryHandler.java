@@ -798,6 +798,7 @@ public class QueryHandler {
                                 previewArray.add(newPreview);
                             }
                             // outside for loop, callback the array
+
                             callback.callback(previewArray);
 
                         } else {

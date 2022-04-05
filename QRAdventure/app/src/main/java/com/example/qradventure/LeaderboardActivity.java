@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 
 /**
@@ -38,7 +40,12 @@ public class LeaderboardActivity extends AppCompatActivity {
     Account account;
     BottomNavigationView navbar;
     PlayerPreview previewInfo;
+    ImageView firstPlace;
+    ImageView secondPlace;
+    ImageView thirdPlace;
+
     ArrayList<PlayerPreview> previewArray;
+    ArrayList<PlayerPreview> top3PreviewArray;
     ArrayAdapter<PlayerPreview> adapter;
     ListView playersListView;
     int fetchCount;
@@ -64,6 +71,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
 
+        top3PreviewArray = new ArrayList<PlayerPreview>();
+
+
         // ==== Initialize & Link adapter ====
         previewArray = new ArrayList<PlayerPreview>();
         playersListView = findViewById(R.id.preview_list);
@@ -78,7 +88,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                 goToProfile(name);
             }
         });
-
 
         // ==== Enable Spinner ====
         String[] spinnerChoices = new String[]{"Top 3", "Top 5", "top 10", "top 25"};
@@ -263,6 +272,7 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void queryTopRanks(String filter) {
         QueryHandler qh = new QueryHandler();
+        int i = 0;
         qh.getTopRanks(filter, fetchCount, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
@@ -271,7 +281,13 @@ public class LeaderboardActivity extends AppCompatActivity {
                 previewArray.clear();
                 for (Object item : args){
                     previewInfo = (PlayerPreview) item;
-                    previewArray.add(previewInfo);
+
+                    if (i < 3) {
+                        top3PreviewArray.add(previewInfo);
+                    }
+                    else previewArray.add(previewInfo);
+                    Log.d("bruh", previewInfo.getUsername());
+
                 }
                 adapter.notifyDataSetChanged();
             }
