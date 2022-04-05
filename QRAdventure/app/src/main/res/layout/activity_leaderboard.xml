@@ -185,6 +185,33 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
             app:layout_constraintVertical_bias="0.27"></ImageView>
 
+        <TextView
+            android:id="@+id/third_place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="null"
+            app:layout_constraintBottom_toBottomOf="@+id/first_place_name"
+            app:layout_constraintEnd_toEndOf="@+id/profile_pic_number_2"
+            app:layout_constraintStart_toStartOf="@+id/profile_pic_number_2"
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic_number_2">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/first_place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="null"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/profile_pic_number_1"
+            app:layout_constraintHorizontal_bias="0.485"
+            app:layout_constraintStart_toStartOf="@+id/profile_pic_number_1"
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic_number_1">
+
+        </TextView>
+
         <ImageView
             android:id="@+id/profile_pic_number_3"
             android:layout_width="90dp"
@@ -196,6 +223,18 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
             app:layout_constraintVertical_bias="0.27"></ImageView>
 
+        <TextView
+            android:id="@+id/second_place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="null"
+            app:layout_constraintBottom_toBottomOf="@+id/first_place_name"
+            app:layout_constraintEnd_toEndOf="@+id/profile_pic_number_3"
+            app:layout_constraintStart_toStartOf="@+id/profile_pic_number_3"
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic_number_3">
+
+        </TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

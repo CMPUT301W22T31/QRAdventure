@@ -30,7 +30,7 @@
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/layout/activity_add_geolocation.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_comments.xml" value="0.16510416666666666" />
-        <entry key="app/src/main/res/layout/activity_leaderboard.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_leaderboard.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/activity_login_qractivity.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.178125" />
@@ -42,6 +42,7 @@
         <entry key="app/src/main/res/layout/activity_post_scan2.xml" value="0.23598724365234375" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/activity_scan.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/layout/activity_scanned_by.xml" value="0.11458333333333333" />
         <entry key="app/src/main/res/layout/activity_search_players.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.15" />

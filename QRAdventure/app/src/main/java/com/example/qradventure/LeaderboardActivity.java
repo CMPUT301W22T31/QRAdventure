@@ -272,24 +272,38 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void queryTopRanks(String filter) {
         QueryHandler qh = new QueryHandler();
-        int i = 0;
+
         qh.getTopRanks(filter, fetchCount, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
                 // Use the array query callback provided
                 // UNSAFE CAST - using wildcard <?> to help cast Object to PlayerPreview
+                ArrayList<PlayerPreview> top3people = new ArrayList<PlayerPreview>();
                 previewArray.clear();
                 for (Object item : args){
                     previewInfo = (PlayerPreview) item;
-
-                    if (i < 3) {
-                        top3PreviewArray.add(previewInfo);
-                    }
-                    else previewArray.add(previewInfo);
                     Log.d("bruh", previewInfo.getUsername());
 
+                    previewArray.add(previewInfo);
+                    top3people.add(previewInfo);
                 }
                 adapter.notifyDataSetChanged();
+
+                firstPlace = findViewById(R.id.profile_pic_number_1);
+                secondPlace = findViewById(R.id.profile_pic_number_2);
+                thirdPlace = findViewById(R.id.profile_pic_number_3);
+                TextView firstPlaceName = findViewById(R.id.first_place_name);
+                TextView secondPlaceName = findViewById(R.id.second_place_name);
+                TextView thirdPlaceName = findViewById(R.id.third_place_name);
+
+                LeaderboardImageSetter leaderboardImageSetter = new LeaderboardImageSetter();
+                ImageView[] imageViews = {firstPlace, secondPlace, thirdPlace};
+                TextView[] usernameTextViews = {firstPlaceName, secondPlaceName, thirdPlaceName};
+                TextView[] scoreTextViews = {};
+
+                for (int i = 0 ; i < 3; i++) {
+                    leaderboardImageSetter.setImages(scoreTextViews[i],usernameTextViews[i], imageViews[i], top3people.get(i));
+                }
             }
         });
     }
