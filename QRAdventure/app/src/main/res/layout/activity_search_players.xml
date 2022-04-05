@@ -82,6 +82,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/navbar_menu" />
 
+    <TextView
+        android:id="@+id/text_owner_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Owner Mode"
+        android:fontFamily="@font/gotham_medium"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
