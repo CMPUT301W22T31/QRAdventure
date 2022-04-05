@@ -5,60 +5,56 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#121212"
-
     >
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:clickable="true"
-        android:translationZ="90dp"
-        android:onClick="goToEditInfo"
-        android:src="@drawable/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_qr_stars"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="5dp" />
+
     <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top"
+        android:layout_height="600dp"
+        android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
-        app:layout_constraintTop_toTopOf="parent">
-
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@drawable/ic_account_page_bg"
             android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_width="200dp"
+                android:layout_height="80dp"
+                android:gravity=""
                 android:orientation="horizontal">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_card"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:cardElevation="10dp"
+                app:cardBackgroundColor="@color/grey"
+                app:cardCornerRadius="40dp"
+                android:layout_marginLeft="60dp"
+                >
 
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_height="110dp"
-                    android:layout_width="110dp"
-
-                    android:id="@+id/profile_card"
-                    app:strokeColor="#B0D4FF"
-                    app:strokeWidth="5dp"
-                    app:cardBackgroundColor="@color/grey"
-                    app:cardCornerRadius="55dp"
-                    app:cardElevation="10dp">
-
-                    <ImageView
-                        android:id="@+id/profile_pic"
-                        android:layout_width="80dp"
-                        android:layout_gravity="center"
-                        android:layout_height="80dp"></ImageView>
-                </com.google.android.material.card.MaterialCardView>
-
+                <ImageView
+                    android:id="@+id/profile_pic"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    ></ImageView>
+            </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:clickable="true"
+                    android:onClick="goToEditInfo"
+                    android:src="@drawable/edit" />
 
             </LinearLayout>
 
@@ -71,12 +67,7 @@
                 android:text="AccountDefault"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                >
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -93,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/gotham_light"
+                    android:fontFamily="@font/gotham_medium"
                     android:paddingTop="15dp"
                     android:text="1+ 800 267 2001"
                     android:textColor="@color/white"
@@ -101,7 +92,6 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -120,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/gotham_light"
+                    android:fontFamily="@font/gotham_medium"
                     android:paddingTop="10dp"
                     android:text="defaultemail@hotspot.com"
                     android:textColor="@color/white"
@@ -128,16 +118,22 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal"
-            >
+            android:paddingBottom="5dp">
 
             <LinearLayout
                 android:layout_width="100dp"
@@ -270,14 +266,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/p4"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
             android:onClick="goToMyCodes"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
-            android:paddingTop="15dp">
+            android:paddingTop="15dp"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -307,14 +303,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/p3"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
             android:onClick="goToMyStats"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -344,14 +340,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/p2"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
             android:onClick="goToLoginQR"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
-            android:paddingTop="15dp">
+            android:paddingTop="15dp"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -380,14 +376,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/blue_rect3"
-            android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/p1"
+            android:clickable="true"
             android:onClick="goToStatusQR"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
+            android:layout_marginBottom="10dp"
             android:text="LOGIN CODE">
 
             <TextView
