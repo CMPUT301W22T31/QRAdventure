@@ -217,6 +217,7 @@
         android:layout_marginBottom="45dp"
         android:background="#001E1E1E"
         android:fontFamily="@font/montserrat_medium"
+        android:onClick=""
         android:text="Sign in with QR"
         android:textColor="#4CC9F0"
         android:textSize="11sp"
