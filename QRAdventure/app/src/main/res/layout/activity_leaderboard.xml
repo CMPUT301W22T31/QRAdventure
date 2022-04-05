@@ -366,7 +366,7 @@
         android:id="@+id/Youareinthe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="50dp"
         android:fontFamily="@font/gotham_light"
         android:text="You are in the"
         android:textColor="#FFFFFF"
