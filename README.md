@@ -55,3 +55,26 @@ Notes for part 3:
   *  website:stackoverflow.com
   *    link:https://stackoverflow.com/questions/7620401/how-to-convert-image-file-data-in-a-byte-array-to-a-bitmap
   *   author: Uttam, https://stackoverflow.com/users/840861/uttam
+
+* Citation for a specific query operation
+    * Website: Stackoverflow
+    * Link: https://stackoverflow.com/a/56815787
+    * Author: Ankit Prajapati
+    * Purpose: mimic the "like" query operator.
+
+* Citation for basic query structure (documentation)
+    * Website: firebase.google.com
+    * Link: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
+    * Author: Google
+
+* Citation for custom listview adapter special functionality
+    * Website: Stackoverflow
+    * Link: https://stackoverflow.com/a/10479144
+    * Author: Samir Mangroliya
+    * Purpose: Set special attributes to items in a listview
+
+* Citation: dropping keyboard functionality
+    * Website: Stackoverflow
+    * Link: https://stackoverflow.com/a/1109108
+    * Author: Reto Meier (+15 revisions)
+    * Purpose: automatically drop the on screen keyboard
