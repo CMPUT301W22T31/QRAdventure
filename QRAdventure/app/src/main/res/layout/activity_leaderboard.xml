@@ -116,6 +116,7 @@
             android:text="TOTAL SCORE"
             android:textColor="#FFFFFF"
             android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buttonFilter3"
             app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
 
@@ -123,6 +124,7 @@
             android:id="@+id/buttonFilter3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
@@ -134,8 +136,9 @@
             android:text="Total Scans"
             android:textColor="#FFFFFF"
             android:textSize="13dp"
-            app:layout_constraintTop_toBottomOf="@+id/leaderboard_text"
-            tools:layout_editor_absoluteX="128dp" />
+            app:layout_constraintStart_toEndOf="@+id/buttonFilter2"
+            app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
+
 
         <Spinner
             android:id="@+id/sizeSpinner"
@@ -144,7 +147,6 @@
             android:contextClickable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/leaderboard_text" />
-
 
         <ImageView
             android:id="@+id/crown"
@@ -192,7 +194,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
@@ -203,7 +204,6 @@
             android:text="Largest CODE"
             android:textColor="#FFFFFF"
             android:textSize="13dp"
-            app:layout_constraintEnd_toStartOf="@+id/buttonFilter3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
 
