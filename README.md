@@ -96,3 +96,9 @@ Notes for part 3:
     * Link: https://www.youtube.com/watch?v=eiexkzCI8m8&t=62s
     * Author: Android Coding
     * Purpose: Implementing map and geolocation for user story
+
+* Citation for geoqueries
+    * Website: Firebase 
+    * Link: https://firebase.google.com/docs/firestore/solutions/geoqueries 
+    * Author: Google Firebase
+    * Purpose: Get location of nearby qr's
