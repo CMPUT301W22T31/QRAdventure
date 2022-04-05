@@ -646,41 +646,6 @@ public class QueryHandler {
 
 
     /**
-     * Gets a list of comments for CommentsActivity
-     *
-     * @param hash     Hash of the QR we are getting the comments from
-     * @param callback Callback function for the calling activity
-     */
-    public void getComments(String hash, Callback callback) {
-
-        DocumentReference QRRef = db.collection("QRDB").document(hash);
-
-        QRRef.collection("Comments")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            ArrayList<Object> args = new ArrayList<Object>();
-                            for (DocumentSnapshot document : task.getResult()) {
-                                String commentAuthor = document.getData().get("Author").toString();
-                                String commentText = document.getData().get("Comment").toString();
-                                Comment aComment = new Comment(commentAuthor, commentText);
-
-                                args.add(aComment);
-                            }
-                            callback.callback(args);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-
-    }
-
-
-    /**
      * Adds a QR to the database
      *
      * @param qr       What we are adding
@@ -1159,6 +1124,11 @@ public class QueryHandler {
                 });
     }
 
+    /**
+     * Queries for the number of times a specific QR has been scanned
+     * @param qr - The targetted QR
+     * @param callback - callback to return size to
+     */
     public void getAmntScanned(QR qr , Callback callback) {
 
         db.collection("QRDB").document(qr.getHash()).collection("Scanned By")
@@ -1179,7 +1149,10 @@ public class QueryHandler {
                 });
     }
 
-
+    /**
+     * notifies the database that the user has changed their profile picture
+     * @param index - identification of the new profile picture
+     */
     public void editProfilePic(Integer index) {
         // need a reference to the account document
         DocumentReference accDocRef = db.collection("AccountDB")

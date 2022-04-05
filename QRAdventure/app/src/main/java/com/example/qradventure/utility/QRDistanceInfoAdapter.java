@@ -27,9 +27,9 @@ public class QRDistanceInfoAdapter extends ArrayAdapter<String> {
     /**
      * Override default getView with a custom one - view from player_list_entry.
      * @param position - position in list
-     * @param convertView -
-     * @param parent - super
-     * @return View - custom view to display
+     * @param convertView - unused view to reuse as list scrolls
+     * @param parent - ViewGroup
+     * @return View - custom view (entry) to display in the listview
      */
     @NonNull
     @Override
