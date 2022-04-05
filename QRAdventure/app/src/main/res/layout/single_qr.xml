@@ -37,8 +37,9 @@
             android:id="@+id/QR_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="Unnamed QR"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -53,7 +54,7 @@
                 android:id="@+id/QR_pts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
@@ -62,7 +63,7 @@
                 android:id="@+id/pts_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fredoka_one"
+                android:fontFamily="@font/gotham_medium"
                 android:gravity=""
                 android:text="pts"
                 android:textColor="@color/black"

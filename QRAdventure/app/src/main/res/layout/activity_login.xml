@@ -16,10 +16,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.58"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.531"
+        app:layout_constraintVertical_bias="0.255"
         app:srcCompat="@drawable/login_logo_shape2" />
 
     <LinearLayout
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:ems="10"
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/gotham_medium"
             android:hint="USERNAME"
             android:inputType="textPersonName"
             android:minHeight="48dp"
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:ems="10"
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/gotham_medium"
             android:hint="PHONE"
             android:inputType="textPersonName"
             android:minHeight="48dp"
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:ems="10"
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/gotham_medium"
             android:hint="EMAIL"
             android:inputType="textPersonName"
             android:minHeight="48dp"
@@ -127,7 +127,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="70dp"
         android:layout_marginBottom="44dp"
-        android:fontFamily="@font/montserrat_medium"
+        android:fontFamily="@font/gotham_medium"
         android:text="Already have an account?"
         android:textAlignment="center"
         android:gravity="center"
@@ -136,7 +136,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonLogin2QR"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="@+id/buttonLogin2QR"
         app:layout_constraintVertical_bias="0.125" />
 
@@ -148,7 +147,7 @@
         android:layout_marginTop="52dp"
         android:layout_marginEnd="140dp"
         android:backgroundTint="#4CC9F0"
-        android:fontFamily="@font/montserrat_medium"
+        android:fontFamily="@font/gotham_medium"
         android:text="LOGIN"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
@@ -168,29 +167,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/login_logo_shape" />
 
-    <TextView
-        android:id="@+id/textView12"
+    <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="ADVENTURE"
-        android:textColor="#000000"
-        android:textSize="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="77dp"
-        android:layout_height="83dp"
-
-        app:layout_constraintEnd_toStartOf="@+id/textView12"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView12"
-        app:srcCompat="@drawable/qr_code2_black" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+
+            app:layout_constraintEnd_toStartOf="@+id/textView12"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView12"
+            app:srcCompat="@drawable/qr_code2_black" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/gotham_medium"
+            android:text="ADVENTURE"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:textSize="42dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView16"
@@ -216,8 +227,7 @@
         android:layout_marginEnd="45dp"
         android:layout_marginBottom="45dp"
         android:background="#001E1E1E"
-        android:fontFamily="@font/montserrat_medium"
-        android:onClick=""
+        android:fontFamily="@font/gotham_medium"
         android:text="Sign in with QR"
         android:textColor="#4CC9F0"
         android:textSize="11sp"

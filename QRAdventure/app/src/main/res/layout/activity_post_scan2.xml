@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_bg"
+    android:background="#121212"
     >
 
     <LinearLayout
@@ -22,17 +22,18 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView6">
 
         <TextView
+            android:id="@+id/post_scan_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
-            android:text="99999"
-            android:textColor="#FFAA00"
+            android:fontFamily="@font/gotham_medium"
+            android:text="null"
+            android:textColor="#FFEB3B"
             android:textSize="35dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
+            android:fontFamily="@font/gotham_medium"
             android:text="score"
             android:textColor="@color/white" />
 
@@ -49,11 +50,13 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
         tools:layout_editor_absoluteX="36dp">
 
+
         <TextView
+            android:id="@+id/n_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/fredoka_one"
-            android:text="Scanned n times"
+            android:fontFamily="@font/gotham_medium"
+            android:text="Scanned null times"
             android:textColor="@color/white" />
 
     </LinearLayout>
@@ -74,10 +77,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="76dp"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:onClick="goToPhoto"
-        android:src="@drawable/take_pic"
+        android:src="@drawable/photo_orange"
+        app:layout_constraintEnd_toStartOf="@+id/see_comments"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
 
@@ -85,12 +91,12 @@
         android:id="@+id/add_geo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="52dp"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:onClick="addGeolocation"
-        android:src="@drawable/location_btn"
+        android:src="@drawable/location_red"
         app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/see_comments"
         app:layout_constraintTop_toTopOf="@+id/see_people"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -98,26 +104,28 @@
         android:id="@+id/see_people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginTop="12dp"
         android:clickable="true"
-        android:onClick="goToScannedBy"
+        android:foreground="?android:attr/selectableItemBackground"
 
-        android:src="@drawable/people_btn"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="goToScannedBy"
+        android:src="@drawable/people_green"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/add_photo"
         app:layout_constraintTop_toBottomOf="@+id/add_photo"
         app:layout_constraintVertical_bias="0.0" />
+
 
     <ImageView
         android:id="@+id/see_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="52dp"
+        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:onClick="goToComments"
-        android:src="@drawable/comments_btn"
+        android:src="@drawable/comments_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
 
@@ -126,8 +134,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/fredoka_one"
-        android:text="TextView"
+        android:fontFamily="@font/gotham_medium"
+        android:text="New QR!"
         android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,31 +144,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:onClick="AddQR"
         android:id="@+id/button"
+        android:layout_width="match_parent"
 
-        android:layout_width="120dp"
         android:layout_height="80dp"
-        android:layout_marginEnd="68dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@drawable/add_btn_color"
-        android:fontFamily="@font/fredoka_one"
+        android:fontFamily="@font/gotham_medium"
+        android:onClick="AddQR"
         android:text="add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:onClick="clickDismiss"
-        android:id="@+id/button2"
-        android:layout_width="120dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="@drawable/dismiss_btn_color"
-        android:fontFamily="@font/fredoka_one"
-        android:text="Dismiss"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <EditText
+        android:textColor="@color/black"
+        android:id="@+id/edit_text_qr_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:ems="10"
+        android:fontFamily="@font/gotham_medium"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:hint="Name this QR"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toTopOf="@+id/see_comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
