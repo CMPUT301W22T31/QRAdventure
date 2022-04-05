@@ -36,9 +36,10 @@ public class Account {
      *      Collection of Records that this user has scanned
      */
     public Account(String username, String email, String phoneNumber, String loginQR, String statusQR, ArrayList<Record> myRecords) {
+        String phone = phoneNumber.substring(0,3) + " " + phoneNumber.substring(3,6) + " " + phoneNumber.substring(6);
         this.username = username;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phone;
         this.loginQR = loginQR;
         this.statusQR = statusQR;
         this.myRecords = myRecords;
@@ -53,9 +54,10 @@ public class Account {
      * @param statusQR
      */
     public Account(String username, String email, String phoneNumber, String loginQR, String statusQR) {
+        String phone = phoneNumber.substring(0,3) + " " + phoneNumber.substring(3,6) + " " + phoneNumber.substring(6);
         this.username = username;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phone;
         this.loginQR = loginQR;
         this.statusQR = statusQR;
         this.myRecords = new ArrayList<Record>();

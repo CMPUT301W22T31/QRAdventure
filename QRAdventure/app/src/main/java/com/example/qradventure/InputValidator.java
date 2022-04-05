@@ -22,7 +22,7 @@ public class InputValidator {
      * @param phone
      *      phone number we are verifying
      * @return
-     *      True if valid (a ten digit numeric phone number), false otherwise
+     *      True if valid (a ten digit numeric phone number) or left blank, false otherwise
      *
      *      Citation
      *      Last Updated : 23 Dec, 2021
@@ -30,9 +30,10 @@ public class InputValidator {
      *      https://www.geeksforgeeks.org/java-program-to-check-for-a-valid-mobile-number/
      */
     public boolean checkPhone(String phone) {
+        // Pattern p = Pattern.compile("^\\d{10}$");
         Pattern p = Pattern.compile("^\\d{10}$");
         Matcher m = p.matcher(phone);
-        return (m.matches());
+        return (m.matches() || phone.equals(""));
     }
 
     /**
@@ -40,7 +41,7 @@ public class InputValidator {
      * @param email
      *      email we are verifying
      * @return
-     *      True if valid email format, false if invalid
+     *      True if valid email format or left blank, false if invalid
      *
      *      Citation
      *      Last Updated : 22 Oct, 2021
@@ -54,8 +55,8 @@ public class InputValidator {
                               "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                               "A-Z]{2,7}$";
         Pattern pat = Pattern.compile(emailPattern);
-        if (email == null)
-            return false;
+        if (email.equals(""))
+            return true;
         return pat.matcher(email).matches();
     }
 }

@@ -104,14 +104,14 @@ public class LoginActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
                     }
-                    if (!validPhone && !(phoneNumber.equals(""))) {
+                    if (!validPhone) {
                         Context context = getApplicationContext();
-                        CharSequence text = "Must provide 10 digit phone number";
+                        CharSequence text = "10 digits, no spaces";
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
                     }
-                    if (!validEmail && !(email.equals(""))) {
+                    if (!validEmail) {
                         Context context = getApplicationContext();
                         CharSequence text = "Must provide valid email";
                         int duration = Toast.LENGTH_SHORT;
