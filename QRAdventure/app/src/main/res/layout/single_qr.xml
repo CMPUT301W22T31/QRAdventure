@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_medium"
             android:text="Unnamed QR"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold" />

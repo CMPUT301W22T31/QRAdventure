@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212"
-    tools:context=".SearchPlayersActivity">
+    tools:context=".activity.SearchPlayersActivity">
 
     <LinearLayout
         android:id="@+id/linearLayoutSearch"
@@ -14,9 +14,9 @@
         android:background="@color/black"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:textColor="@color/black"
@@ -71,6 +71,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/navbar_menu" />
 
+    <TextView
+        android:id="@+id/text_owner_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Owner Mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSearch" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
