@@ -301,13 +301,41 @@ public class LeaderboardActivity extends AppCompatActivity {
                 TextView secondPlaceScore = findViewById(R.id.second_place_score);
                 TextView thirdPlaceScore = findViewById(R.id.third_place_score);
 
+
+
+
                 LeaderboardImageSetter leaderboardImageSetter = new LeaderboardImageSetter();
                 ImageView[] imageViews = {firstPlace, secondPlace, thirdPlace};
                 TextView[] usernameTextViews = {firstPlaceName, secondPlaceName, thirdPlaceName};
                 TextView[] scoreTextViews = {firstPlaceScore, secondPlaceScore, thirdPlaceScore};
 
-                for (int i = 0 ; i < 3; i++) {
-                    leaderboardImageSetter.setImages(scoreTextViews[i],usernameTextViews[i], imageViews[i], top3people.get(i));
+                //If there is less than three users, do not display the top three users
+                Log.d("meme", thirdPlaceScore.getText().toString());
+                if (args.size() < 3) {
+                    //less than three players -> disable all display for top three players at top of leaderboard
+                    ImageView crown = findViewById(R.id.crown);
+                    crown.setVisibility(View.GONE);
+
+                    TextView secondPlaceText = findViewById(R.id.second_place_number_text);
+                    TextView thirdPlaceText = findViewById(R.id.third_place_number_text);
+                    secondPlaceText.setVisibility(View.GONE);
+                    thirdPlaceText.setVisibility(View.GONE);
+
+                    firstPlaceName.setVisibility(View.GONE);
+                    secondPlaceName.setVisibility(View.GONE);
+                    thirdPlaceName.setVisibility(View.GONE);
+                    firstPlaceScore.setVisibility(View.GONE);
+                    secondPlaceScore.setVisibility(View.GONE);
+                    thirdPlaceScore.setVisibility(View.GONE);
+                    firstPlace.setVisibility(View.GONE);
+                    secondPlace.setVisibility(View.GONE);
+                    thirdPlace.setVisibility(View.GONE);
+
+                }
+                else {
+                    for (int i = 0; i < 3; i++) {
+                        leaderboardImageSetter.setImages(scoreTextViews[i], usernameTextViews[i], imageViews[i], top3people.get(i));
+                    }
                 }
             }
         });

@@ -13,8 +13,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp">
 
