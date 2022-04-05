@@ -2,9 +2,7 @@ package com.example.qradventure.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.qradventure.R;
@@ -24,8 +22,6 @@ public class StatsActivity extends AppCompatActivity {
     int totalScore;
     int scanCount;
     int bestQR;
-    ImageView profilePic;
-    Long retrievedProfileIndex;
 
     /**
      * Initiates call to display stats on textviews
@@ -43,26 +39,8 @@ public class StatsActivity extends AppCompatActivity {
 
         // Set basic player stats
         SetPlayerStats();
-
-        // set profile picture for user
-        setProfilePic();
-
     }
 
-
-    public void setProfilePic() {
-        //set up profile pic for user
-        profilePic = findViewById(R.id.img_profile_stats);
-
-        // If user has selected profile pic
-        if (retrievedProfileIndex != null) {
-            setUpProfilePic(retrievedProfileIndex.intValue());
-        }
-        else {
-            setUpProfilePic(0); // default set to the turtle pic
-        }
-
-    }
     /**
      * Uses QueryHandler and Callback to get player stats
      * Sets relevant textviews
@@ -79,6 +57,7 @@ public class StatsActivity extends AppCompatActivity {
                 scanCount = ((Number) args.get(1)).intValue();
                 bestQR = ((Number) args.get(2)).intValue();
                 //retrievedProfileIndex = (Long)args.get(3);
+
 
                 // get textviews
                 TextView tvTotalScore = findViewById(R.id.tvStatsTotalScore);
@@ -170,29 +149,6 @@ public class StatsActivity extends AppCompatActivity {
 
 
     }
-    /**
-     * Correlates appropriate profile pic index w/ profile pic
-     * @param profileIndex: index of profile picture to retrievein database
-     */
-    void setUpProfilePic(Integer profileIndex) {
-        switch (profileIndex) {
-            case 0:
-                profilePic.setBackgroundResource(R.drawable.ic_turtle);break;
-            case 1:
-                profilePic.setBackgroundResource(R.drawable.ic_fish);break;
-            case 2:
-                profilePic.setBackgroundResource(R.drawable.ic_butterfly);
-                break;
-            case 3:
-                profilePic.setBackgroundResource(R.drawable.ic_ladybug);
-                break;
-            case 4:
-                profilePic.setBackgroundResource(R.drawable.ic_crocodile);
-                break;
-            case 5:
-                profilePic.setBackgroundResource(R.drawable.ic_duck);
-                break;
-        }
-    }
+
 
 }
