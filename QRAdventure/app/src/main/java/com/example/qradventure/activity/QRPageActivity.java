@@ -89,26 +89,8 @@ public class QRPageActivity extends AppCompatActivity {
             QRTitle.setText("PLACEHOLDER");
         }
 
-        Button deleteButton = findViewById(R.id.button_delete_qr);
+        deleteButton = findViewById(R.id.button_delete_qr);
         deleteButton.setVisibility(View.INVISIBLE);
-
-        Intent intent = getIntent();
-        String ownerRes = intent.getStringExtra("Owner");
-
-        if (ownerRes != null) {
-              deleteButton.setVisibility(View.VISIBLE);
-         }
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                QueryHandler query = new QueryHandler();
-                query.deleteQR(hash);
-
-                Intent ownerIntent = new Intent(QRPageActivity.this, OwnerActivity.class);
-                startActivity(ownerIntent);
-            }
-        });
 
         // enable navbar functionality
         BottomNavigationView navbar = findViewById(R.id.navbar_menu);
@@ -151,6 +133,26 @@ public class QRPageActivity extends AppCompatActivity {
                     break;
             }
             return false;
+        });
+        navbar.setVisibility(View.VISIBLE);
+
+        Intent intent = getIntent();
+        String ownerRes = intent.getStringExtra("Owner");
+
+        if (ownerRes != null) {
+            deleteButton.setVisibility(View.VISIBLE);
+            navbar.setVisibility(View.INVISIBLE);
+        }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QueryHandler query = new QueryHandler();
+                query.deleteQR(hash);
+
+                Intent ownerIntent = new Intent(QRPageActivity.this, OwnerActivity.class);
+                startActivity(ownerIntent);
+            }
         });
 
     }

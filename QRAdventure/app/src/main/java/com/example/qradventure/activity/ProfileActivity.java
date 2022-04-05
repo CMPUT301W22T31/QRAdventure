@@ -80,24 +80,6 @@ public class ProfileActivity extends AppCompatActivity {
         // Call FusedLocationProviderClient class to grab location of user
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // display delete button if owner
-        String ownerRes = intent.getStringExtra("Owner");
-        if (ownerRes != null) {
-              deleteButton.setVisibility(View.VISIBLE);
-        }
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                QueryHandler query = new QueryHandler();
-                query.deleteAccount(username);
-
-                Intent doneIntent = new Intent(ProfileActivity.this, SearchPlayersActivity.class);
-                doneIntent.putExtra("Owner", "Owner");
-                startActivity(doneIntent);
-            }
-        });
-
         // ====== Enable navbar functionality ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
@@ -142,6 +124,27 @@ public class ProfileActivity extends AppCompatActivity {
                     break;
             }
             return false;
+        });
+
+        navbar.setVisibility(View.VISIBLE);
+
+        // display delete button if owner
+        String ownerRes = intent.getStringExtra("Owner");
+        if (ownerRes != null) {
+            deleteButton.setVisibility(View.VISIBLE);
+            navbar.setVisibility(View.INVISIBLE);
+        }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QueryHandler query = new QueryHandler();
+                query.deleteAccount(username);
+
+                Intent doneIntent = new Intent(ProfileActivity.this, SearchPlayersActivity.class);
+                doneIntent.putExtra("Owner", "Owner");
+                startActivity(doneIntent);
+            }
         });
 
         // ====== query DB for display fields ======

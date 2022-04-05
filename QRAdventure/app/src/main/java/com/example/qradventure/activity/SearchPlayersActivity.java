@@ -71,12 +71,6 @@ public class SearchPlayersActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.text_owner_mode);
         text.setVisibility(View.INVISIBLE);
 
-        // Owner mode text
-        Intent intent = getIntent();
-        if (intent.getStringExtra("Owner") != null) {
-            text.setVisibility(View.VISIBLE);
-        }
-
         // Initialize data, listview, adapter
         playerListView = findViewById(R.id.username_list);
         playerNames = new ArrayList<>();
@@ -137,6 +131,15 @@ public class SearchPlayersActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        navbar.setVisibility(View.VISIBLE);
+
+        // Owner mode
+        Intent intent = getIntent();
+        if (intent.getStringExtra("Owner") != null) {
+            text.setVisibility(View.VISIBLE);
+            navbar.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Handles events on user's permissions on location.
