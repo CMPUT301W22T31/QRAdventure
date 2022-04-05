@@ -2,13 +2,12 @@ package com.example.qradventure;
 
 
 
-import android.util.Log;
-
 import static org.junit.Assert.*;
+
+import com.example.qradventure.model.QR;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 public class QRTest {

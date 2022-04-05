@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.StatsActivity"
+    android:background="@drawable/gradient_bg">
+
+    <TextView
+        android:id="@+id/tvPageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="Player Stats"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:autoSizeMaxTextSize="32dp"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="2dp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/gotham_medium"
+        android:maxHeight="64dp"
+        android:text="#USERNAME#"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.528"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgTrophy" />
+
+    <ImageView
+        android:id="@+id/imgTrophy"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/trophy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPageTitle"
+        app:tint="#FF9800" />
+
+    <TextView
+        android:id="@+id/tvLabelTotalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham_medium"
+        android:text="Total Score"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvStatsTotalScore"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.542" />
+
+    <TextView
+        android:id="@+id/tvLabelBestQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="Best QR"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvLabelTotalScans"
+        app:layout_constraintStart_toStartOf="@+id/tvLabelTotalScans"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelTotalScans" />
+
+    <TextView
+        android:id="@+id/tvLabelTotalScans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="Total Scans"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvLabelTotalScore"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/tvLabelTotalScore"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelTotalScore" />
+
+    <TextView
+        android:id="@+id/tvStatsTotalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham_medium"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvRankTotalScore"
+        app:layout_constraintStart_toEndOf="@+id/tvLabelTotalScore"
+        app:layout_constraintTop_toTopOf="@+id/tvLabelTotalScore" />
+
+    <TextView
+        android:id="@+id/tvStatsBestQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvStatsTotalScans"
+        app:layout_constraintStart_toStartOf="@+id/tvStatsTotalScans"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatsTotalScans" />
+
+    <TextView
+        android:id="@+id/tvStatsTotalScans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvStatsTotalScore"
+        app:layout_constraintStart_toStartOf="@+id/tvStatsTotalScore"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatsTotalScore" />
+
+    <TextView
+        android:id="@+id/tvRankTotalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham_medium"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvStatsTotalScore"
+        app:layout_constraintTop_toTopOf="@+id/tvLabelTotalScore" />
+
+    <TextView
+        android:id="@+id/tvRankBestQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvRankTotalScans"
+        app:layout_constraintStart_toStartOf="@+id/tvRankTotalScans"
+        app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScans" />
+
+    <TextView
+        android:id="@+id/tvRankTotalScans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvRankTotalScore"
+        app:layout_constraintStart_toStartOf="@+id/tvRankTotalScore"
+        app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScore" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

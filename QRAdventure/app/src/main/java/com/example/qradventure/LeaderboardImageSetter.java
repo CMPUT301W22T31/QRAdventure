@@ -3,6 +3,8 @@ package com.example.qradventure;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.qradventure.model.PlayerPreview;
+
 public class LeaderboardImageSetter {
     public void setImages(TextView scoreView, TextView nameView, ImageView imageView, PlayerPreview playerPreview) {
         int index = playerPreview.getProfilePicIndex();
