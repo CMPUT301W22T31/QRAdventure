@@ -10,17 +10,14 @@
     <ImageView
         android:id="@+id/imageView10"
         android:layout_width="0dp"
-        app:layout_constraintWidth="0.4"
         android:layout_height="628dp"
         android:layout_marginTop="150dp"
-        android:layout_marginEnd="255dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.58"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.255"
+        app:layout_constraintWidth="0.4"
         app:srcCompat="@drawable/login_logo_shape2" />
 
     <LinearLayout
@@ -149,7 +146,7 @@
         android:layout_marginEnd="140dp"
         android:backgroundTint="#4CC9F0"
         android:fontFamily="@font/gotham_medium"
-        android:text="LOGIN"
+        android:text="SIGNUP"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
