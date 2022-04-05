@@ -21,6 +21,7 @@ import com.example.qradventure.model.QueryHandler;
 import com.example.qradventure.R;
 import com.example.qradventure.model.Account;
 import com.example.qradventure.model.scanner;
+import com.example.qradventure.utility.InputValidator;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -121,7 +122,13 @@ public class LoginActivity extends AppCompatActivity {
                 data.put("scanCount", 0);
                 data.put("profilePic", profileIndex);
 
-                if (!username.matches("")) {
+
+                // input validate username
+                InputValidator inputVal = new InputValidator();
+                Context context = getApplicationContext();
+                boolean validUsername = inputVal.checkUser(username, context);
+
+                if (validUsername) {
 
                     // Check for a document matching the input username
                     QueryHandler query = new QueryHandler();
@@ -141,19 +148,11 @@ public class LoginActivity extends AppCompatActivity {
                                 int duration = Toast.LENGTH_SHORT;
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
-                                // TODO: Does this case need extra logic? Or just a toast?
                             }
 
                         }
                     });
 
-                } else {
-                    // user input was empty, notify them via toast:
-                    Context context = getApplicationContext();
-                    CharSequence text = "Username Empty";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
                 }
             }
         });

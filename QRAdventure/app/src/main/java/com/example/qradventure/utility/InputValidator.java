@@ -1,4 +1,7 @@
 package com.example.qradventure.utility;
+import android.content.Context;
+import android.widget.Toast;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
@@ -10,11 +13,31 @@ public class InputValidator {
      * Use to validate the users username
      * @param username
      *      username we are verifying
+     * @param context
+     *      context to display toast error message to
      * @return
      *      True if valid (between 3 and 18 characters inclusive), false otherwise
      */
-    public boolean checkUser(String username) {
-        return username.length()>=3&&username.length()<=18;
+    public boolean checkUser(String username, Context context) {
+        int duration = Toast.LENGTH_SHORT;
+
+        if (username.length() < 3) {
+            CharSequence toastMsg = "Username must be at least 3 characters";
+            Toast toast = Toast.makeText(context, toastMsg, duration);
+            toast.show();
+            return false;
+        } else if (username.length() > 18) {
+            CharSequence toastMsg = "Username must be at most 18 characters";
+            Toast toast = Toast.makeText(context, toastMsg, duration);
+            toast.show();
+            return false;
+        } else if (username.contains("-")) {
+            CharSequence toastMsg = "Username cannot contain: -";
+            Toast toast = Toast.makeText(context, toastMsg, duration);
+            toast.show();
+            return false;
+        }
+        return true;
     }
 
     /**
