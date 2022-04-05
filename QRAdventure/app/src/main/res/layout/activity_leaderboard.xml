@@ -111,8 +111,10 @@
             android:textSize="20dp"
             app:layout_constraintBottom_toTopOf="@+id/profile_pic_number_2"
             app:layout_constraintEnd_toStartOf="@+id/imageView8"
+            app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonFilter2">
+            app:layout_constraintTop_toBottomOf="@+id/buttonFilter2"
+            app:layout_constraintVertical_bias="1.0">
 
         </TextView>
 
@@ -127,7 +129,8 @@
             app:layout_constraintBottom_toTopOf="@+id/profile_pic_number_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView8"
-            app:layout_constraintTop_toBottomOf="@+id/buttonFilter1">
+            app:layout_constraintTop_toBottomOf="@+id/buttonFilter1"
+            app:layout_constraintVertical_bias="1.0">
 
         </TextView>
 
