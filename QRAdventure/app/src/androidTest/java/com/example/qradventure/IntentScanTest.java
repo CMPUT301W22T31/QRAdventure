@@ -242,7 +242,7 @@ public class IntentScanTest {
         solo.clickInList(3);
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
         solo.goBack();
-        solo.clickOnText("Best QR");
+        solo.clickOnText("Largest CODE");
         solo.clickInList(3);
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
         solo.goBack();
