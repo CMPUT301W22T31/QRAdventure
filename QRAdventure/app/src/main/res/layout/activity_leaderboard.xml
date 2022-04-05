@@ -35,7 +35,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         tools:layout_editor_absoluteX="20dp"></ImageView>
-
     <ImageView
         android:id="@+id/bottompercentile"
         android:layout_width="match_parent"
@@ -346,7 +345,6 @@
         </TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <TextView
         android:id="@+id/tvMyRank"
         android:layout_width="wrap_content"
