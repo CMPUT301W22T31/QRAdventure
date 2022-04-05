@@ -170,6 +170,7 @@ public class IntentScanTest {
     /**
      * Test for adding an image to a QR. Uses a mock of PostScanActivity to manually set the image
      * bitmap.
+     * The image shows up as a black or white square for some reason, but it does work
      * @throws Exception
      */
     @Test
