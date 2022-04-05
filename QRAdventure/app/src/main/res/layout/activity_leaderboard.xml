@@ -19,7 +19,7 @@
         android:layout_marginTop="1dp"
         android:alpha="0.4"
         android:src="@drawable/ic_leaderboardlistviewbackground"
-        app:layout_constraintHeight_percent="0.8"
+        app:layout_constraintHeight_percent="0.51"
         app:layout_constraintTop_toBottomOf="@+id/imageView7"></ImageView>
 
     <ImageView
@@ -32,8 +32,6 @@
         android:src="@drawable/ic_bottompercentilerectangle"
         app:layout_constraintBottom_toTopOf="@+id/bottompercentile"
         app:layout_constraintHeight_percent="0.03"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         tools:layout_editor_absoluteX="20dp"></ImageView>
 
     <ImageView
@@ -45,8 +43,6 @@
         android:src="@drawable/ic_bottompercentile"
         app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
         app:layout_constraintHeight_percent="0.1"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
         tools:layout_editor_absoluteX="20dp"></ImageView>
 
 
@@ -101,15 +97,16 @@
             android:id="@+id/buttonFilter1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/gothamlight"
             android:onClick="displayHighScores"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="5dp"
             android:text="TOTAL SCORE"
             android:textColor="#FFFFFF"
+            android:textSize="13dp"
             app:layout_constraintEnd_toStartOf="@+id/sizeSpinner"
             app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
 
@@ -126,6 +123,7 @@
             android:paddingHorizontal="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:textSize="13dp"
             android:text="Total Scans"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/buttonFilter1"
@@ -144,7 +142,6 @@
             android:id="@+id/crown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:src="@drawable/ic_crown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +162,7 @@
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter2"
-            app:layout_constraintVertical_bias="1.0">
+>
 
         </TextView>
 
@@ -181,7 +178,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/crown"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter1"
-            app:layout_constraintVertical_bias="1.0">
+>
 
         </TextView>
 
@@ -196,7 +193,8 @@
             android:fontFamily="@font/gothamlight"
             android:onClick="displayBestQR"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:textSize="13dp"
+            android:paddingRight="5dp"
             android:text="Largest CODE"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/buttonFilter3"
@@ -218,10 +216,6 @@
             app:layout_constraintVertical_bias="0.139" />
 
 
-
-
-
-
         <ImageView
             android:id="@+id/profile_pic_number_1"
             android:layout_width="100dp"
@@ -241,7 +235,7 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
-            app:layout_constraintVertical_bias="0.34"></ImageView>
+            app:layout_constraintVertical_bias="0.228"></ImageView>
 
         <TextView
             android:id="@+id/second_place_score"
@@ -327,7 +321,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profile_pic_number_1"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
-            app:layout_constraintVertical_bias="0.34"></ImageView>
+            app:layout_constraintVertical_bias="0.228"></ImageView>
 
         <TextView
             android:id="@+id/third_place_score"
@@ -355,7 +349,7 @@
         android:text="###"
         android:textAlignment="center"
         android:textColor="#B0D4FF"
-        android:textSize="15sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintEnd_toEndOf="@+id/bottompercentile"
         app:layout_constraintHorizontal_bias="0.022"
@@ -366,15 +360,15 @@
         android:id="@+id/Youareinthe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="100dp"
         android:fontFamily="@font/gotham_light"
         android:text="You are in the"
         android:textColor="#FFFFFF"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bottompercentile"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="0.481" />
 
     <TextView
         android:id="@+id/tvPercHeader"
@@ -386,7 +380,7 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textFontWeight="200"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintStart_toEndOf="@+id/tvMyRank"
         app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder"
@@ -401,7 +395,7 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textFontWeight="200"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintStart_toEndOf="@+id/tvPercHeader"
         app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder"
