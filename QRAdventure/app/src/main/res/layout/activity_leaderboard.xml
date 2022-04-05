@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LeaderboardActivity"
-    android:background="@color/black">
+    android:background="#4F4D51">
 
 
     <LinearLayout
@@ -21,88 +21,142 @@
 
     </LinearLayout>
 
+    <ListView
+
+        android:id="@+id/preview_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:dividerHeight="8sp"
+        app:layout_constraintBottom_toTopOf="@id/navbar_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.77"
+        android:paddingTop="0dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personalPlacementRegion"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.4"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_polygon_14"
+        ></ImageView>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/personalPlacementRegion"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.38"
         android:background="@drawable/ic_polygon_13"
-        app:layout_constraintTop_toBottomOf="@id/topPanel">
+        app:layout_constraintTop_toBottomOf="@id/topPanel"
+        tools:layout_editor_absoluteX="-42dp">
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFilter1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/gotham_medium"
             android:onClick="displayHighScores"
             android:text="High Scores"
-            android:textColor="#FFFFFF" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonFilter2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#00FFFFFF"
-            android:backgroundTint="#BF5E5E5E"
-            android:fontFamily="@font/gotham_medium"
-            android:onClick="displayBestQR"
-            android:text="Best QR"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toStartOf="@+id/sizeSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFilter3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/gotham_medium"
             android:onClick="displayMostScanned"
             android:text="Total Scans"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toStartOf="@+id/buttonFilter1"
+            app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
 
         <Spinner
             android:id="@+id/sizeSpinner"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:contextClickable="false" />
+            android:layout_marginEnd="72dp"
+            android:contextClickable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonFilter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#BF5E5E5E"
+            android:fontFamily="@font/gotham_medium"
+            android:onClick="displayBestQR"
+            android:text="Best QR"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toStartOf="@+id/buttonFilter3"
+            app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
 
         <TextView
-            android:id="@+id/tvMyRank"
+            android:id="@+id/leaderboard_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_light"
-            android:text="###"
-            android:textAlignment="center"
+            android:text="LEADERBOARD"
             android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvPercHeader"
-            app:layout_constraintHorizontal_bias="0.924"
+            android:textSize="33sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvMyRank"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.139" />
 
         <TextView
             android:id="@+id/tvPRHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
             android:fontFamily="@font/gotham_light"
             android:text="You are in the"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvMyRank"
-            app:layout_constraintHorizontal_bias="0.877"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
+            app:layout_constraintVertical_bias="0.58" />
 
+
+        <TextView
+            android:id="@+id/tvMyRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:fontFamily="@font/gotham_light"
+            android:text="###"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/tvPercHeader"
+            app:layout_constraintTop_toBottomOf="@+id/tvPercHeader" />
         <TextView
             android:id="@+id/tvPercHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="116dp"
+            android:layout_marginEnd="92dp"
             android:fontFamily="@font/gotham_light"
             android:text="percentile"
             android:textAlignment="center"
@@ -111,20 +165,21 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.643" />
+        <ImageView
+            android:id="@+id/profile_pic_number_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.474"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ListView
-
-        android:id="@+id/preview_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/navbar_menu"
-        app:layout_constraintTop_toBottomOf="@+id/personalPlacementRegion"
-        app:layout_constraintVertical_bias="0.0"
-        android:dividerHeight="2.5sp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"

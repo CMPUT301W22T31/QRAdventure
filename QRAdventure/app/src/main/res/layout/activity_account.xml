@@ -7,13 +7,7 @@
     android:background="#121212"
     >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_qr_stars"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="5dp" />
+
 
     <LinearLayout
         android:id="@+id/linearLayout6"

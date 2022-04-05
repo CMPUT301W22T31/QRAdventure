@@ -6,10 +6,13 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="#FAF4FF"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        app:cardCornerRadius="15dp"
         app:cardElevation="10dp">
 
         <LinearLayout
@@ -18,16 +21,16 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textColor="#818181"
+                android:textColor="#4F4D51"
                 android:id="@+id/tvRank"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:fontFamily="@font/gotham_medium"
+                android:fontFamily="@font/gotham_light"
                 android:gravity="center"
                 android:text="##"
                 android:textAlignment="center"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <ImageView
                 android:id="@+id/leaderboard_profile_pic"
@@ -38,15 +41,15 @@
                 app:tint="#00FFFFFF" />
 
             <TextView
-                android:textColor="#818181"
+                android:textColor="#424044"
                 android:id="@+id/other_player_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/gotham_medium"
+                android:fontFamily="@font/gothammedium"
                 android:padding="20dp"
                 android:text="Username"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:maxWidth="150dp"
                 android:maxHeight="100dp"/>
 
@@ -57,11 +60,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="0dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/gotham_medium"
+                android:fontFamily="@font/gothamlight"
                 android:gravity="center_vertical|end"
                 android:paddingEnd="20dp"
                 android:text="Score"
-                android:textSize="24sp" />
+                android:textSize="25sp" />
 
 
         </LinearLayout>
