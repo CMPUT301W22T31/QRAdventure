@@ -3,24 +3,70 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/btn_bg.xml" value="0.347" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/login_info_box.xml" value="0.347" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/login_info_box2.xml" value="0.347" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/drawable/login_info_box3.xml" value="0.347" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/font/.xml" value="0.40208333333333335" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/font/montserrat_alternates_medium.xml" value="0.40208333333333335" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_account.xml" value="0.371875" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_comments.xml" value="0.371875" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_edit_info.xml" value="0.371875" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login.xml" value="0.5" />
-        <entry key="..\:/Users/Aaron/AndroidStudioProjects/QRAdventure/QRAdventure/app/src/main/res/layout/activity_login_qractivity.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/account2.xml" value="0.188" />
+        <entry key="app/src/main/res/drawable/add_btn_color.xml" value="0.135" />
+        <entry key="app/src/main/res/drawable/blue_rect2.xml" value="0.135" />
+        <entry key="app/src/main/res/drawable/blue_rect3.xml" value="0.135" />
+        <entry key="app/src/main/res/drawable/box.xml" value="0.188" />
+        <entry key="app/src/main/res/drawable/button_bg.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/comment_button_color.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/comments_btn.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/gradient_bg.xml" value="0.135" />
+        <entry key="app/src/main/res/drawable/gradientbackground.xml" value="0.135" />
+        <entry key="app/src/main/res/drawable/ic_group_98.xml" value="0.1865" />
+        <entry key="app/src/main/res/drawable/ic_more_info.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/ic_more_info1.xml" value="0.1865" />
+        <entry key="app/src/main/res/drawable/ic_other_profile_bg.xml" value="0.2045" />
+        <entry key="app/src/main/res/drawable/ic_qr_location.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/ic_qr_stars.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/ic_user_location.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/leaderboard.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/location2.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/location_btn.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/more_info_design.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/qr_code2.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/qr_code2_black.xml" value="0.1525" />
+        <entry key="app/src/main/res/drawable/qr_scanner.xml" value="0.1525" />
+        <entry key="app/src/main/res/font/fredoka_one.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/layout/activity_account.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_add_geolocation.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/activity_comments.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/layout/activity_leaderboard.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_login_qractivity.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/activity_map.xml" value="0.178125" />
+        <entry key="app/src/main/res/layout/activity_maps.xml" value="0.25295109612141653" />
+        <entry key="app/src/main/res/layout/activity_my_codes.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_my_stats.xml" value="0.11197916666666667" />
+        <entry key="app/src/main/res/layout/activity_owner.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/activity_post_scan.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_post_scan2.xml" value="0.23598724365234375" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_qrpage.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/activity_scan.xml" value="0.24628499348958333" />
+        <entry key="app/src/main/res/layout/activity_scanned_by.xml" value="0.11458333333333333" />
+        <entry key="app/src/main/res/layout/activity_search_players.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/activity_stats.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_status_qractivity.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/activity_view_codes.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/camera.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/content_comment.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/fragment_leaderboard.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/fragment_location.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_maps_title_header.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/image_confirm_fragment.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/layout/nearby_qr_list_dialogue.xml" value="0.259567387687188" />
+        <entry key="app/src/main/res/layout/player_list_entry.xml" value="0.2762115478515625" />
+        <entry key="app/src/main/res/layout/profile_choice.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/profile_choice_dialogue.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/qr_distance_info.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/single_qr.xml" value="0.3050186157226562" />
+        <entry key="app/src/main/res/layout/username_list.xml" value="0.1796875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/profile_header_round.xml" value="0.1105" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
