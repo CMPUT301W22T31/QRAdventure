@@ -165,6 +165,14 @@ public class AccountActivity extends AppCompatActivity {
             String username = account.getUsername();
             String email = account.getEmail();
             String phoneNumber = account.getPhoneNumber();
+
+            if (email.equals("")) {
+                email = "N/A";
+            }
+            if (phoneNumber.equals("")) {
+                phoneNumber = "N/A";
+            }
+
             displayUsername.setText(username);
             displayEmail.setText(email);
             displayPhoneNumber.setText(phoneNumber);

@@ -182,6 +182,12 @@ public class ProfileActivity extends AppCompatActivity {
      */
     public void setTextViews(String name, String email, String phone, String score) {
         // get reference to the textviews
+        if (email.equals("")) {
+            email = "N/A";
+        }
+        if (phone.equals("")) {
+            phone = "N/A";
+        }
         TextView tvUsername = findViewById(R.id.tvUsername);
         TextView tvPhone = findViewById(R.id.tvPhone);
         TextView tvEmail = findViewById(R.id.tvEmail);
