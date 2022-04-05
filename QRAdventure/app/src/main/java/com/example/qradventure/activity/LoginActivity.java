@@ -38,7 +38,6 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * LoginActivity
  * Handles Account Registration
- * TODO: Rename Activity
  */
 public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db;

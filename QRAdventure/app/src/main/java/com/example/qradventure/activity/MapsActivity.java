@@ -48,6 +48,10 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
+/**
+ * MapsActivity
+ * Uses Google Maps to display the map of your location and nearby QRs
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
     Dialog nearByQRDialogue;
     private GoogleMap mMap;
@@ -59,6 +63,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<String> nearByQRs = new ArrayList<String>();
     String content = null;
 
+    /**
+     * Initializes variables
+     * enables navbar
+     * @param savedInstanceState - unused
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,13 +195,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void nearByQRList(){
-        nearByQRDialogue.setContentView(R.layout.nearby_qr_list_dialogue);
-        nearByQRDialogue.show();
-    }
-
-
-
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity
      * This method is copied into every activity which we can clock the scannable button from
@@ -276,6 +278,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+    /**
+     * Builds a dialogue fragment to display a list of nearby QRs
+     * @param view - button that called this method
+     */
     public void nearByQRList(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();

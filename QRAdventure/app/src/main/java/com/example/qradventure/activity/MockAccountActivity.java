@@ -21,7 +21,10 @@ public class MockAccountActivity extends AccountActivity {
     FirebaseFirestore db;
     Account old;
 
-
+    /**
+     * onCreate initialize mock data
+     * @param savedInstanceState - unused
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

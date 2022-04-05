@@ -29,6 +29,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.qradventure.databinding.ActivityAddGeolocationBinding;
 
+/**
+ * Used to add a geolocation after scanning a QR code
+ */
 public class AddGeolocationActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
     private GoogleMap mMap;
@@ -122,7 +125,12 @@ public class AddGeolocationActivity extends FragmentActivity implements OnMapRea
 
     }
 
-    // This is for setting up the custom icon for the marker
+    /**
+     * used to set a custom icon for the map marker
+     * @param context - app context
+     * @param vectorResId - icon
+     * @return BitmapDescriptor - information of the custom icon
+     */
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0,0,vectorDrawable.getIntrinsicWidth()

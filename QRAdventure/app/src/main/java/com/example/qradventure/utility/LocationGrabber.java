@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Used to get the location of the current user
+ * Uses CurrentAccount singleton to get the account, and set its location
+ */
 public class LocationGrabber {
     Account account;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -28,6 +32,11 @@ public class LocationGrabber {
         this.fusedLocationProviderClient = fusedLocationProviderClient;
         account = CurrentAccount.getAccount();
     }
+
+    /**
+     * Gets and sets location of current user
+     * @param context
+     */
     @SuppressLint("MissingPermission")
     public void getLocation(Context context) {
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
@@ -38,13 +47,10 @@ public class LocationGrabber {
                     Geocoder geocoder = new Geocoder(context, Locale.getDefault());
                     try {
                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        Log.d("logs", "latitude = " + addresses.get(0).getLatitude());
-                        Log.d("logs", "longitude = " + addresses.get(0).getLongitude());
                         ArrayList<Double> userLocation = new ArrayList<Double>();
                         userLocation.add(addresses.get(0).getLongitude());
                         userLocation.add(addresses.get(0).getLatitude());
                         account.setLocation(userLocation);
-                        Log.d("logs", "user location now: " + account.getLocation().toString());
 
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -73,7 +73,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.SearchPlayersActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".activity.CommentsActivity"
             android:exported="false" />

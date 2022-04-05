@@ -32,10 +32,11 @@ public class PlayerScoreAdapter extends ArrayAdapter<PlayerPreview> {
 
     /**
      * Override default getView with a custom one - view from player_list_entry.
+     * Allows for trophies to be displayed on top ranked players
      * @param position - position in list
-     * @param convertView -
-     * @param parent - super
-     * @return View - custom view to display
+     * @param convertView - unused view to reuse as list scrolls
+     * @param parent - ViewGroup
+     * @return View - custom view to display within the listView
      */
     @NonNull
     @Override
