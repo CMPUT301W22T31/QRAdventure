@@ -48,8 +48,13 @@ public class PlayerScoreAdapter extends ArrayAdapter<PlayerPreview> {
             view = LayoutInflater.from(context).inflate(R.layout.player_list_entry, parent, false);
         }
 
-        // set special attributes for top 3 ranked players (trophies!)
-        // TODO: change border colors too?
+        /*
+         * Citation
+         *      Website: Stackoverflow
+         *      Link: https://stackoverflow.com/a/10479144
+         *      Author: Samir Mangroliya
+         *      Purpose: Set special attributes to items in a listview
+         */
         int rank = preview.getRank();
         ImageView trophy = view.findViewById(R.id.ivTrophy);
 

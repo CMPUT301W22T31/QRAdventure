@@ -48,7 +48,6 @@ public class SearchPlayersActivity extends AppCompatActivity {
     ListView playerListView;
     ArrayList<String> playerNames;
     ArrayAdapter<String> usernameAdapter;
-    FirebaseFirestore db;
     Account account;
     BottomNavigationView navbar;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -102,7 +101,6 @@ public class SearchPlayersActivity extends AppCompatActivity {
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
-                    Log.d("check", "WORKING???");
                     Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
                     startActivity(intent1);
                     break;
@@ -151,13 +149,10 @@ public class SearchPlayersActivity extends AppCompatActivity {
         }
         if (requestCode == 44) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            Log.d("logs", "Grabbing location ");
-            Log.d("logs", "Location before: " + account.getLocation().toString() );
             LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
             locationGrabber.getLocation(this);
             Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent5);
-            Log.d("logs", "Location after: " + account.getLocation().toString() );
         }
 
     }
@@ -184,6 +179,14 @@ public class SearchPlayersActivity extends AppCompatActivity {
      * @param v - (unused)
      */
     public void queryUsername(View v) {
+
+        /*
+         * Citation: dropping keyboard functionality
+         *      Website: Stackoverflow
+         *      Link: https://stackoverflow.com/a/1109108
+         *      Author: Reto Meier (+15 revisions)
+         *      Purpose: automatically drop the on screen keyboard
+         */
         // drop keyboard
         View view = this.getCurrentFocus();
         if (view != null) {

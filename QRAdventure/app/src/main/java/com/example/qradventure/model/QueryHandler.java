@@ -36,7 +36,13 @@ import java.util.Map;
 
 
 /**
- * Class for holding all Querys to the Firestore database.
+ * Class for holding all Queries to the Firestore database.
+ *
+ * Citation for query structure
+ *      Website: firebase.google.com
+ *      Link: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
+ *      Author: Google
+ *
  * Makes heavy use of callbacks. The Idea for callbacks
  * came from this citation:
  *
@@ -297,7 +303,13 @@ public class QueryHandler {
 
 
     /**
-     * Takes a string and querys a search result based off of the string
+     * Takes a string and queries for similar usernames
+     *
+     * Citation:
+     *      Website: Stackoverflow
+     *      Link: https://stackoverflow.com/a/56815787
+     *      Author: Ankit Prajapati
+     *      Purpose: mimic the "like" query operator.
      *
      * @param username What we are searching for
      * @param callback Callback function
