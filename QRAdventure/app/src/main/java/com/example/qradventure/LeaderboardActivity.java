@@ -44,6 +44,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     ImageView secondPlace;
     ImageView thirdPlace;
 
+
     ArrayList<PlayerPreview> previewArray;
     ArrayList<PlayerPreview> top3PreviewArray;
     ArrayAdapter<PlayerPreview> adapter;
@@ -296,10 +297,14 @@ public class LeaderboardActivity extends AppCompatActivity {
                 TextView secondPlaceName = findViewById(R.id.second_place_name);
                 TextView thirdPlaceName = findViewById(R.id.third_place_name);
 
+                TextView firstPlaceScore = findViewById(R.id.first_place_score);
+                TextView secondPlaceScore = findViewById(R.id.second_place_score);
+                TextView thirdPlaceScore = findViewById(R.id.third_place_score);
+
                 LeaderboardImageSetter leaderboardImageSetter = new LeaderboardImageSetter();
                 ImageView[] imageViews = {firstPlace, secondPlace, thirdPlace};
                 TextView[] usernameTextViews = {firstPlaceName, secondPlaceName, thirdPlaceName};
-                TextView[] scoreTextViews = {};
+                TextView[] scoreTextViews = {firstPlaceScore, secondPlaceScore, thirdPlaceScore};
 
                 for (int i = 0 ; i < 3; i++) {
                     leaderboardImageSetter.setImages(scoreTextViews[i],usernameTextViews[i], imageViews[i], top3people.get(i));
