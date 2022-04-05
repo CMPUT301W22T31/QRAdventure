@@ -982,14 +982,22 @@ public class QueryHandler {
                             for (QueryDocumentSnapshot accDocRef : task.getResult()) {
                                 rank = rank + 1;
                                 // get relevant preview data
+                                Long profileIndex = (Long) accDocRef.getData().get("profilePic");
                                 String username = accDocRef.getId();
                                 String score = "" + accDocRef.get(fieldFilter).toString();
 
                                 // create preview and add to array
-                                PlayerPreview newPreview = new PlayerPreview(username, score, rank);
+                                PlayerPreview newPreview;
+                                if (profileIndex == null) {
+                                    newPreview = new PlayerPreview(username, score, rank);
+                                }
+                                else {
+                                    newPreview = new PlayerPreview(username, score, rank, profileIndex.intValue());
+                                }
                                 previewArray.add(newPreview);
                             }
                             // outside for loop, callback the array
+
                             callback.callback(previewArray);
 
                         } else {

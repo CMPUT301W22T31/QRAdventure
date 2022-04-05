@@ -49,6 +49,9 @@ public class PlayerScoreAdapter extends ArrayAdapter<PlayerPreview> {
             view = LayoutInflater.from(context).inflate(R.layout.player_list_entry, parent, false);
         }
 
+        // set special attributes for top 3 ranked players
+
+        ImageView profilepic = view.findViewById(R.id.leaderboard_profile_pic);
         /*
          * Citation
          *      Website: Stackoverflow
@@ -57,21 +60,35 @@ public class PlayerScoreAdapter extends ArrayAdapter<PlayerPreview> {
          *      Purpose: Set special attributes to items in a listview
          */
         int rank = preview.getRank();
-        ImageView trophy = view.findViewById(R.id.ivTrophy);
+        int profilePicIndex = preview.getProfilePicIndex();
 
-        if (rank == 1) {
-            // color filter GOLD
-            trophy.setColorFilter(Color.argb(255,255,193,7));
-        } else if (rank == 2) {
-            // color filter SILVER
-            trophy.setColorFilter(Color.argb(255,170,170,170));
-        } else if (rank == 3) {
-            // color filter BRONZE
-            trophy.setColorFilter(Color.argb(255,178,127,78));
-        } else {
-            // set alpha to 0 to hide trophy
-            trophy.setColorFilter(Color.argb(0,178,127,78));
+        switch (profilePicIndex) {
+            case 0:
+                profilepic.setBackgroundResource(R.drawable.ic_turtle);
+                //profileCard.setCardBackgroundColor(Color.parseColor("#4361EE"));
+                break;
+            case 1:
+                profilepic.setBackgroundResource(R.drawable.ic_fish);
+                //profileCard.setCardBackgroundColor(Color.parseColor("#3A0CA3"));
+                break;
+            case 2:
+                profilepic.setBackgroundResource(R.drawable.ic_butterfly);
+                //profileCard.setCardBackgroundColor(Color.parseColor("#a8dadc"));
+                break;
+            case 3:
+                profilepic.setBackgroundResource(R.drawable.ic_ladybug);
+                //profileCard.setCardBackgroundColor(Color.parseColor("#b5179e"));
+                break;
+            case 4:
+                profilepic.setBackgroundResource(R.drawable.ic_crocodile);
+                //profileCard.setCardBackgroundColor(Color.parseColor("#457b9d"));
+                break;
+            case 5:
+                profilepic.setBackgroundResource(R.drawable.ic_duck);
+                //profileCard.setCardBackgroundColor(Color.parseColor("#2a9d8f"));
+                break;
         }
+
 
         // get and set the textviews
         TextView tvUsername = view.findViewById(R.id.other_player_name);
