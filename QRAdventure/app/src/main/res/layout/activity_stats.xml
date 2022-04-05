@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/gotham_medium"
-        android:text="Player Stats"
+        android:text="Stats"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="32dp"
@@ -39,26 +39,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.528"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgTrophy" />
+        app:layout_constraintTop_toBottomOf="@+id/img_profile_stats" />
 
     <ImageView
-        android:id="@+id/imgTrophy"
+        android:id="@+id/img_profile_stats"
         android:layout_width="144dp"
         android:layout_height="144dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/trophy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPageTitle"
-        app:tint="#FF9800" />
+        />
+
 
     <TextView
         android:id="@+id/tvLabelTotalScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/gotham_medium"
-        android:text="Total Score"
+        android:fontFamily="@font/gothamlight"
+        android:text="TOTAL SCORE"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24dp"
@@ -73,8 +73,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:fontFamily="@font/gotham_medium"
-        android:text="Best QR"
+        android:fontFamily="@font/gothamlight"
+        android:text="LARGEST QR"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24dp"
@@ -87,8 +87,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:fontFamily="@font/gotham_medium"
-        android:text="Total Scans"
+        android:fontFamily="@font/gothamlight"
+        android:text="TOTAL SCANS"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24dp"
@@ -152,6 +152,22 @@
         app:layout_constraintTop_toTopOf="@+id/tvLabelTotalScore" />
 
     <TextView
+        android:id="@+id/tvRankTotalScorePercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="12dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="percentile"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvRankTotalScore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvRankTotalScore"
+        app:layout_constraintTop_toTopOf="@+id/tvLabelTotalScore" />
+
+    <TextView
         android:id="@+id/tvRankBestQR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -166,6 +182,21 @@
         app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScans" />
 
     <TextView
+        android:id="@+id/tvRankBestQRPercentile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="percentile"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvRankBestQR"
+        app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScansPercentile" />
+
+    <TextView
         android:id="@+id/tvRankTotalScans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -178,6 +209,22 @@
         app:layout_constraintEnd_toEndOf="@+id/tvRankTotalScore"
         app:layout_constraintStart_toStartOf="@+id/tvRankTotalScore"
         app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScore" />
+
+    <TextView
+        android:id="@+id/tvRankTotalScansPercentile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/gotham_medium"
+        android:text="percentile"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvRankTotalScans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvRankTotalScans"
+        app:layout_constraintTop_toBottomOf="@+id/tvRankTotalScorePercent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
