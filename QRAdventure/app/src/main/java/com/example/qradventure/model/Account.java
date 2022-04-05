@@ -16,7 +16,7 @@ public class Account {
     private ArrayList<Double> location; // 0 index is longitude, 1 is latitude
     private ArrayList<Record> myRecords; // A list is used here to enforce chronological order
     //private Set<Record> alreadyHas; // Used for tracking which records the player has
-
+    private Integer profileIndex = null;
     /**
      * Constructor with the record list
      * @param username
@@ -103,6 +103,14 @@ public class Account {
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
         return Objects.equals(username, account.username);
+    }
+
+    public void setProfileIndex(Integer profileIndex) {
+        this.profileIndex = profileIndex;
+    }
+
+    public Integer getProfileIndex() {
+        return profileIndex;
     }
 
     /**
@@ -228,6 +236,10 @@ public class Account {
         return myRecords.size();
     }
 
+    /**
+     * Get an arraylist of all the records that the account has
+     * @return myRecords
+     */
     public ArrayList<Record> getMyRecords() {
         return myRecords;
     }

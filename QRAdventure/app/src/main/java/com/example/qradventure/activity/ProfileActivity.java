@@ -3,15 +3,18 @@ package com.example.qradventure.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +48,10 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FusedLocationProviderClient fusedLocationProviderClient;
     Account account;
-    String content = null;
+    CardView profileCard;
+    ImageView profilepic;
 
+    String content = null;
 
     /**
      * Gets and displays fields of a player's profile
@@ -67,6 +72,10 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
         Account account = CurrentAccount.getAccount();
+
+        // set up the profile pic chosen by the user
+        profileCard = findViewById(R.id.other_profile_card);
+        profilepic = findViewById(R.id.other_profile_pic);
 
         // Call FusedLocationProviderClient class to grab location of user
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -140,15 +149,57 @@ public class ProfileActivity extends AppCompatActivity {
         query.getProfile(username, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
-
-
                 String email = (String) args.get(0);
                 String phone = (String) args.get(1);
                 Long totalScore = (Long)args.get(2);
+                Long retrievedProfileIndex = (Long)args.get(3);
+
+                // if the user has a profile pic set up then set the profile pic to be that
+                if (retrievedProfileIndex != null) {
+                    setUpProfilePic(retrievedProfileIndex.intValue());
+                }
+                else {
+                    setUpProfilePic(0); // just set it to the turtle pic
+                }
+
                 setTextViews(username, email, phone, totalScore.toString());
             }
         });
     }
+
+    void setUpProfilePic(Integer profileIndex) {
+        switch (profileIndex) {
+            case 0:
+                profilepic.setBackgroundResource(R.drawable.ic_turtle);
+                profileCard.setCardBackgroundColor(Color.parseColor("#4361EE"));
+                break;
+            case 1:
+                profilepic.setBackgroundResource(R.drawable.ic_fish);
+                profileCard.setCardBackgroundColor(Color.parseColor("#3A0CA3"));
+                break;
+            case 2:
+                profilepic.setBackgroundResource(R.drawable.ic_butterfly);
+                profileCard.setCardBackgroundColor(Color.parseColor("#a8dadc"));
+                break;
+            case 3:
+                profilepic.setBackgroundResource(R.drawable.ic_ladybug);
+                profileCard.setCardBackgroundColor(Color.parseColor("#b5179e"));
+                break;
+            case 4:
+                profilepic.setBackgroundResource(R.drawable.ic_crocodile);
+                profileCard.setCardBackgroundColor(Color.parseColor("#457b9d"));
+                break;
+            case 5:
+                profilepic.setBackgroundResource(R.drawable.ic_duck);
+                profileCard.setCardBackgroundColor(Color.parseColor("#2a9d8f"));
+                break;
+        }
+    }
+
+        /**
+         * Sends to ViewCodes activity. Called when respective button is clicked.
+         * @param view: unused
+         */
 
     /**
      * Sends to ViewCodes activity. Called when respective button is clicked.
@@ -206,8 +257,6 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d("logs", "Location after: " + account.getLocation().toString() );
         }
     }
-
-
 
     /**
      * This method is called whenever a QR code is scanned. Takes the user to PostScanActivity

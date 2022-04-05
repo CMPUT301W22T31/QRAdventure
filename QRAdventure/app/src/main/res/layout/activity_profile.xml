@@ -41,12 +41,23 @@
                 android:layout_height="80dp"
                 android:gravity=""
                 android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/other_profile_card"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:cardElevation="10dp"
+                    app:cardBackgroundColor="@color/grey"
+                    app:cardCornerRadius="40dp"
+                    android:layout_marginLeft="60dp"
+                    >
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:src="@drawable/account_default" />
+                    <ImageView
+                        android:id="@+id/other_profile_pic"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        ></ImageView>
+                </androidx.cardview.widget.CardView>
+
             </LinearLayout>
 
             <TextView

@@ -55,7 +55,6 @@ public class LeaderboardActivity extends AppCompatActivity {
     int currentFilter;
     int colorToggleOn = Color.argb(120,255,255,255);
     int colorToggleOff = Color.argb(0,255,255,255);
-    String TAG = "Leaderboard_TAG";
     FusedLocationProviderClient fusedLocationProviderClient;
     String content = null;
 
@@ -91,6 +90,17 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
 
 
+        /*
+         * Citation
+         *      Website: https://developer.android.com/guide/topics/ui/controls/spinner
+         *      Author: Google
+         *
+         *      Website: Stackoverflow
+         *      Link: https://stackoverflow.com/a/17650125
+         *      Author: Nicolas Tyler
+         *      Purpose: How to use the Spinner object
+         *
+         */
         // ==== Enable Spinner ====
         String[] spinnerChoices = new String[]{"Top 3", "Top 5", "top 10", "top 25"};
         Spinner spinner = (Spinner) findViewById(R.id.sizeSpinner);
@@ -205,8 +215,6 @@ public class LeaderboardActivity extends AppCompatActivity {
      * @param v: button that called this method
      */
     public void displayHighScores(View v) {
-        Log.d(TAG, "fetchcount = "+fetchCount);
-
         // This is filter 1. do nothing if already on this filter.
         if (currentFilter == 1 && previewArray.size() == fetchCount) { return; }
 
@@ -371,13 +379,10 @@ public class LeaderboardActivity extends AppCompatActivity {
         }
         if (requestCode == 44) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            Log.d("logs", "Grabbing location ");
-            Log.d("logs", "Location before: " + account.getLocation().toString() );
             LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
             locationGrabber.getLocation(this);
             Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent5);
-            Log.d("logs", "Location after: " + account.getLocation().toString() );
         }
     }
 

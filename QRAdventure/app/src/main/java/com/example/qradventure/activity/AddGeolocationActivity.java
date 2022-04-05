@@ -105,6 +105,7 @@ public class AddGeolocationActivity extends FragmentActivity implements OnMapRea
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 15f));
     }
 
+
     @Override
     public void onMarkerDrag(@NonNull Marker marker) {
 

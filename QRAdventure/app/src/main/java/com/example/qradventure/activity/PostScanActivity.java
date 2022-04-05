@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import android.widget.Toast;
 
 import com.example.qradventure.model.Callback;
@@ -61,8 +60,8 @@ import java.util.HashMap;
  * Activity that comes immediately after scanning a QR code.
  * Allows the player to manage and interact with the code they have just scanned.
  */
-public class PostScanActivity extends AppCompatActivity {
 
+public class PostScanActivity extends AppCompatActivity {
     protected QR qr;
     private String recordID;
     private Button photoButton;

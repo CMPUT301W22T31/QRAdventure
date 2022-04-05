@@ -156,12 +156,10 @@ public class CommentsActivity extends AppCompatActivity {
         navbar.setOnItemSelectedListener((item) ->  {
             switch(item.getItemId()) {
                 case R.id.leaderboards:
-                    Log.d("check", "WORKING???");
                     Intent intent1 = new Intent(getApplicationContext(), LeaderboardActivity.class);
                     startActivity(intent1);
                     break;
                 case R.id.search_players:
-                    Log.d("check", "YES WORKING???");
                     Intent intent2 = new Intent(getApplicationContext(), SearchPlayersActivity.class);
                     startActivity(intent2);
                     break;
@@ -214,13 +212,10 @@ public class CommentsActivity extends AppCompatActivity {
         }
         if (requestCode == 44) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            Log.d("logs", "Grabbing location ");
-            Log.d("logs", "Location before: " + account.getLocation().toString() );
             LocationGrabber locationGrabber = new LocationGrabber(fusedLocationProviderClient);
             locationGrabber.getLocation(this);
             Intent intent5 = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent5);
-            Log.d("logs", "Location after: " + account.getLocation().toString() );
         }
     }
 
