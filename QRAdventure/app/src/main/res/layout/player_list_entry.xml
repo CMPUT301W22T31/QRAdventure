@@ -52,7 +52,7 @@
                 android:fontFamily="@font/gothammedium"
                 android:padding="20dp"
                 android:text="Username"
-                android:textSize="18sp"
+                android:textSize="13sp"
                 android:maxWidth="150dp"
                 android:maxHeight="100dp"/>
 
