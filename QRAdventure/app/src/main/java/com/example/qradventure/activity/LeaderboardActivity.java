@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qradventure.LeaderboardImageSetter;
 import com.example.qradventure.model.Callback;
 import com.example.qradventure.model.CurrentAccount;
 import com.example.qradventure.utility.LocationGrabber;
@@ -39,6 +41,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 
 /**
@@ -48,7 +51,14 @@ public class LeaderboardActivity extends AppCompatActivity {
     Account account;
     BottomNavigationView navbar;
     PlayerPreview previewInfo;
+    ImageView firstPlace;
+    ImageView secondPlace;
+    ImageView thirdPlace;
+    TextView filterSelected;
+
+
     ArrayList<PlayerPreview> previewArray;
+    ArrayList<PlayerPreview> top3PreviewArray;
     ArrayAdapter<PlayerPreview> adapter;
     ListView playersListView;
     int fetchCount;
@@ -74,6 +84,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         // Get the account from the singleton
         account = CurrentAccount.getAccount();
 
+        top3PreviewArray = new ArrayList<PlayerPreview>();
+
+
         // ==== Initialize & Link adapter ====
         previewArray = new ArrayList<PlayerPreview>();
         playersListView = findViewById(R.id.preview_list);
@@ -88,7 +101,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                 goToProfile(name);
             }
         });
-
 
         /*
          * Citation
@@ -139,6 +151,10 @@ public class LeaderboardActivity extends AppCompatActivity {
                 // do nothing
             }
         });
+
+        // get the filter category, e.g., "highest score"
+        // so the textview at bottom of leaderboard can be changed
+        filterSelected = findViewById(R.id.categoryhighest);
 
         // ==== set default filter: top 10 from High Score ====
         fetchCount = 10;
@@ -227,6 +243,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         queryTopRanks(filter);
 
+        filterSelected.setText("highest score.");
+
         int score = CurrentAccount.getAccount().getTotalScore();
         calculateMyPercentile(filter, score);
     }
@@ -248,6 +266,8 @@ public class LeaderboardActivity extends AppCompatActivity {
         String filter = "bestQR";
 
         queryTopRanks(filter);
+
+        filterSelected.setText("largest code.");
 
         int score = CurrentAccount.getAccount().getHighestQR();
         calculateMyPercentile(filter, score);
@@ -271,6 +291,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         queryTopRanks(filter);
 
+        filterSelected.setText("most scanning.");
+
         int score = CurrentAccount.getAccount().getTotalCodesScanned();
         calculateMyPercentile(filter, score);
     }
@@ -282,20 +304,74 @@ public class LeaderboardActivity extends AppCompatActivity {
      */
     public void queryTopRanks(String filter) {
         QueryHandler qh = new QueryHandler();
+
         qh.getTopRanks(filter, fetchCount, new Callback() {
             @Override
             public void callback(ArrayList<Object> args) {
                 // Use the array query callback provided
                 // UNSAFE CAST - using wildcard <?> to help cast Object to PlayerPreview
+                ArrayList<PlayerPreview> top3people = new ArrayList<PlayerPreview>();
                 previewArray.clear();
                 for (Object item : args){
                     previewInfo = (PlayerPreview) item;
+                    Log.d("bruh", previewInfo.getUsername());
+
                     previewArray.add(previewInfo);
+                    top3people.add(previewInfo);
                 }
                 adapter.notifyDataSetChanged();
+
+                firstPlace = findViewById(R.id.profile_pic_number_1);
+                secondPlace = findViewById(R.id.profile_pic_number_2);
+                thirdPlace = findViewById(R.id.profile_pic_number_3);
+                TextView firstPlaceName = findViewById(R.id.first_place_name);
+                TextView secondPlaceName = findViewById(R.id.second_place_name);
+                TextView thirdPlaceName = findViewById(R.id.third_place_name);
+
+                TextView firstPlaceScore = findViewById(R.id.first_place_score);
+                TextView secondPlaceScore = findViewById(R.id.second_place_score);
+                TextView thirdPlaceScore = findViewById(R.id.third_place_score);
+
+
+
+
+                LeaderboardImageSetter leaderboardImageSetter = new LeaderboardImageSetter();
+                ImageView[] imageViews = {firstPlace, secondPlace, thirdPlace};
+                TextView[] usernameTextViews = {firstPlaceName, secondPlaceName, thirdPlaceName};
+                TextView[] scoreTextViews = {firstPlaceScore, secondPlaceScore, thirdPlaceScore};
+
+                //If there is less than three users, do not display the top three users
+                Log.d("meme", thirdPlaceScore.getText().toString());
+                if (args.size() < 3) {
+                    //less than three players -> disable all display for top three players at top of leaderboard
+                    ImageView crown = findViewById(R.id.crown);
+                    crown.setVisibility(View.GONE);
+
+                    TextView secondPlaceText = findViewById(R.id.second_place_number_text);
+                    TextView thirdPlaceText = findViewById(R.id.third_place_number_text);
+                    secondPlaceText.setVisibility(View.GONE);
+                    thirdPlaceText.setVisibility(View.GONE);
+
+                    firstPlaceName.setVisibility(View.GONE);
+                    secondPlaceName.setVisibility(View.GONE);
+                    thirdPlaceName.setVisibility(View.GONE);
+                    firstPlaceScore.setVisibility(View.GONE);
+                    secondPlaceScore.setVisibility(View.GONE);
+                    thirdPlaceScore.setVisibility(View.GONE);
+                    firstPlace.setVisibility(View.GONE);
+                    secondPlace.setVisibility(View.GONE);
+                    thirdPlace.setVisibility(View.GONE);
+
+                }
+                else {
+                    for (int i = 0; i < 3; i++) {
+                        leaderboardImageSetter.setImages(scoreTextViews[i], usernameTextViews[i], imageViews[i], top3people.get(i));
+                    }
+                }
             }
         });
     }
+
 
     /**
      * Uses QueryHandler and Callback to get your percentile among all players

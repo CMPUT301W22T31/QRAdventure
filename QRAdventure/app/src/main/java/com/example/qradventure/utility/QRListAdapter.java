@@ -29,6 +29,13 @@ public class QRListAdapter extends ArrayAdapter<Record>{
         this.accountRecords = accountRecords;
     }
 
+    /**
+     * getView - allows custom logic for each view in the listview
+     * @param position - position of view in list
+     * @param convertView - unused view to reuse as list scrolls
+     * @param parent - ViewGroup
+     * @return View - a single item (view) in the listview
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

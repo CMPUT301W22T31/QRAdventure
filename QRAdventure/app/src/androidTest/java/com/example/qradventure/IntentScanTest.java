@@ -170,6 +170,7 @@ public class IntentScanTest {
     /**
      * Test for adding an image to a QR. Uses a mock of PostScanActivity to manually set the image
      * bitmap.
+     * The image shows up as a black or white square for some reason, but it does work
      * @throws Exception
      */
     @Test
@@ -241,7 +242,7 @@ public class IntentScanTest {
         solo.clickInList(3);
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
         solo.goBack();
-        solo.clickOnText("Best QR");
+        solo.clickOnText("Largest CODE");
         solo.clickInList(3);
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
         solo.goBack();

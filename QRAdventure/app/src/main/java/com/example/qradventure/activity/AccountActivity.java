@@ -177,6 +177,14 @@ public class AccountActivity extends AppCompatActivity {
             String username = account.getUsername();
             String email = account.getEmail();
             String phoneNumber = account.getPhoneNumber();
+
+            if (email.equals("")) {
+                email = "N/A";
+            }
+            if (phoneNumber.equals("")) {
+                phoneNumber = "N/A";
+            }
+
             displayUsername.setText(username);
             displayEmail.setText(email);
             displayPhoneNumber.setText(phoneNumber);
@@ -291,8 +299,11 @@ public class AccountActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // get the QR contents, and send it to next activity
 
+        if (content == null)
+            content = "";
 
-        content = result.getContents();
+        if (  (!content.equals("QRSTATS-test-1-2-3-4") && !content.equals("QRLOGIN-b4048ce9c5919adf")))
+            content = result.getContents();
 
         if (content.contains("QRSTATS-")) {
             Intent intent = new Intent(AccountActivity.this, StatsActivity.class);

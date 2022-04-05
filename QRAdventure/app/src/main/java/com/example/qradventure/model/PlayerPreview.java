@@ -9,6 +9,7 @@ package com.example.qradventure.model;
 public class PlayerPreview {
     private String username;
     private String totalScore;
+    private int profilePicIndex;
     private int rank;
 
     /**
@@ -17,11 +18,37 @@ public class PlayerPreview {
      *      username of the player
      * @param score
      *      total score of the player
+     * @param rank
+     *      ranking in leaderboard
+     */
+    public PlayerPreview(String name, String score, int rank, int profilePicIndex) {
+        this.username = name;
+        this.totalScore = score;
+        this.rank = rank;
+        this.profilePicIndex = profilePicIndex;
+
+    }
+
+
+     /*
+     If no profile picture is provided, give default profile
+     index as 0
+     */
+
+    /**
+     * Constructor2
+     * @param name
+     *      username of the player
+     * @param score
+     *      total score of the player
+     * @param rank
+     *      ranking in leaderboard
      */
     public PlayerPreview(String name, String score, int rank) {
         this.username = name;
         this.totalScore = score;
         this.rank = rank;
+        this.profilePicIndex = 0;
     }
 
     public String getScore() {
@@ -34,6 +61,10 @@ public class PlayerPreview {
 
     public int getRank() {
         return this.rank;
+    }
+
+    public int getProfilePicIndex() {
+        return this.profilePicIndex;
     }
 
     public void setRank(int newRank) {

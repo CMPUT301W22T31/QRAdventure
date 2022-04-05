@@ -9,6 +9,10 @@ import android.view.View;
 import com.example.qradventure.R;
 import com.example.qradventure.activity.SearchPlayersActivity;
 
+/**
+ * Owner activity, 'replaces' account activity
+ * allows owner to access SearchPlayersActivity with a special intent that lets them delete accounts
+ */
 public class OwnerActivity extends AppCompatActivity {
 
     @Override
@@ -19,6 +23,7 @@ public class OwnerActivity extends AppCompatActivity {
 
     /**
      * Sends to SearchPlayers activity. Called when respective button is clicked.
+     * IMPORTANT: includes an intent extra - Owner flag
      * @param view: unused
      */
     public void goToPlayers(View view) {

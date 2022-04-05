@@ -115,6 +115,7 @@ public class ViewCodesActivity extends AppCompatActivity {
         if (username.length() >= 10) {
             header.setTextSize(25);
         }
+
         // ====== NAVBAR ======
         navbar = findViewById(R.id.navbar_menu);
         navbar.setItemIconTintList(null);
@@ -159,6 +160,13 @@ public class ViewCodesActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        navbar.setVisibility(View.VISIBLE);
+
+        String ownerRes = intent.getStringExtra("Owner");
+        if (ownerRes != null) {
+            navbar.setVisibility(View.INVISIBLE);
+        }
 
     }
 
