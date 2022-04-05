@@ -78,7 +78,7 @@ public class StatsActivity extends AppCompatActivity {
                 totalScore = ((Number) args.get(0)).intValue();
                 scanCount = ((Number) args.get(1)).intValue();
                 bestQR = ((Number) args.get(2)).intValue();
-                retrievedProfileIndex = (Long)args.get(3);
+                //retrievedProfileIndex = (Long)args.get(3);
 
                 // get textviews
                 TextView tvTotalScore = findViewById(R.id.tvStatsTotalScore);
