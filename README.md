@@ -78,3 +78,21 @@ Notes for part 3:
     * Link: https://stackoverflow.com/a/1109108
     * Author: Reto Meier (+15 revisions)
     * Purpose: automatically drop the on screen keyboard
+
+* Citation for implementing navbar
+    * Website: Youtube
+    * Link: https://www.youtube.com/watch?v=Chso6xrJ6aU&t=314s
+    * Author: Stevdza-San
+    * Purpose: Implement navbar in bottom of screen.
+   
+* Citation for getting current location of user
+    * Website: Youtube
+    * Link: https://www.youtube.com/watch?v=2rEqH6Blex4
+    * Author: Coding With Tea 
+    * Purpose: Grab current location of user
+
+* Citation for adding map to app
+    * Website: Youtube
+    * Link: https://www.youtube.com/watch?v=eiexkzCI8m8&t=62s
+    * Author: Android Coding
+    * Purpose: Implementing map and geolocation for user story
