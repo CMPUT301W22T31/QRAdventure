@@ -358,23 +358,23 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintEnd_toEndOf="@+id/bottompercentile"
-        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toEndOf="@+id/Youareinthe"
-        app:layout_constraintTop_toTopOf="@+id/bottompercentile"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintTop_toTopOf="@+id/bottompercentile" />
 
     <TextView
         android:id="@+id/Youareinthe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="48dp"
         android:fontFamily="@font/gotham_light"
         android:text="You are in the"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bottompercentile" />
+        app:layout_constraintTop_toTopOf="@+id/bottompercentile"
+        app:layout_constraintVertical_bias="0.48" />
 
     <TextView
         android:id="@+id/tvPercHeader"
@@ -386,10 +386,11 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textFontWeight="200"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintStart_toEndOf="@+id/tvMyRank"
-        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder" />
+        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder"
+        app:layout_constraintVertical_bias="0.48" />
 
     <TextView
         android:id="@+id/categoryhighest"
@@ -400,10 +401,11 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textFontWeight="200"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
         app:layout_constraintStart_toEndOf="@+id/tvPercHeader"
-        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder" />
+        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder"
+        app:layout_constraintVertical_bias="0.48" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"

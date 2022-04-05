@@ -130,6 +130,10 @@ public class LeaderboardActivity extends AppCompatActivity {
             }
         });
 
+        // get the filter category, e.g., "highest score"
+        // so the textview at bottom of leaderboard can be changed
+        filterSelected = findViewById(R.id.categoryhighest);
+
         // ==== set default filter: top 10 from High Score ====
         fetchCount = 10;
         currentFilter = 0; // 0 is no filter. Need 0 on startup.
@@ -219,6 +223,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         queryTopRanks(filter);
 
+        filterSelected.setText("highest score.");
+
         int score = CurrentAccount.getAccount().getTotalScore();
         calculateMyPercentile(filter, score);
     }
@@ -241,6 +247,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         queryTopRanks(filter);
 
+        filterSelected.setText("largest code.");
+
         int score = CurrentAccount.getAccount().getHighestQR();
         calculateMyPercentile(filter, score);
     }
@@ -262,6 +270,8 @@ public class LeaderboardActivity extends AppCompatActivity {
         String filter = "scanCount";
 
         queryTopRanks(filter);
+
+        filterSelected.setText("most scanning.");
 
         int score = CurrentAccount.getAccount().getTotalCodesScanned();
         calculateMyPercentile(filter, score);
