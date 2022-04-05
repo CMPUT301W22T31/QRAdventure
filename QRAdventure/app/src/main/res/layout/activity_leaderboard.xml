@@ -22,15 +22,46 @@
         app:layout_constraintHeight_percent="0.8"
         app:layout_constraintTop_toBottomOf="@+id/imageView7"></ImageView>
 
+    <ImageView
+        android:id="@+id/bottompercentileborder"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+
+        android:foregroundGravity="bottom"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_bottompercentilerectangle"
+        app:layout_constraintBottom_toTopOf="@+id/bottompercentile"
+        app:layout_constraintHeight_percent="0.03"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:layout_editor_absoluteX="20dp"></ImageView>
+
+    <ImageView
+        android:id="@+id/bottompercentile"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:foregroundGravity="bottom"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_bottompercentile"
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
+        app:layout_constraintHeight_percent="0.1"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        tools:layout_editor_absoluteX="20dp"></ImageView>
+
+
     <ListView
         android:id="@+id/preview_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:dividerHeight="8sp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@id/navbar_menu"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="20dp"
+        android:divider="#5e5c62"
+        android:dividerHeight="8sp"
         android:paddingTop="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottompercentileborder"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/personalPlacementRegion"
@@ -56,26 +87,28 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_polygon_14"
         app:layout_constraintHeight_percent="0.4"></ImageView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/personalPlacementRegion"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.38"
         android:background="@drawable/ic_polygon_13"
-        app:layout_constraintTop_toBottomOf="@id/topPanel"
-        tools:layout_editor_absoluteX="-42dp">
+        app:layout_constraintHeight_percent="0.38"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topPanel">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFilter1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/gothamlight"
             android:onClick="displayHighScores"
-            android:text="High Scores"
+            android:paddingHorizontal="10dp"
+            android:text="TOTAL SCORE"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/sizeSpinner"
             app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
@@ -84,12 +117,15 @@
             android:id="@+id/buttonFilter3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/gothamlight"
             android:onClick="displayMostScanned"
+            android:paddingHorizontal="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:text="Total Scans"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/buttonFilter1"
@@ -153,13 +189,15 @@
             android:id="@+id/buttonFilter2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/gothamlight"
             android:onClick="displayBestQR"
-            android:text="Best QR"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Largest CODE"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/buttonFilter3"
             app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
@@ -180,46 +218,9 @@
             app:layout_constraintVertical_bias="0.139" />
 
 
-        <TextView
-            android:id="@+id/tvPRHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="48dp"
-            android:fontFamily="@font/gotham_light"
-            android:text="You are in the"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvMyRank"
-            app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
-            app:layout_constraintVertical_bias="0.893" />
 
-        <TextView
-            android:id="@+id/tvMyRank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="76dp"
-            android:layout_marginEnd="52dp"
-            android:fontFamily="@font/gotham_light"
-            android:text="###"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="1sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvPercHeader"
-            app:layout_constraintTop_toBottomOf="@+id/tvPercHeader" />
 
-        <TextView
-            android:id="@+id/tvPercHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="84dp"
-            android:fontFamily="@font/gotham_light"
-            android:text="percentile"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textFontWeight="200"
-            android:textSize="15sp"
-        />
+
 
         <ImageView
             android:id="@+id/profile_pic_number_1"
@@ -262,9 +263,9 @@
             android:id="@+id/first_place_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gothamlight"
             android:text="null"
             android:textColor="#A7EFFF"
-            android:fontFamily="@font/gothamlight"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="@+id/profile_pic_number_1"
             app:layout_constraintStart_toStartOf="@+id/profile_pic_number_1"
@@ -291,8 +292,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="null"
-            android:textSize="12dp"
             android:textColor="#DBF9FF"
+            android:textSize="12dp"
 
             app:layout_constraintBottom_toBottomOf="@+id/first_place_name"
             app:layout_constraintEnd_toEndOf="@+id/profile_pic_number_2"
@@ -308,8 +309,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="null"
-            android:textSize="12dp"
             android:textColor="#DBF9FF"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/first_place_name"
             app:layout_constraintEnd_toEndOf="@+id/profile_pic_number_3"
             app:layout_constraintStart_toStartOf="@+id/profile_pic_number_3"
@@ -332,10 +333,10 @@
             android:id="@+id/third_place_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:textColor="#A7EFFF"
-            android:text="null"
             android:fontFamily="@font/gothamlight"
+            android:text="null"
+            android:textColor="#A7EFFF"
+            android:textSize="30dp"
             app:layout_constraintBottom_toBottomOf="@+id/first_place_name"
             app:layout_constraintEnd_toEndOf="@+id/profile_pic_number_3"
             app:layout_constraintStart_toStartOf="@+id/profile_pic_number_3"
@@ -346,6 +347,63 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/tvMyRank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham_light"
+        android:text="###"
+        android:textAlignment="center"
+        android:textColor="#B0D4FF"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
+        app:layout_constraintEnd_toEndOf="@+id/bottompercentile"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintStart_toEndOf="@+id/Youareinthe"
+        app:layout_constraintTop_toTopOf="@+id/bottompercentile"
+        app:layout_constraintVertical_bias="0.541" />
+
+    <TextView
+        android:id="@+id/Youareinthe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:fontFamily="@font/gotham_light"
+        android:text="You are in the"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottompercentile" />
+
+    <TextView
+        android:id="@+id/tvPercHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/gotham_light"
+        android:text="percentile for the "
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textFontWeight="200"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
+        app:layout_constraintStart_toEndOf="@+id/tvMyRank"
+        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder" />
+
+    <TextView
+        android:id="@+id/categoryhighest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham_light"
+        android:text="largest code"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textFontWeight="200"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
+        app:layout_constraintStart_toEndOf="@+id/tvPercHeader"
+        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"

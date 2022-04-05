@@ -43,6 +43,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     ImageView firstPlace;
     ImageView secondPlace;
     ImageView thirdPlace;
+    TextView filterSelected;
 
 
     ArrayList<PlayerPreview> previewArray;
