@@ -9,18 +9,18 @@
     android:background="#4F4D51">
 
     <ImageView
+        android:id="@+id/imageView4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:foregroundGravity="bottom"
-        android:scaleType="fitXY"
-        app:layout_constraintWidth_percent="0.5"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="1dp"
         android:alpha="0.4"
+        android:foregroundGravity="bottom"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_leaderboardlistviewbackground"
-        app:layout_constraintHeight_percent="0.8"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7"></ImageView>
+        app:layout_constraintHeight_percent="0.51"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7"
+        app:layout_constraintWidth_percent="0.5"
+        tools:layout_editor_absoluteX="20dp"></ImageView>
 
     <ImageView
         android:id="@+id/bottompercentileborder"
@@ -32,22 +32,7 @@
         android:src="@drawable/ic_bottompercentilerectangle"
         app:layout_constraintBottom_toTopOf="@+id/bottompercentile"
         app:layout_constraintHeight_percent="0.03"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         tools:layout_editor_absoluteX="20dp"></ImageView>
-    <ImageView
-        android:id="@+id/bottompercentile"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:foregroundGravity="bottom"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_bottompercentile"
-        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
-        app:layout_constraintHeight_percent="0.1"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        tools:layout_editor_absoluteX="20dp"></ImageView>
-
 
     <ListView
         android:id="@+id/preview_list"
@@ -59,7 +44,7 @@
         android:divider="#5e5c62"
         android:dividerHeight="8sp"
         android:paddingTop="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottompercentileborder"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,15 +85,16 @@
             android:id="@+id/buttonFilter1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:backgroundTint="#BF5E5E5E"
             android:fontFamily="@font/gothamlight"
             android:onClick="displayHighScores"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="5dp"
             android:text="TOTAL SCORE"
             android:textColor="#FFFFFF"
+            android:textSize="13dp"
             app:layout_constraintEnd_toStartOf="@+id/sizeSpinner"
             app:layout_constraintTop_toBottomOf="@+id/leaderboard_text" />
 
@@ -125,6 +111,7 @@
             android:paddingHorizontal="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:textSize="13dp"
             android:text="Total Scans"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/buttonFilter1"
@@ -143,7 +130,6 @@
             android:id="@+id/crown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:src="@drawable/ic_crown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +150,7 @@
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter2"
-            app:layout_constraintVertical_bias="1.0">
+>
 
         </TextView>
 
@@ -180,7 +166,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/crown"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter1"
-            app:layout_constraintVertical_bias="1.0">
+>
 
         </TextView>
 
@@ -195,7 +181,8 @@
             android:fontFamily="@font/gothamlight"
             android:onClick="displayBestQR"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:textSize="13dp"
+            android:paddingRight="5dp"
             android:text="Largest CODE"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/buttonFilter3"
@@ -217,10 +204,6 @@
             app:layout_constraintVertical_bias="0.139" />
 
 
-
-
-
-
         <ImageView
             android:id="@+id/profile_pic_number_1"
             android:layout_width="100dp"
@@ -240,7 +223,7 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
-            app:layout_constraintVertical_bias="0.34"></ImageView>
+            app:layout_constraintVertical_bias="0.228"></ImageView>
 
         <TextView
             android:id="@+id/second_place_score"
@@ -326,7 +309,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profile_pic_number_1"
             app:layout_constraintTop_toBottomOf="@+id/buttonFilter3"
-            app:layout_constraintVertical_bias="0.34"></ImageView>
+            app:layout_constraintVertical_bias="0.228"></ImageView>
 
         <TextView
             android:id="@+id/third_place_score"
@@ -345,65 +328,69 @@
         </TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <TextView
-        android:id="@+id/tvMyRank"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gotham_light"
-        android:text="###"
-        android:textAlignment="center"
-        android:textColor="#B0D4FF"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
-        app:layout_constraintEnd_toEndOf="@+id/bottompercentile"
-        app:layout_constraintHorizontal_bias="0.022"
-        app:layout_constraintStart_toEndOf="@+id/Youareinthe"
-        app:layout_constraintTop_toTopOf="@+id/bottompercentile" />
 
-    <TextView
-        android:id="@+id/Youareinthe"
+    <LinearLayout
+        android:id="@+id/linearLayout10"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:fontFamily="@font/gotham_light"
-        android:text="You are in the"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bottompercentile"
-        app:layout_constraintVertical_bias="0.48" />
+        android:layout_height="40dp"
+        android:background="@drawable/ic_bottompercentile"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/navbar_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/tvPercHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/gotham_light"
-        android:text="percentile for the "
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textFontWeight="200"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
-        app:layout_constraintStart_toEndOf="@+id/tvMyRank"
-        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder"
-        app:layout_constraintVertical_bias="0.48" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/categoryhighest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gotham_light"
-        android:text="largest code"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textFontWeight="200"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/bottompercentile"
-        app:layout_constraintStart_toEndOf="@+id/tvPercHeader"
-        app:layout_constraintTop_toBottomOf="@+id/bottompercentileborder"
-        app:layout_constraintVertical_bias="0.48" />
+            <TextView
+                android:id="@+id/Youareinthe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_light"
+                android:gravity="left"
+                android:text="You are in the"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"></TextView>
+
+            <TextView
+                android:id="@+id/tvMyRank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="@font/gotham_light"
+                android:text="###"
+                android:textAlignment="center"
+                android:textColor="#B0D4FF"
+                android:textSize="12sp"></TextView>
+
+            <TextView
+                android:id="@+id/tvPercHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/gotham_light"
+                android:text="percentile for the "
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textFontWeight="200"
+                android:textSize="12sp"></TextView>
+
+            <TextView
+                android:id="@+id/categoryhighest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_light"
+                android:text="largest code"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textFontWeight="200"
+                android:textSize="12sp"></TextView>
+        </LinearLayout>
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbar_menu"
