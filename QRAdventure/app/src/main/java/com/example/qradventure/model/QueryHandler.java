@@ -1214,12 +1214,14 @@ public class QueryHandler {
                                     long totalScore = (long) doc.getData().get("TotalScore");
                                     long scanCount = (long) doc.getData().get("scanCount");
                                     long bestQR = (long) doc.getData().get("bestQR");
+                                    long profilePicIndex = (long) doc.getData().get("profilePic");
 
                                     // order we add them matters
                                     // refer to callback in StatsActivity
                                     args.add(totalScore);
                                     args.add(scanCount);
                                     args.add(bestQR);
+                                    args.add(profilePicIndex);
                                     callback.callback(args);
 
                                 } else {
